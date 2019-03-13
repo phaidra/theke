@@ -3,6 +3,7 @@ import './plugins/vuetify'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueI18n from 'vue-i18n'
+import moment from 'moment'
 import eng from 'phaidra-vue-components/src/i18n/eng'
 import deu from 'phaidra-vue-components/src/i18n/deu'
 import ita from 'phaidra-vue-components/src/i18n/ita'
@@ -34,6 +35,12 @@ Vue.filter('truncate', function (text, length, clamp) {
   tcText = tcText.slice(0, last)
 
   return tcText + clamp
+})
+
+Vue.filter('unixtime', function (value) {
+  if (value) {
+    return moment.unix(String(value)).format('DD.MM.YYYY hh:mm:ss')
+  }
 })
 
 const messages = { eng, deu, ita }

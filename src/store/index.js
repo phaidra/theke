@@ -93,6 +93,9 @@ export default new Vuex.Store({
             commit('setToken', json['XSRF-TOKEN'])
             document.cookie = 'X-XSRF-TOKEN=' + json['XSRF-TOKEN']
           }
+
+          dispatch('initSearch')
+
         })
         .catch(function (error) {
           console.log(error)
@@ -112,6 +115,7 @@ export default new Vuex.Store({
         .then(function (response) { return response.json() })
         .then(function (json) {
           commit('initStore')
+          dispatch('initSearch')
           if (json.alerts && json.alerts.length > 0) {
             commit('setAlerts', json.alerts)
           }
@@ -120,6 +124,7 @@ export default new Vuex.Store({
         .catch(function (error) {
           console.log(error)
           commit('initStore')
+          dispatch('initSearch')
           resolve()
         })
       })

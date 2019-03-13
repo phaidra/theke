@@ -445,6 +445,9 @@ const mutations = {
 
     state.facetQueries.push(yearsFacet)
   },
+  setFacetQueries (state, facetQueries) {
+    state.facetQueries = facetQueries
+  },
   setSearchResults (state, results) {
     state.searchResults = results
   },
@@ -986,6 +989,16 @@ const actions = {
         reject()
       })
     })
+  },
+  initSearch ({dispatch, commit, state, rootState}) {
+    let searchsettings = rootState.settings.global.search.state
+    if (searchsettings.owner) {
+      commit('setOwnerFilter', searchsettings.owner)
+    }
+    if (searchsettings.facetQueries) {
+      commit('setFacetQueries', searchsettings.facetQueries)
+    }
+    dispatch('search')
   }
 }
 

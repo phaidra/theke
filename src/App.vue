@@ -3,7 +3,7 @@
     <v-app>
       <v-container fluid grid-list-lg>
         <v-layout column>
-          
+
           <v-layout row>
             <v-flex xs4>
               <autocomplete
@@ -17,18 +17,16 @@
               ></autocomplete>
             </v-flex>
             <template v-if="token">
-              <v-flex xs5>
-                <h3 class="font-weight-light pt-4">Logged in [{{ token }}]</h3>
-              </v-flex>
-              <v-flex xs1>
-                <v-btn raised single-line color="primary lighten-2" class="mt-3" @click="logout()">Logout</v-btn>
+              <v-flex>
+                <v-btn :to="{ name: 'submit'}" color="primary lighten-2" raised>{{ $t('Submit') }}</v-btn>
+                <v-btn raised single-line @click="logout()">Logout</v-btn>
               </v-flex>
             </template>
             <template v-else>
-              <v-flex xs2> 
+              <v-flex> 
                 <v-text-field v-model="credentials.username" :label="'username'" ></v-text-field>
               </v-flex>
-              <v-flex xs2>
+              <v-flex>
                 <v-text-field 
                   v-model="credentials.password" 
                   :label="'password'" 
@@ -148,11 +146,8 @@ export default {
   created: function () {
     this.$store.dispatch('initSettings')
     this.$store.commit('initStore')
+    this.$store.dispatch('initSearch')
     this.$vuetify.theme.primary = this.$store.state.settings.instance.primary
-    if(this.searchsettings.owner){
-      this.$store.dispatch('setOwnerFilter', this.searchsettings.owner)
-    }
-    this.$store.dispatch('search')
   }
 }
 </script>

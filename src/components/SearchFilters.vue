@@ -37,7 +37,7 @@
           </li>
         </ul>
       </li>
-      <li>
+      <li v-if="searchsettings.ownerfilter">
         <v-layout column>
           <v-flex>
             <v-layout row>
@@ -61,7 +61,7 @@
           </v-flex>
         </v-layout>
       </li>
-      <li>
+      <li v-if="searchsettings.authorfilter">
         <v-layout column>
           <v-flex>
             <v-layout row>
@@ -104,7 +104,7 @@
           </v-flex>
         </v-layout>
       </li>
-      <li>
+      <li v-if="searchsettings.rolefilter">
         <v-layout column>
           <v-flex>
             <v-layout row>
@@ -177,6 +177,9 @@ export default {
     Autocomplete
   },
   computed: {
+    searchsettings: function() {
+      return this.$store.state.settings.global.search.state
+    },
     owner () {
       return this.$store.state.search.owner
     },

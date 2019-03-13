@@ -1,20 +1,24 @@
 <template>
-  <v-card>
-    <v-toolbar flat>
-      <v-toolbar-title>Submit</v-toolbar-title>
-    </v-toolbar>
-    <v-card-text>
-      <p-i-form
-        :form="form"
-        :contentmodel="contentmodel" 
-        v-on:object-created="objectCreated($event)"
-        v-on:load-form="form = $event"
-      ></p-i-form>
-    </v-card-text>
-  </v-card>
+  <v-flex>
+    <v-btn :to="{ name: 'search'}" raised>{{ $t('Back') }}</v-btn>
+    <v-card>
+      <v-toolbar flat>
+        <v-toolbar-title>Submit</v-toolbar-title>
+      </v-toolbar>
+      <v-card-text>
+        <p-i-form
+          :form="form"
+          :contentmodel="contentmodel" 
+          v-on:object-created="objectCreated($event)"
+          v-on:load-form="form = $event"
+        ></p-i-form>
+      </v-card-text>
+    </v-card>
+  </v-flex>
 </template>
 
 <script>
+import fields from 'phaidra-vue-components/src/utils/fields'
 
 export default {
   name: 'submit',
@@ -24,12 +28,12 @@ export default {
       form: {
         sections: [
           {
-            title: 'Container metadata',
+            title: 'Movie metadata',
             id: 1,
             fields: []
           },
           {
-            title: 'File',
+            title: 'Cover',
             id: 2,
             type: 'member',
             multiplicable: true,
@@ -42,6 +46,14 @@ export default {
   methods: {
     objectCreated: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object ' + event + ' created' }])
+    },
+    getCookie: function (name) {
+      var value = "; " + document.cookie
+      var parts = value.split("; " + name + "=")
+      if (parts.length == 2) {
+        var val = parts.pop().split(";").shift()
+        return val === ' ' ? null : val
+      }
     }
   },
   mounted: function () {
@@ -92,6 +104,7 @@ export default {
 
     let productioncomp = fields.getField('role')
     productioncomp.role = 'role:prp'
+    productioncomp.showname = true
     this.form.sections[0].fields.push(productioncomp)
 
     let prodyear = fields.getField('date-edtf')
@@ -124,17 +137,19 @@ export default {
 
     this.form.sections[0].fields.push(fields.getField('note'))
 
-    this.form.sections[1].fields.push(fields.getField('physical-location'))
+    this.form.sections[0].fields.push(fields.getField('physical-location'))
 
-    this.form.sections[1].fields.push(fields.getField('shelf-mark'))
+    this.form.sections[0].fields.push(fields.getField('shelf-mark'))
 
-    this.form.sections[2].fields.push(fields.getField('resource-type'))
-    this.form.sections[2].fields.push(fields.getField('file'))
-    this.form.sections[2].fields.push(fields.getField('title'))
+    let mrt = fields.getField('resource-type')
+    mrt.value = 'https://pid.phaidra.org/vocabulary/resourcetype/HMJ4-EW36'
+    this.form.sections[1].fields.push(mrt)
+    this.form.sections[1].fields.push(fields.getField('file'))
+    this.form.sections[1].fields.push(fields.getField('title'))
     let mt = fields.getField('mime-type')
     mt.required = true
-    this.form.sections[2].fields.push(mt)
-    this.form.sections[2].fields.push(fields.getField('license'))
+    this.form.sections[1].fields.push(mt)
+    this.form.sections[1].fields.push(fields.getField('license'))
   }
 }
 </script>
