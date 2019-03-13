@@ -99,9 +99,6 @@ export default {
     }
   },
   methods: {
-    handleSelect: function (query) {
-      this.$store.commit('setQuery', query.term)
-    },
     setSort: function (sort) {
       this.$store.dispatch('setSort', sort)
     },

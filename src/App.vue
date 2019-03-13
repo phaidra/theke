@@ -101,6 +101,7 @@ export default {
   methods: {
     handleSelect: function (query) {
       this.$store.commit('setQuery', query.term)
+      this.$store.dispatch('search')
     },
     login: function () {
       this.$store.dispatch('login', this.credentials)
