@@ -24,7 +24,7 @@ export default {
   name: 'submit',
   data () {
     return {
-      contentmodel: 'https://pid.phaidra.org/vocabulary/resourcetype/HS9G-WDM9',
+      contentmodel: 'https://pid.phaidra.org/vocabulary/8MY0-BQDQ',
       form: {
         sections: [
           {
@@ -65,7 +65,7 @@ export default {
 
     let rt = fields.getField('resource-type')
     if (this.contentmodel) {
-      rt.value = 'https://pid.phaidra.org/vocabulary/resourcetype/HS9G-WDM9'
+      rt.value = 'https://pid.phaidra.org/vocabulary/8MY0-BQDQ'
       rt['skos:prefLabel'].push({ '@value': 'container', '@language': 'eng' })
     }
     this.form.sections[0].fields.push(rt)
@@ -142,7 +142,7 @@ export default {
     this.form.sections[0].fields.push(fields.getField('shelf-mark'))
 
     let mrt = fields.getField('resource-type')
-    mrt.value = 'https://pid.phaidra.org/vocabulary/resourcetype/HMJ4-EW36'
+    mrt.value = 'https://pid.phaidra.org/vocabulary/44TN-P1S0'
     this.form.sections[1].fields.push(mrt)
     this.form.sections[1].fields.push(fields.getField('file'))
     this.form.sections[1].fields.push(fields.getField('title'))
