@@ -16,6 +16,7 @@
                 :onSelect="handleSelect"
               ></autocomplete>
             </v-flex>
+            <v-spacer></v-spacer>
             <template v-if="token">
               <v-flex>
                 <v-btn :to="{ name: 'submit'}" color="primary lighten-2" raised>{{ $t('Submit') }}</v-btn>

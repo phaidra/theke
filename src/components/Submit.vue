@@ -1,6 +1,8 @@
 <template>
   <v-flex>
-    <v-btn :to="{ name: 'search'}" raised>{{ $t('Back') }}</v-btn>
+    <v-flex>
+      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
+    </v-flex>
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>Submit</v-toolbar-title>
@@ -41,6 +43,22 @@ export default {
           }
         ]
       }
+    }
+  },
+  computed: {
+    breadcrumbs () {
+      let bc = [
+        {
+          text: 'Search',
+          to: { name: 'search', path: '/' }
+        },
+        {
+          text: 'Submit',
+          disabled: true,
+          to: { name: 'submit' },
+        }
+      ]
+      return bc
     }
   },
   methods: {
@@ -119,7 +137,7 @@ export default {
 
     this.form.sections[0].fields.push(fields.getField('description'))
 
-    this.form.sections[0].fields.push(fields.getField('adaptation'))
+    this.form.sections[0].fields.push(fields.getField('movieadaptation'))
 
     this.form.sections[0].fields.push(fields.getField('genre'))
 
