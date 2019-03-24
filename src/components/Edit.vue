@@ -38,8 +38,7 @@ export default {
         },
         {
           text: 'Edit ' + this.pid,
-          disabled: true,
-          to: { name: 'detail', params: { pid: this.pid } },
+          disabled: true
         }
       ]
       return bc

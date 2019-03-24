@@ -116,7 +116,9 @@ const state = {
   roles: [],
   query_input: '',
   collection: '',
-  facetQueries: []
+  facetQueries: [],
+  statsfields: [],
+  stats: {}
 }
 
 const getters = {
@@ -196,8 +198,8 @@ const mutations = {
         label: 'Access',
         field: 'datastreams',
         id: 'datastreams',
-        exclusive: 1,
-        show: 0,
+        exclusive: true,
+        show: false,
         queries: [
           {
             id: 'restricted',
@@ -692,6 +694,15 @@ const mutations = {
       }
     }
   },
+  setSortdef (state, sortdef) {
+    state.sortdef = sortdef
+  },
+  setStatsfields (state, statsfields) {
+    state.statsfields = statsfields
+  },
+  setStats (state, stats) {
+    state.stats = stats
+  },
   setCollection (state, collection) {
     state.collection = collection
   }
@@ -933,6 +944,13 @@ const actions = {
       ands.push('owner:*')
     }
 
+    if (state.statsfields) {
+      params['stats'] = true
+      for (let sf of state.statsfields) {
+        params['stats.field'] = sf
+      }
+    }
+
     if (state.collection) {
       ands.push('ispartof:"' + state.collection + '"')
       searchdefarr.push('collection=' + state.collection)
@@ -954,6 +972,7 @@ const actions = {
     .then(function (json) {
       commit('setDocs', json.response.docs)
       commit('setTotal', json.response.numFound)
+      commit('setStats', json.stats)
       commit('setFacetCounts', json.facet_counts)
       commit('updateFacetQueries', json.facet_counts)
       commit('resetFacets')
@@ -997,6 +1016,12 @@ const actions = {
     }
     if (searchsettings.facetQueries) {
       commit('setFacetQueries', searchsettings.facetQueries)
+    }
+    if (searchsettings.sortdef) {
+      commit('setSortdef', searchsettings.sortdef)
+    }
+    if (searchsettings.statsfields) {
+      commit('setStatsfields', searchsettings.statsfields)
     }
     dispatch('search')
   }

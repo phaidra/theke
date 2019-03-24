@@ -13,7 +13,8 @@
           <v-divider light></v-divider>
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
-            <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit') }}</v-btn>
+            <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary lighten-2" raised>{{ $t('Add member') }}</v-btn>
+            <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit metadata') }}</v-btn>
             <template v-if="viewable">
               <v-btn :href="instance.api + '/object/' + pid + '/diss/Content/get'" primary>{{ $t('View') }}</v-btn>
             </template>
@@ -25,7 +26,7 @@
       </v-flex>
   
       <v-flex xs6 v-if="members">
-        <v-card v-for="(member) in members" :key="'member_'+member.pid">
+        <v-card v-for="(member) in members" :key="'member_'+member.pid" class="mb-3">
           <a :href="instance.api + '/object/' + member.pid + '/diss/Content/get'">
             <v-img max-height="400" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
             <v-img max-height="400" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
@@ -36,7 +37,7 @@
           <v-divider light></v-divider>
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
-            <v-btn :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit') }}</v-btn>
+            <v-btn :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit metadata') }}</v-btn>
             <template>
               <v-btn :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
             </template>

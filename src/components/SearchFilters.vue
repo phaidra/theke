@@ -3,30 +3,30 @@
   <v-container fluid grid-list-md>
     <ul class="main-ul">
       <li v-for="(f, i) in facetQueries" :key="i">
-        <v-icon @click.native="showFacet(f)" v-if="f.show" name="univie-stop2" class="primary--text"></v-icon>
-        <v-icon @click.native="showFacet(f)" v-if="!f.show" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
+        <!--<v-icon @click.native="showFacet(f)" v-if="f.show" class="primary--text">check_box</v-icon>
+        <v-icon @click.native="showFacet(f)" v-if="!f.show" class="primary--text">check_box_outline_blank</v-icon>-->
         <span @click="showFacet(f)" class="facet-label primary--text" :class="{ active: f.show }">{{ $t(f.label) }}</span>
         <ul v-if="f.show">
           <li v-for="(q, j) in f.queries" :key="j">
             <span @click="toggleFacet(q,f)">
-              <v-icon v-if="q.active" name="univie-stop2" class="primary--text"></v-icon>
-              <v-icon v-if="!q.active" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
+              <!--<v-icon v-if="q.active" class="primary--text">check_box</v-icon>
+              <v-icon v-if="!q.active" class="primary--text">check_box_outline_blank</v-icon>-->
               <span :class="{ active: q.active }" class="facet-label primary--text">{{ $t(q.label) }}</span>
               <span class="facet-count grey--text" v-if="q.count > 0">({{q.count}})</span>
             </span>
             <ul v-if="q.active && q.childFacet" >
               <li v-for="(q1, k) in q.childFacet.queries" :key="k">
                 <span @click="toggleFacet(q1,q.childFacet)">
-                  <v-icon v-if="q1.active" name="univie-stop2" class="primary--text"></v-icon>
-                  <v-icon v-if="!q1.active" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
+                  <!--<v-icon v-if="q1.active" class="primary--text">check_box</v-icon>
+                  <v-icon v-if="!q1.active" class="primary--text">check_box_outline_blank</v-icon>-->
                   <span :class="{ active: q1.active }" class="facet-label primary--text">{{ $t(q1.label) }}</span>
                   <span class="facet-count grey--text" v-if="q1.count > 0">({{q1.count}})</span>
                 </span>
                 <ul v-if="q1.active && q1.childFacet" >
                   <li v-for="(q2, l) in q1.childFacet.queries" :key="l">
                     <span @click="toggleFacet(q2,q1.childFacet)">
-                      <v-icon v-if="q2.active" name="univie-stop2" class="primary--text"></v-icon>
-                      <v-icon v-if="!q2.active" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
+                      <!--<v-icon v-if="q2.active" class="primary--text">check_box</v-icon>
+                      <v-icon v-if="!q2.active" class="primary--text">check_box_outline_blank</v-icon>-->
                       <span :class="{ active: q2.active }" class="facet-label primary--text">{{ $t(q2.label) }}</span>
                       <span class="facet-count grey--text" v-if="q2.count>0">({{q2.count}})</span>
                     </span>
@@ -36,132 +36,6 @@
             </ul>
           </li>
         </ul>
-      </li>
-      <li v-if="searchsettings.ownerfilter">
-        <v-layout column>
-          <v-flex>
-            <v-layout row>
-              <v-flex>
-                <v-icon @click.native="toggleOwnerFilter()" v-if="showOwnerFilter" name="univie-stop2" class="primary--text"></v-icon>
-                <v-icon @click.native="toggleOwnerFilter()" v-if="!showOwnerFilter" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
-                <span @click="toggleOwnerFilter()" class="facet-label primary--text" :class="{ active: showOwnerFilter }">Owner</span>
-              </v-flex>
-            </v-layout>
-            <autocomplete
-              v-if="showOwnerFilter"
-              searchaction="search"
-              placeholder="Search..."
-              name="autocomplete"
-              :initValue="owner"
-              :suggester="'ownersuggester'"
-              :customParams="{ token: 'dev' }"
-              :classes="{ input: 'form-control', wrapper: 'input-wrapper'}"
-              :onSelect="handleOwnerSelect"
-            ></autocomplete>
-          </v-flex>
-        </v-layout>
-      </li>
-      <li v-if="searchsettings.authorfilter">
-        <v-layout column>
-          <v-flex>
-            <v-layout row>
-              <v-flex>
-                <v-icon @click.native="toggleAuthorFilter()" v-if="showAuthorFilter" name="univie-stop2" class="primary--text"></v-icon>
-                <v-icon @click.native="toggleAuthorFilter()" v-if="!showAuthorFilter" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
-                <span @click="toggleAuthorFilter()" class="facet-label primary--text" :class="{ active: showAuthorFilter }">{{ $t('Authors') }}</span>
-              </v-flex>
-            </v-layout>
-            <v-layout row v-if="showAuthorFilter">
-              <v-flex xs2>
-                <v-icon name="material-social-person" class="primary--text" height="100%"></v-icon>
-              </v-flex>
-              <v-flex xs10>
-                <v-select
-                  :placeholder="$t('ADD_PREFIX') + ' '  + $t(persAuthors[0].label) + ' ' + $t('ADD_SUFFIX') + '...'"
-                  chips
-                  tags
-                  clearable
-                  v-model="persAuthorsValues"
-                >
-                </v-select>
-              </v-flex>
-            </v-layout>
-            <v-layout row v-if="showAuthorFilter">
-              <v-flex xs2>
-                <v-icon name="material-action-account-balance" class="primary--text" height="100%"></v-icon>
-              </v-flex>
-              <v-flex xs10>
-                <v-select
-                  :placeholder="$t('ADD_PREFIX') + ' '  + $t(corpAuthors[0].label) + ' ' + $t('ADD_SUFFIX') + '...'"
-                  chips
-                  tags
-                  clearable
-                  v-model="corpAuthorsValues"
-                >
-                </v-select>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </li>
-      <li v-if="searchsettings.rolefilter">
-        <v-layout column>
-          <v-flex>
-            <v-layout row>
-              <v-flex>
-                <v-icon @click.native="toggleRoleFilter()" v-if="showRoleFilter" name="univie-stop2" class="primary--text"></v-icon>
-                <v-icon @click.native="toggleRoleFilter()" v-if="!showRoleFilter" name="univie-checkbox-unchecked" class="primary--text"></v-icon>
-                <span @click="toggleRoleFilter()" class="facet-label primary--text" :class="{ active: showRoleFilter }">{{ $t('Roles') }}</span>
-              </v-flex>
-            </v-layout>
-            <v-layout column v-if="showRoleFilter">
-              <v-select
-                :placeholder="$t('Add role') + '...'"
-                :hint="$t('Personal')"
-                :items="marcRolesArray"
-                v-model="selectedRole.pers"
-                @input="addRoleFilter('pers')"
-                max-height="400"
-                persistent-hint
-              ></v-select>
-              <v-select
-                :placeholder="$t('Add role') + '...'"
-                :hint="$t('Corporate')"
-                :items="marcRolesArray"
-                v-model="selectedRole.corp"
-                @input="addRoleFilter('corp')"
-                max-height="400"
-                persistent-hint
-              ></v-select>
-              <template v-if="roles.length > 0">
-                <div v-for="(role, i) in roles" :key="i" >
-                  <v-layout row>
-                    <v-flex xs2>
-                      <v-icon v-if="role.type==='pers'" name="material-social-person" class="primary--text" height="100%"></v-icon>
-                      <v-icon v-if="role.type==='corp'" name="material-action-account-balance" class="primary--text" height="100%"></v-icon>
-                    </v-flex>
-                    <v-flex xs8>
-                      <v-select
-                        :placeholder="$t('ADD_PREFIX') + ' '  + $t(role.label) + ' ' + $t('ADD_SUFFIX') + '...'"
-                        chips
-                        tags
-                        clearable
-                        :items="role.values"
-                        v-model="role.values"
-                        @input="setRoleFilterValues(role)"
-                      >
-                      </v-select>
-                    </v-flex>
-                    <v-flex xs2>
-                      <v-icon name="material-navigation-close" class="primary--text" height="100%" @click.native="removeRoleFilter(role)"></v-icon>
-                    </v-flex>
-                  </v-layout>
-                </div>
-              </template>
-            </v-layout>
-
-          </v-flex>
-        </v-layout>
       </li>
     </ul>
   </v-container>
@@ -193,7 +67,7 @@ export default {
       return this.$store.state.search.showOwnerFilter
     },
     facetQueries () {
-      return this.$store.state.search.facetQueries
+      return this.$store.state.search.facetQueries.filter(f => !f.hidefilter);
     },
     persAuthors () {
       return this.$store.state.search.pers_authors
@@ -280,3 +154,21 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ul {
+  list-style: none;
+}
+
+.facet-label {
+  font-size: 16px;
+  font-weight: 300;
+  margin-right: 5px;
+}
+
+.active {
+  font-size: 18px;
+  font-weight: 400;
+  text-shadow: rgba(0,0,0,.12) 1px 1px 4px;
+}
+</style>

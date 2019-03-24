@@ -12,34 +12,20 @@
               <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="9" v-model="page" class="mb-3" flat></v-pagination>
             </v-flex>
             <v-flex xs4>
-              <v-container grid-list-md>
-                <v-layout row wrap>
-                  <v-flex>
-                    <v-tooltip bottom>
-                      <v-icon @click.native="setSort('title asc')" name="fontello-sort-name-up" :color="sortIsActive('title asc') ? '#1A74B0' : '#777777'" slot="activator"></v-icon>
-                      <span>{{ $t('Title ascending')}}</span>
-                    </v-tooltip>
-                  </v-flex>
-                  <v-flex>
-                    <v-tooltip bottom>
-                      <v-icon @click.native="setSort('title desc')" name="fontello-sort-name-down" :color="sortIsActive('title desc') ? '#1A74B0' : '#777777'" slot="activator"></v-icon>
-                      <span>{{ $t('Title descending')}}</span>
-                    </v-tooltip>
-                  </v-flex>
-                  <v-flex>
-                    <v-tooltip bottom>
-                      <v-icon @click.native="setSort('created asc')" name="fontello-sort-number-up" :color="sortIsActive('created asc') ? '#1A74B0' : '#777777'" slot="activator"></v-icon>
-                      <span>{{ $t('Upload date ascending')}}</span>
-                    </v-tooltip>
-                  </v-flex>
-                  <v-flex>
-                    <v-tooltip bottom>
-                      <v-icon @click.native="setSort('created desc')" name="fontello-sort-number-down" :color="sortIsActive('created desc') ? '#1A74B0' : '#777777'" slot="activator"></v-icon>
-                      <span>{{ $t('Upload date descending')}}</span>
-                    </v-tooltip>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+              <v-btn-toggle v-model="toggle_exclusive">
+                <v-btn @click.native="setSort('title asc')">
+                  <span>A-Z</span>
+                </v-btn>
+                <v-btn @click.native="setSort('title desc')">
+                  <span>Z-A</span>
+                </v-btn>
+                <v-btn @click.native="setSort('dcterms_created_year_sort asc')">
+                  <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
+                </v-btn>
+                <v-btn @click.native="setSort('dcterms_created_year_sort desc')">
+                  <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
+                </v-btn>
+              </v-btn-toggle>
             </v-flex>
           </v-layout>
           <v-flex v-if="inCollection" class="display-2 primary--text">{{ $t('Members of') }} {{ inCollection }} <icon name="material-navigation-close" class="primary--text" height="100%" @click.native="removeCollectionFilter()"></icon></v-flex>
@@ -96,6 +82,29 @@ export default {
     },
     inCollection: function () {
       return this.$store.state.search.collection
+    },
+    dctermsCreatedYearMin: function () {
+      if (this.$store.state.search.stats) {
+        if (this.$store.state.search.stats.stats_fields) {
+          if (this.$store.state.search.stats.stats_fields.dcterms_created_year) {
+            return this.$store.state.search.stats.stats_fields.dcterms_created_year.min
+          }
+        }
+      }
+    },
+    dctermsCreatedYearMax: function () {
+      if (this.$store.state.search.stats) {
+        if (this.$store.state.search.stats.stats_fields) {
+          if (this.$store.state.search.stats.stats_fields.dcterms_created_year) {
+            return this.$store.state.search.stats.stats_fields.dcterms_created_year.max
+          }
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      toggle_exclusive: 0,
     }
   },
   methods: {

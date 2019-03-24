@@ -13,6 +13,10 @@
       @keydown="handleKeyDown"
       @focus="handleFocus"
       autocomplete="off"
+      append-icon="search"
+      @click:append="clickSearch"
+      @click:clear="clickClear"
+      clearable
     />
     <div :class="`${getClassName('list')} autocomplete autocomplete-list elevation-2`" v-show="showList && suggestions.length">
       <v-list>
@@ -119,6 +123,16 @@
         } else {
           return this.getData(value)
         }
+      },
+
+      clickSearch () {
+        this.onSelect ? this.onSelect({ term: this.type }) : null
+        this.showList = false
+      },
+
+      clickClear () {
+        this.onSelect ? this.onSelect({ term: "" }) : null
+        this.showList = false
       },
 
       handleKeyDown (e) {

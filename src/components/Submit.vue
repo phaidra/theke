@@ -5,7 +5,7 @@
     </v-flex>
     <v-card>
       <v-toolbar flat>
-        <v-toolbar-title>Submit</v-toolbar-title>
+        <v-toolbar-title>{{ $('Submit') }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
         <p-i-form
@@ -33,13 +33,6 @@ export default {
             title: 'Movie metadata',
             id: 1,
             fields: []
-          },
-          {
-            title: 'Cover',
-            id: 2,
-            type: 'member',
-            multiplicable: true,
-            fields: []
           }
         ]
       }
@@ -64,22 +57,9 @@ export default {
   methods: {
     objectCreated: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object ' + event + ' created' }])
-    },
-    getCookie: function (name) {
-      var value = "; " + document.cookie
-      var parts = value.split("; " + name + "=")
-      if (parts.length == 2) {
-        var val = parts.pop().split(";").shift()
-        return val === ' ' ? null : val
-      }
     }
   },
   mounted: function () {
-    var token = this.getCookie('X-XSRF-TOKEN')
-    if (token) {
-      // TODO init userdata if setting token from cookie
-      this.$store.commit('setToken', token)
-    }
 
     let rt = fields.getField('resource-type')
     if (this.contentmodel) {
@@ -158,16 +138,6 @@ export default {
     this.form.sections[0].fields.push(fields.getField('physical-location'))
 
     this.form.sections[0].fields.push(fields.getField('shelf-mark'))
-
-    let mrt = fields.getField('resource-type')
-    mrt.value = 'https://pid.phaidra.org/vocabulary/44TN-P1S0'
-    this.form.sections[1].fields.push(mrt)
-    this.form.sections[1].fields.push(fields.getField('file'))
-    this.form.sections[1].fields.push(fields.getField('title'))
-    let mt = fields.getField('mime-type')
-    mt.required = true
-    this.form.sections[1].fields.push(mt)
-    this.form.sections[1].fields.push(fields.getField('license'))
   }
 }
 </script>
