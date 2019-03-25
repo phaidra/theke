@@ -5,7 +5,7 @@
     </v-flex>
     <v-card>
       <v-toolbar flat>
-        <v-toolbar-title>{{ $('Submit') }}</v-toolbar-title>
+        <v-toolbar-title>{{ $t('Submit') }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
         <p-i-form

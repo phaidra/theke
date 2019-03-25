@@ -12,15 +12,15 @@
                 :initValue="query"
                 :suggester="'titlesuggester'"
                 :customParams="{ token: 'dev' }"
-                :classes="{ input: 'form-control', wrapper: 'input-wrapper'}"
+                :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
                 :onSelect="handleSelect"
               ></autocomplete>
             </v-flex>
             <v-spacer></v-spacer>
             <template v-if="token">
               <v-flex>
-                <v-btn :to="{ name: 'submit'}" color="primary lighten-2" raised>{{ $t('Submit') }}</v-btn>
-                <v-btn raised single-line @click="logout()">Logout</v-btn>
+                <v-btn :to="{ name: 'submit' }" color="primary lighten-2" raised>{{ $t('Submit') }}</v-btn>
+                <v-btn class="grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
               </v-flex>
             </template>
             <template v-else>
@@ -163,5 +163,9 @@ export default {
 
 .right {
   float: right;
+}
+
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: white;
 }
 </style>

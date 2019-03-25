@@ -54,6 +54,7 @@ export default {
   methods: {
     objectSaved: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Metadata for object ' + event + ' saved' }])
+      this.$router.push({ name: 'detail', params: { pid: this.parentpid } })
     },
     loadJsonld (self, pid) {
       var url = self.$store.state.settings.instance.api + '/object/' + pid + '/metadata?mode=resolved'

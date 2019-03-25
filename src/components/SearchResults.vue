@@ -6,7 +6,7 @@
         <v-card class="ma-3" flat :color="'rgba(255, 255, 255, 0)'">
           <v-layout>
             <v-flex xs2>
-              <v-img height="120px" min-width="120px" contain :src="getPreview(doc.pid)" ></v-img>
+              <router-link :to="{ name: 'detail', params: { pid: doc.pid } }"><v-img height="120px" min-width="120px" contain :src="getPreview(doc.pid)" ></v-img></router-link>
             </v-flex>
             <v-flex>
               <v-card-title primary-title>

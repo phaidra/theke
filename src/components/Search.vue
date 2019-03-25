@@ -12,7 +12,7 @@
               <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="9" v-model="page" class="mb-3" flat></v-pagination>
             </v-flex>
             <v-flex xs4>
-              <v-btn-toggle v-model="toggle_exclusive">
+              <v-btn-toggle class="" light v-model="toggle_exclusive">
                 <v-btn @click.native="setSort('title asc')">
                   <span>A-Z</span>
                 </v-btn>
@@ -104,7 +104,7 @@ export default {
   },
   data () {
     return {
-      toggle_exclusive: 0,
+      toggle_exclusive: null,
     }
   },
   methods: {
