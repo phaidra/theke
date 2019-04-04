@@ -13,7 +13,7 @@
           <v-divider light></v-divider>
           <v-card-actions v-if="loggedin" class="pa-3">
             <v-spacer></v-spacer>
-            <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary lighten-2" raised>{{ $t('Add member') }}</v-btn>
+            <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary lighten-2" raised>{{ $t('Add file') }}</v-btn>
             <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit metadata') }}</v-btn>
           </v-card-actions>
         </v-card>
@@ -21,7 +21,7 @@
   
       <v-flex xs6 v-if="members">
         <v-card v-for="(member) in members" :key="'member_'+member.pid" class="mb-3 pt-4">
-          <a :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
+          <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
             <v-img max-height="400" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
             <v-img max-height="400" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
           </a>
@@ -33,7 +33,7 @@
             <v-spacer></v-spacer>
             <v-btn v-if="loggedin" :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit metadata') }}</v-btn>
             <template>
-              <v-btn :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
+              <v-btn target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
             </template>
             <template>
               <v-btn :href="instance.api + '/object/' + member.pid + '/diss/Content/download'" primary>{{ $t('Download') }}</v-btn>
@@ -62,11 +62,11 @@ export default {
     breadcrumbs () {
       let bc = [
         {
-          text: 'Search',
+          text: this.$t('Search'),
           to: { name: 'search', path: '/' }
         },
         {
-          text: 'Detail ' + this.$route.params.pid,
+          text: this.$t('Detailpage') + ' ' + this.$route.params.pid,
           disabled: true,
           to: { name: 'detail', params: { pid: this.$route.params.pid } },
         }
@@ -207,12 +207,14 @@ export default {
   },
   beforeRouteEnter: function (to, from, next) {
     next(vm => {
+      vm.displayjsonld = {}
       vm.loadDetail(vm, to.params.pid).then(() => {
         next()
       })
     })
   },
   beforeRouteUpdate: function (to, from, next) {
+    this.displayjsonld = {}
     this.loadDetail(this, to.params.pid).then(() => {
       next()
     })

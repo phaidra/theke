@@ -705,6 +705,15 @@ const mutations = {
   },
   setCollection (state, collection) {
     state.collection = collection
+  },
+  resetFilters (state) {
+    for (let fq of state.facetQueries) {
+      if (fq.resetable) {
+        for (let q of fq.queries) {
+          q.active = false
+        }
+      }
+    }
   }
 }
 
@@ -1008,6 +1017,10 @@ const actions = {
         reject()
       })
     })
+  },
+  resetFilters ({dispatch, commit}) {
+    commit('resetFilters')
+    dispatch('search')
   },
   initSearch ({dispatch, commit, state, rootState}) {
     let searchsettings = rootState.settings.global.search.state

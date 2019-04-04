@@ -7,12 +7,12 @@
 
         <v-flex xs12 class="pt-5">
           <v-layout row>
-            <v-flex xs2><span>{{ total }} {{ $t('objects') }}</span></v-flex>
+            <v-flex xs1><span>{{ total }} {{ $t('objects') }}</span></v-flex>
             <v-flex xs6>
               <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="9" v-model="page" class="mb-3" flat></v-pagination>
             </v-flex>
             <v-flex xs4>
-              <v-btn-toggle class="" light v-model="toggle_exclusive">
+              <v-btn-toggle light v-model="toggle_exclusive">
                 <v-btn @click.native="setSort('title asc')">
                   <span>A-Z</span>
                 </v-btn>

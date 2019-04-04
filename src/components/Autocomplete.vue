@@ -5,7 +5,7 @@
       type="text"
       :id="id"
       :class="`${getClassName('input')} autocomplete-input`"
-      :label="'search'"
+      :label="$t('Search')"
       :name="name"
       v-model="type"
       @input="handleInput"

@@ -29,15 +29,15 @@ export default {
     breadcrumbs () {
       let bc = [
         {
-          text: 'Search',
+          text: this.$t('Search'),
           to: { name: 'search', path: '/' }
         },
         {
-          text: 'Detail ' + this.parentpid,
+          text: this.$t('Detailpage') + ' ' + this.parentpid,
           to: { name: 'detail', params: { pid: this.parentpid } },
         },
         {
-          text: 'Edit ' + this.pid,
+          text: this.$t('Metadata editor') + ' ' + this.pid,
           disabled: true
         }
       ]
@@ -79,6 +79,7 @@ export default {
   beforeRouteEnter: function (to, from, next) {
     next(vm => {
       vm.parentpid = from.params.pid
+      vm.editform = {}
       vm.loadJsonld(vm, to.params.pid).then(() => {
         next()
       })
@@ -86,6 +87,7 @@ export default {
   },
   beforeRouteUpdate: function (to, from, next) {
     this.parentpid = from.params.pid
+    this.editform = {}
     this.loadJsonld(this, to.params.pid).then(() => {
       next()
     })

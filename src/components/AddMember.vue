@@ -7,21 +7,15 @@
       <v-toolbar flat>
         <v-toolbar-title>{{ $t('Add member of') }} {{this.parentpid}}</v-toolbar-title>        
         <v-divider class="mx-3" inset vertical></v-divider>
-        <v-select
-          :items="contentmodels"
-          v-model="contentmodel"
-          label="Object type"
-          single-line
-        ></v-select>
-        <v-checkbox class="pt-4 pl-4" v-if="contentmodel === 'https://pid.phaidra.org/vocabulary/44TN-P1S0'" v-model="isthumbnail" :label="$t('Container thumbnail')"></v-checkbox>
+        <v-checkbox class="pt-4 pl-4" v-model="isthumbnail" :label="$t('Container thumbnail')"></v-checkbox>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-card-text>
         <p-i-form
           :form="form"
-          :contentmodel="contentmodel" 
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
+          v-on:form-input-p-select="handleSelect($event)"
         ></p-i-form>
       </v-card-text>
     </v-card>
@@ -38,29 +32,6 @@ export default {
       parentpid: '',
       memberpid: '',
       isthumbnail: false,
-      contentmodel: 'https://pid.phaidra.org/vocabulary/44TN-P1S0',
-      contentmodels: [
-        { 
-          text: 'Data', 
-          value: 'https://pid.phaidra.org/vocabulary/7AVS-Y482',
-        }, 
-        { 
-          text: 'Picture', 
-          value: 'https://pid.phaidra.org/vocabulary/44TN-P1S0' 
-        }, 
-        { 
-          text: 'Audio', 
-          value: 'https://pid.phaidra.org/vocabulary/8YB5-1M0J' 
-        }, 
-        { 
-          text: 'Video', 
-          value: 'https://pid.phaidra.org/vocabulary/B0Y6-GYT8' 
-        }, 
-        { 
-          text: 'Document',
-           value: 'https://pid.phaidra.org/vocabulary/69ZZ-2KGX' 
-        }
-      ],
       form: {
         sections: [
           {
@@ -91,20 +62,80 @@ export default {
         }
       ]
       return bc
-    }
-  },
-  watch: {
-    contentmodel: function (val) {
-      for (var i = 0; i < this.form.sections.length; i++) {
-        for (var j = 0; j < this.form.sections[i].fields.length; j++) {
-          if (this.form.sections[i].fields[j].predicate === 'dcterms:type') {
-            this.form.sections[i].fields[j].value = this.contentmodel
-          }
-        }
-      }
+    },
+    vocabularies: function () {
+      return this.$store.state.vocabulary.vocabularies
     }
   },
   methods: {
+    getResourceTypeFromMimeType: function (mime) {
+      switch (mime) {
+        case 'image/jpeg':
+        case 'image/tiff':
+        case 'image/gif':
+        case 'image/png':
+        case 'image/x-ms-bmp':
+          // picture
+          return 'https://pid.phaidra.org/vocabulary/44TN-P1S0'
+
+        case 'audio/wav':
+        case 'audio/mpeg':
+        case 'audio/flac':
+        case 'audio/ogg':
+          // audio
+          return 'https://pid.phaidra.org/vocabulary/8YB5-1M0J'
+
+        case 'application/pdf':
+          // document
+          return 'https://pid.phaidra.org/vocabulary/69ZZ-2KGX'
+
+        case 'video/mpeg':
+        case 'video/avi':
+        case 'video/mp4':
+        case 'video/quicktime':
+        case 'video/x-matroska':
+          // video
+          return 'https://pid.phaidra.org/vocabulary/B0Y6-GYT8'
+
+        // eg application/x-iso9660-image
+        default:
+          // data
+          return 'https://pid.phaidra.org/vocabulary/7AVS-Y482'
+      }
+    },
+    handleSelect: function (val) {
+      var i
+      var j
+      var k
+      if (val.predicate === 'ebucore:hasMimeType') {
+        for (i = 0; i < this.form.sections.length; i++) {
+          var mime
+          for (j = 0; j < this.form.sections[i].fields.length; j++) {
+            if (this.form.sections[i].fields[j].predicate === 'ebucore:hasMimeType') {
+              mime = this.form.sections[i].fields[j].value
+            }
+          }
+          var resourcetype = this.getResourceTypeFromMimeType(mime)
+          for (j = 0; j < this.form.sections[i].fields.length; j++) {
+            if (this.form.sections[i].fields[j].predicate === 'dcterms:type') {
+              var rt = this.form.sections[i].fields[j]
+              rt.value = resourcetype
+              var preflabels
+              for (k = 0; k < this.vocabularies['resourcetype'].terms.length; k++) {
+                if (this.vocabularies['resourcetype'].terms[k]['@id'] === rt.value) {
+                  preflabels = this.vocabularies['resourcetype'].terms[k]['skos:prefLabel']
+                }
+              }
+              rt['skos:prefLabel'] = []
+              Object.entries(preflabels).forEach(([key, value]) => {
+                rt['skos:prefLabel'].push({ '@value': value, '@language': key })
+              })
+            }
+          }
+          this.form.sections.splice(i, 1, this.form.sections[i])
+        }
+      }
+    },
     objectCreated: function (event) {
       this.memberpid = event
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object ' + this.memberpid + ' created' }])
@@ -174,7 +205,9 @@ export default {
     let mt = fields.getField('mime-type')
     mt.required = true
     this.form.sections[0].fields.push(mt)
-    this.form.sections[0].fields.push(fields.getField('license'))
+    let lic = fields.getField('license')
+    lic.value = 'http://rightsstatements.org/vocab/InC/1.0/'
+    this.form.sections[0].fields.push(lic)
   },
   beforeRouteEnter: function (to, from, next) {
     next(vm => {

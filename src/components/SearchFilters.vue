@@ -1,43 +1,51 @@
 <template>
 
   <v-container fluid grid-list-md>
-    <ul class="main-ul">
-      <li v-for="(f, i) in facetQueries" :key="i">
-        <!--<v-icon @click.native="showFacet(f)" v-if="f.show" class="primary--text">check_box</v-icon>
-        <v-icon @click.native="showFacet(f)" v-if="!f.show" class="primary--text">check_box_outline_blank</v-icon>-->
-        <span @click="showFacet(f)" class="facet-label primary--text" :class="{ active: f.show }">{{ $t(f.label) }}</span>
-        <ul v-if="f.show">
-          <li v-for="(q, j) in f.queries" :key="j">
-            <span @click="toggleFacet(q,f)">
-              <!--<v-icon v-if="q.active" class="primary--text">check_box</v-icon>
-              <v-icon v-if="!q.active" class="primary--text">check_box_outline_blank</v-icon>-->
-              <span :class="{ active: q.active }" class="facet-label primary--text">{{ $t(q.label) }}</span>
-              <span class="facet-count grey--text" v-if="q.count > 0">({{q.count}})</span>
-            </span>
-            <ul v-if="q.active && q.childFacet" >
-              <li v-for="(q1, k) in q.childFacet.queries" :key="k">
-                <span @click="toggleFacet(q1,q.childFacet)">
-                  <!--<v-icon v-if="q1.active" class="primary--text">check_box</v-icon>
-                  <v-icon v-if="!q1.active" class="primary--text">check_box_outline_blank</v-icon>-->
-                  <span :class="{ active: q1.active }" class="facet-label primary--text">{{ $t(q1.label) }}</span>
-                  <span class="facet-count grey--text" v-if="q1.count > 0">({{q1.count}})</span>
-                </span>
-                <ul v-if="q1.active && q1.childFacet" >
-                  <li v-for="(q2, l) in q1.childFacet.queries" :key="l">
-                    <span @click="toggleFacet(q2,q1.childFacet)">
-                      <!--<v-icon v-if="q2.active" class="primary--text">check_box</v-icon>
-                      <v-icon v-if="!q2.active" class="primary--text">check_box_outline_blank</v-icon>-->
-                      <span :class="{ active: q2.active }" class="facet-label primary--text">{{ $t(q2.label) }}</span>
-                      <span class="facet-count grey--text" v-if="q2.count>0">({{q2.count}})</span>
-                    </span>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <v-layout column>
+      <v-flex>
+        <v-spacer></v-spacer>
+        <v-btn @click.native="resetFilters()" :disabled="disableReset">
+          <span>{{ $t('Remove filters') }}</span>
+        </v-btn>
+      </v-flex>
+      <ul class="main-ul">
+        <li v-for="(f, i) in facetQueries" :key="i">
+          <!--<v-icon @click.native="showFacet(f)" v-if="f.show" class="primary--text">check_box</v-icon>
+          <v-icon @click.native="showFacet(f)" v-if="!f.show" class="primary--text">check_box_outline_blank</v-icon>-->
+          <span @click="showFacet(f)" class="facet-label primary--text" :class="{ active: f.show }">{{ $t(f.label) }}</span>
+          <ul v-if="f.show">
+            <li v-for="(q, j) in f.queries" :key="j">
+              <span @click="toggleFacet(q,f)">
+                <!--<v-icon v-if="q.active" class="primary--text">check_box</v-icon>
+                <v-icon v-if="!q.active" class="primary--text">check_box_outline_blank</v-icon>-->
+                <span :class="{ active: q.active }" class="facet-label primary--text">{{ $t(q.label) }}</span>
+                <span class="facet-count grey--text" v-if="q.count > 0">({{q.count}})</span>
+              </span>
+              <ul v-if="q.active && q.childFacet" >
+                <li v-for="(q1, k) in q.childFacet.queries" :key="k">
+                  <span @click="toggleFacet(q1,q.childFacet)">
+                    <!--<v-icon v-if="q1.active" class="primary--text">check_box</v-icon>
+                    <v-icon v-if="!q1.active" class="primary--text">check_box_outline_blank</v-icon>-->
+                    <span :class="{ active: q1.active }" class="facet-label primary--text">{{ $t(q1.label) }}</span>
+                    <span class="facet-count grey--text" v-if="q1.count > 0">({{q1.count}})</span>
+                  </span>
+                  <ul v-if="q1.active && q1.childFacet" >
+                    <li v-for="(q2, l) in q1.childFacet.queries" :key="l">
+                      <span @click="toggleFacet(q2,q1.childFacet)">
+                        <!--<v-icon v-if="q2.active" class="primary--text">check_box</v-icon>
+                        <v-icon v-if="!q2.active" class="primary--text">check_box_outline_blank</v-icon>-->
+                        <span :class="{ active: q2.active }" class="facet-label primary--text">{{ $t(q2.label) }}</span>
+                        <span class="facet-count grey--text" v-if="q2.count>0">({{q2.count}})</span>
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </v-layout>
   </v-container>
 
 </template>
@@ -68,6 +76,18 @@ export default {
     },
     facetQueries () {
       return this.$store.state.search.facetQueries.filter(f => !f.hidefilter);
+    },
+    disableReset () {
+      for (let fq of this.$store.state.search.facetQueries) {
+        if (fq.resetable) {
+          for (let q of fq.queries) {
+            if (q.active) {
+              return false
+            }
+          }
+        }
+      }
+      return true
     },
     persAuthors () {
       return this.$store.state.search.pers_authors
@@ -145,6 +165,9 @@ export default {
     },
     removeRoleFilterValue: function (role, value) {
       this.$store.dispatch('removeRoleFilterValue', {role: role, value: value})
+    },
+    resetFilters: function () {
+      this.$store.dispatch('resetFilters')
     }
   },
   mounted () {
