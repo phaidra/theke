@@ -4,6 +4,7 @@ import Search from '@/components/Search'
 import Detail from '@/components/Detail'
 import Edit from '@/components/Edit'
 import Submit from '@/components/Submit'
+import Contact from '@/components/Contact'
 import AddMember from '@/components/AddMember'
 
 Vue.use(Router)
@@ -34,6 +35,11 @@ export default new Router({
       path: '/addmember/:pid',
       name: 'addmember',
       component: AddMember
-    }
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: Contact
+    },
   ]
 })

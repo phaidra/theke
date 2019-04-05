@@ -69,6 +69,7 @@ export default {
   'schema:genre': 'Genre',
   'dcterms:temporal': 'Temporal coverage',
   'vra:hasTechnique': 'Technique',
+  'dce:format': 'Format',
   'vra:material': 'Material',
   'vra:hasInscription': 'Inscription',
 

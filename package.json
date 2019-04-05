@@ -1,6 +1,6 @@
 {
   "name": "theke",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
-    "phaidra-vue-components": "^0.3.12",
+    "phaidra-vue-components": "^0.3.15",
     "qs": "^6.6.0",
     "vue": "^2.6.6",
     "vue-i18n": "^8.9.0",

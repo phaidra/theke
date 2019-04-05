@@ -555,7 +555,8 @@ export default {
   'edm:rights': 'Lizenz',
 
   'rdau:P60193': 'Journal/Series',
-  'rdau:P60227': 'Adaptation of',
+  // c18n
+  'rdau:P60227': 'Literaturvorlage',
 
   'dcterms:spatial': 'Depicted/Represented place',
   'vra:placeOfCreation': 'Place of creation',
@@ -594,6 +595,7 @@ export default {
   'schema:genre': 'Genre',
   'dcterms:temporal': 'Zeitliche Abdeckung',
   'vra:hasTechnique': 'Technik',
+  'dce:format': 'Format',
   'vra:material': 'Material',
   'vra:hasInscription': 'Inschrift',
 
@@ -611,6 +613,7 @@ export default {
   'Production year': 'Produktionsjahr',
   'Language of subtitles': 'Untertitelsprache',
   'Is motion picture adaptation of': 'Literaturvorlage',
+  'Adaptation of': 'Literaturvorlage',
   'Supplementary content': 'Extras',
   'Award': 'Auszeichnung',
   'Audience': 'FSK',
@@ -647,5 +650,6 @@ export default {
   'Series': 'Serie',
   'Thriller': 'Thriller',
   'Tragicomedy': 'Tragikkomödie',
-  'Entertainment': 'Unterhaltung'
+  'Entertainment': 'Unterhaltung',
+  'Department of Romance Studies, University of Vienna': 'Institut für Romanistik, Universität Wien'
 }

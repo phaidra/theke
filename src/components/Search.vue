@@ -19,10 +19,10 @@
                 <v-btn @click.native="setSort('title desc')">
                   <span>Z-A</span>
                 </v-btn>
-                <v-btn @click.native="setSort('dcterms_created_year_sort asc')">
+                <v-btn @click.native="setSort('rdau_P60071_year_sort asc')">
                   <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
                 </v-btn>
-                <v-btn @click.native="setSort('dcterms_created_year_sort desc')">
+                <v-btn @click.native="setSort('rdau_P60071_year_sort desc')">
                   <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
                 </v-btn>
               </v-btn-toggle>
@@ -86,8 +86,8 @@ export default {
     dctermsCreatedYearMin: function () {
       if (this.$store.state.search.stats) {
         if (this.$store.state.search.stats.stats_fields) {
-          if (this.$store.state.search.stats.stats_fields.dcterms_created_year) {
-            return this.$store.state.search.stats.stats_fields.dcterms_created_year.min
+          if (this.$store.state.search.stats.stats_fields.rdau_P60071_year) {
+            return this.$store.state.search.stats.stats_fields.rdau_P60071_year.min
           }
         }
       }
@@ -95,8 +95,8 @@ export default {
     dctermsCreatedYearMax: function () {
       if (this.$store.state.search.stats) {
         if (this.$store.state.search.stats.stats_fields) {
-          if (this.$store.state.search.stats.stats_fields.dcterms_created_year) {
-            return this.$store.state.search.stats.stats_fields.dcterms_created_year.max
+          if (this.$store.state.search.stats.stats_fields.rdau_P60071_year) {
+            return this.$store.state.search.stats.stats_fields.rdau_P60071_year.max
           }
         }
       }

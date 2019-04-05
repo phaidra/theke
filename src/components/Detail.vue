@@ -13,7 +13,7 @@
           <v-divider light></v-divider>
           <v-card-actions v-if="loggedin" class="pa-3">
             <v-spacer></v-spacer>
-            <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary lighten-2" raised>{{ $t('Add file') }}</v-btn>
+            <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
             <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit metadata') }}</v-btn>
           </v-card-actions>
         </v-card>

@@ -19,7 +19,7 @@
             <v-spacer></v-spacer>
             <template v-if="token">
               <v-flex>
-                <v-btn :to="{ name: 'submit' }" color="primary lighten-2" raised>{{ $t('Submit') }}</v-btn>
+                <v-btn :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
                 <v-btn class="grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
               </v-flex>
             </template>
@@ -37,7 +37,7 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs1>
-                <v-btn raised single-line color="primary lighten-2" class="mt-3" @click="login()">Login</v-btn>
+                <v-btn raised single-line color="primary" class="mt-3" @click="login()">{{ $t('Login') }}</v-btn>
               </v-flex>
             </template>
             <v-spacer></v-spacer>
@@ -58,6 +58,21 @@
             </transition>
           </v-flex>
 
+          <v-footer class="pa-3">
+            <v-spacer></v-spacer>
+            <v-flex xs1>
+              <v-select
+                v-model="lang"
+                :items="languages"
+                :label="$t('Language')"
+                @change="$i18n.locale=$event"
+                prepend-icon="language"
+                single-line
+              ></v-select>
+            </v-flex>
+            <router-link class="mx-4 title navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
+            <a class="navlink" href="https://github.com/phaidra/theke" target="_blank">v {{ version }}</a>
+          </v-footer>
         </v-layout>
       </v-container>
     </v-app>
@@ -67,6 +82,7 @@
 <script>
 import fields from 'phaidra-vue-components/src/utils/fields'
 import Autocomplete from '@/components/Autocomplete'
+import {version} from '../package.json'
 
 export default {
   name: 'app',
@@ -92,6 +108,12 @@ export default {
   },
   data () {
     return {
+      version: version,
+      lang: 'deu',
+      languages: [
+        { text: 'English', value: 'eng' },
+        { text: 'Deutsch', value: 'deu' }
+      ],
       credentials: {
         username: '',
         password: ''
@@ -137,6 +159,9 @@ export default {
     },
     removeCollectionFilter: function () {
       this.$store.dispatch('setCollection', '')
+    },
+    initLanguages: function () {
+      this.$store.commit('setLangTerms', this.$store.state.settings.global.vocabularies.lang)
     }
   },
   mounted: function () {
@@ -149,6 +174,7 @@ export default {
     this.$store.dispatch('initSettings')
     this.$store.commit('initStore')
     this.$store.dispatch('initSearch')
+    this.initLanguages()
     this.$vuetify.theme.primary = this.$store.state.settings.instance.primary
   }
 }
@@ -167,5 +193,13 @@ export default {
 
 .theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
   background-color: white;
+}
+
+.title {
+  font-weight: 300
+}
+
+.navlink {
+  text-decoration: none
 }
 </style>

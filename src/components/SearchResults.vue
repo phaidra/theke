@@ -17,7 +17,7 @@
                       {{drt}}<span v-if="(i+1) < doc.bib_roles_pers_drt.length">, </span>
                     </span>
                   </div>
-                  <div v-if="doc.dcterms_created_year" class="my-3">{{ doc.dcterms_created_year[0] }}</div>
+                  <div v-if="doc.rdau_P60071_year" class="my-3">{{ doc.rdau_P60071_year[0] }}</div>
                 </div>
               </v-card-title>
             </v-flex>

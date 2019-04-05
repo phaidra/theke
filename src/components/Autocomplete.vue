@@ -218,8 +218,10 @@
       },
 
       getData (value) {
-        if (value.length < this.min || !this.suggester) return
-        this.$store.dispatch('suggest', { suggester: this.suggester, value: value })
+        if (value) {
+          if (value.length < this.min || !this.suggester) return
+          this.$store.dispatch('suggest', { suggester: this.suggester, value: value })
+        }
       }
     },
 
