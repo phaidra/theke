@@ -70,7 +70,7 @@
                 single-line
               ></v-select>
             </v-flex>
-            <router-link class="mx-4 title navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
+            <router-link class="mx-4 navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
             <a class="navlink" href="https://github.com/phaidra/theke" target="_blank">v {{ version }}</a>
           </v-footer>
         </v-layout>
@@ -200,6 +200,7 @@ export default {
 }
 
 .navlink {
-  text-decoration: none
+  text-decoration: none;
+  font-weight: 300;
 }
 </style>
