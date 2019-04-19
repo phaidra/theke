@@ -651,5 +651,9 @@ export default {
   'Thriller': 'Thriller',
   'Tragicomedy': 'Tragikkomödie',
   'Entertainment': 'Unterhaltung',
-  'Department of Romance Studies, University of Vienna': 'Institut für Romanistik, Universität Wien'
+  'Department of Romance Studies, University of Vienna': 'Institut für Romanistik, Universität Wien',
+
+  'Container thumbnail': 'Cover thumbnail',
+  'Download': 'Herunterladen',
+  'View': 'Anzezigen'
 }

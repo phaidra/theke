@@ -110,29 +110,62 @@ export default {
       if (val.predicate === 'ebucore:hasMimeType') {
         for (i = 0; i < this.form.sections.length; i++) {
           var mime
-          for (j = 0; j < this.form.sections[i].fields.length; j++) {
-            if (this.form.sections[i].fields[j].predicate === 'ebucore:hasMimeType') {
-              mime = this.form.sections[i].fields[j].value
+          if (this.form.sections[i].fields) {
+            for (j = 0; j < this.form.sections[i].fields.length; j++) {
+              if (this.form.sections[i].fields[j].predicate === 'ebucore:hasMimeType') {
+                mime = this.form.sections[i].fields[j].value
+              }
             }
           }
           var resourcetype = this.getResourceTypeFromMimeType(mime)
-          for (j = 0; j < this.form.sections[i].fields.length; j++) {
-            if (this.form.sections[i].fields[j].predicate === 'dcterms:type') {
-              var rt = this.form.sections[i].fields[j]
-              rt.value = resourcetype
-              var preflabels
-              for (k = 0; k < this.vocabularies['resourcetype'].terms.length; k++) {
-                if (this.vocabularies['resourcetype'].terms[k]['@id'] === rt.value) {
-                  preflabels = this.vocabularies['resourcetype'].terms[k]['skos:prefLabel']
+          if (this.form.sections[i].fields) {
+            for (j = 0; j < this.form.sections[i].fields.length; j++) {
+              if (this.form.sections[i].fields[j].predicate === 'dcterms:type') {
+                var rt = this.form.sections[i].fields[j]
+                rt.value = resourcetype
+                var preflabels
+                for (k = 0; k < this.vocabularies['resourcetype'].terms.length; k++) {
+                  if (this.vocabularies['resourcetype'].terms[k]['@id'] === rt.value) {
+                    preflabels = this.vocabularies['resourcetype'].terms[k]['skos:prefLabel']
+                  }
                 }
+                rt['skos:prefLabel'] = []
+                Object.entries(preflabels).forEach(([key, value]) => {
+                  rt['skos:prefLabel'].push({ '@value': value, '@language': key })
+                })
               }
-              rt['skos:prefLabel'] = []
-              Object.entries(preflabels).forEach(([key, value]) => {
-                rt['skos:prefLabel'].push({ '@value': value, '@language': key })
-              })
             }
           }
           this.form.sections.splice(i, 1, this.form.sections[i])
+        }
+        if (this.$store.state.settings.global.upload) {
+          if (this.$store.state.settings.global.upload.accessrights) {
+            if (this.$store.state.settings.global.upload.accessrights[resourcetype]){
+              for (k = 0; k < this.form.sections.length; k++) {
+                if (typeof this.form.sections[k].id === 'string'){
+                  if (this.form.sections[k].id.startsWith('autoaccessrights_')){
+                    this.form.sections.splice(k, 1)
+                  }
+                }
+              }
+              this.form.sections.push(
+                {
+                  title: 'Access rights',
+                  type: 'accessrights',
+                  id: 'autoaccessrights_'+resourcetype,
+                  rights: this.$store.state.settings.global.upload.accessrights[resourcetype]
+                }
+              )
+            } else {
+              for (k = 0; k < this.form.sections.length; k++) {
+                if (typeof this.form.sections[k].id === 'string'){
+                  if (this.form.sections[k].id.startsWith('autoaccessrights_')){
+                    this.form.sections.splice(k, 1)
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },

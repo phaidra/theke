@@ -73,6 +73,9 @@ export default {
   'vra:material': 'Material',
   'vra:hasInscription': 'Inscription',
 
+  // c18n
+  'Container thumbnail': 'Cover thumbnail',
+
   uwm_etheses: 'E-Theses',
   uwm_etheses_note_2: 'Note 2',
   uwm_etheses_note_1: 'Note 1',

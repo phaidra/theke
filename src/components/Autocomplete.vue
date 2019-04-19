@@ -17,6 +17,7 @@
       @click:append="clickSearch"
       @click:clear="clickClear"
       clearable
+      :loading="loading"
     />
     <div :class="`${getClassName('list')} autocomplete autocomplete-list elevation-2`" v-show="showList && suggestions.length">
       <v-list>
@@ -71,7 +72,9 @@
         default: 0
       },
 
-      onSelect: Function
+      onSelect: Function,
+
+      loading: Boolean
     },
 
     data () {

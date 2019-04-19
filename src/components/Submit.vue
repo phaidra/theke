@@ -182,6 +182,8 @@ export default {
       this.form.sections[0].fields.push(fields.getField('note'))
 
       let physloc = fields.getField('physical-location-select-text')
+      physloc.selectlabel = 'Standort'
+      physloc.label = 'Arbeitsbereich'
       physloc.vocabulary = 'pool'
       this.form.sections[0].fields.push(physloc)
 

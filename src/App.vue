@@ -14,6 +14,7 @@
                 :customParams="{ token: 'dev' }"
                 :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
                 :onSelect="handleSelect"
+                :loading="loading"
               ></autocomplete>
             </v-flex>
             <v-spacer></v-spacer>
@@ -118,13 +119,16 @@ export default {
         username: '',
         password: ''
       },
-      psvis: true
+      psvis: true,
+      loading: false
     }
   },
   methods: {
     handleSelect: function (query) {
+      var self = this
+      this.loading = true
       this.$store.commit('setQuery', query.term)
-      this.$store.dispatch('search')
+      this.$store.dispatch('search').then(function () { self.loading = false })
     },
     login: function () {
       this.$store.dispatch('login', this.credentials)
