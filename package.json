@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
-    "phaidra-vue-components": "^0.3.16",
+    "phaidra-vue-components": "^0.3.17",
     "qs": "^6.7.0",
     "vue": "^2.6.10",
     "vue-i18n": "^8.10.0",

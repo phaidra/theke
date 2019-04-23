@@ -18,8 +18,6 @@ export default {
   'My objects': 'Meine Objekte',
   'My groups': 'Meine Gruppen',
   'Templates': 'Vorlagen',
-  'Logout': 'Logout',
-  'Login': 'Login',
   'If you have technical problems please contact': 'Bei technischen Fragen steht Ihnen unsere Support-Adresse zur Verfügung',
   'Most searched-for services': 'Meistgesuchte Services',
   'Information about': 'Informationen über',
@@ -529,7 +527,6 @@ export default {
   'hours': 'Stunden',
   'minutes': 'Minuten',
   'seconds': 'Sekunden',
-  'Production country': 'Productionsland',
 
   'bf:Title': 'Titel',
   'bf:ParallelTitle': 'Parallel titel',
