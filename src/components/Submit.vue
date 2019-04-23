@@ -10,6 +10,7 @@
       <v-card-text>
         <p-i-form
           :form="form"
+          :templating="false"
           :contentmodel="contentmodel" 
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
