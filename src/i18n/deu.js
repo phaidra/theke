@@ -655,5 +655,8 @@ export default {
   'View': 'Anzezigen',
   'Add member of': 'Datei hinzufügen',
   'Record created': 'Metadatensatz wurde erstellt',
-  'Upload successful': 'Datei wurde hochgeladen'
+  'Upload successful': 'Datei wurde hochgeladen',
+
+  'u:account userID': 'u:account-UserID',
+  'u:account password': 'u:account-Passwort'
 }

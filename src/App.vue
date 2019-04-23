@@ -26,12 +26,12 @@
             </template>
             <template v-else>
               <v-flex> 
-                <v-text-field v-model="credentials.username" :label="'username'" ></v-text-field>
+                <v-text-field v-model="credentials.username" :label="$t('u:account userID')" ></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field 
                   v-model="credentials.password" 
-                  :label="'password'" 
+                  :label="$t('u:account password')" 
                   :append-icon="psvis ? 'visibility' : 'visibility_off'"
                   @click:append="toggleVisibility"
                   :type="psvis ? 'password' : 'text'"
@@ -176,6 +176,7 @@ export default {
   },
   created: function () {
     this.$store.dispatch('initSettings')
+    document.title = this.$store.state.settings.global.name
     this.$store.commit('initStore')
     this.$store.dispatch('initSearch')
     this.initLanguages()
