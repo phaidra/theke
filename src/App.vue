@@ -59,7 +59,7 @@
             </transition>
           </v-flex>
 
-          <v-footer class="pa-3">
+          <v-footer class="pa-3" color="#fafafa">
             <v-spacer></v-spacer>
             <v-flex xs1>
               <v-select

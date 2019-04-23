@@ -655,5 +655,8 @@ export default {
 
   'Container thumbnail': 'Cover thumbnail',
   'Download': 'Herunterladen',
-  'View': 'Anzezigen'
+  'View': 'Anzezigen',
+  'Add member of': 'Datei hinzufügen',
+  'Record created': 'Metadatensatz wurde erstellt',
+  'Upload successful': 'Datei wurde hochgeladen'
 }

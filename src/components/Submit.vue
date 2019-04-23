@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     objectCreated: function (event) {
-      this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object ' + event + ' created' }])
+      this.$store.commit('setAlerts', [{ type: 'success', msg: this.$t('Record created') + ' ' + event }])
     }
   },
   mounted: function () {

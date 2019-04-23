@@ -35,10 +35,9 @@ export default {
       form: {
         sections: [
           {
-            title: 'Member',
+            title: '',
             id: 1,
             type: 'general',
-            multiplicable: true,
             fields: []
           }
         ]
@@ -49,15 +48,15 @@ export default {
     breadcrumbs () {
       let bc = [
         {
-          text: 'Search',
+          text: this.$t('Search'),
           to: { name: 'search', path: '/' }
         },
         {
-          text: 'Detail ' + this.parentpid,
+          text: this.$t('Detailpage') + ' ' + this.parentpid,
           to: { name: 'detail', params: { pid: this.parentpid } },
         },
         {
-          text: 'Add member of ' + this.parentpid,
+          text: this.$t('Add member of') + ' ' + this.parentpid,
           disabled: true
         }
       ]
@@ -171,7 +170,7 @@ export default {
     },
     objectCreated: function (event) {
       this.memberpid = event
-      this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object ' + this.memberpid + ' created' }])
+      this.$store.commit('setAlerts', [{ type: 'success', msg: this.$t('Upload successful') + ' ' + event }])
       // add membership relation
       var self = this
       var httpFormData = new FormData()
@@ -189,9 +188,6 @@ export default {
       })
       .then(function (response) { return response.json() })
       .then(function (json) {
-        if (json.alerts && json.alerts.length > 0) {
-          self.$store.commit('setAlerts', json.alerts)
-        }
         if (self.isthumbnail) {
           httpFormData = new FormData()
           httpFormData.append('predicate', 'http://phaidra.org/XML/V1.0/relations#isThumbnailFor')
@@ -207,9 +203,6 @@ export default {
           })
           .then(function (response) { return response.json() })
           .then(function (json) {
-            if (json.alerts && json.alerts.length > 0) {
-              self.$store.commit('setAlerts', json.alerts)
-            }
             self.loading = false
             self.$router.push({ name: 'detail', params: { pid: self.parentpid } })
           })

@@ -4,8 +4,9 @@
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
     </v-flex>
     <v-flex v-if="loggedin">
-      <v-layout row>
-        <v-flex xs1>
+      <v-card flat color="#fafafa">
+        <v-card-actions>
+          <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark v-on="on">{{ $t('Download') }}</v-btn>
@@ -16,11 +17,8 @@
               </v-list-tile>
             </v-list>
           </v-menu>
-        </v-flex>
-        <v-flex xs1>
-          <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
-        </v-flex>
-      </v-layout>
+        </v-card-actions>
+      </v-card>
     </v-flex>
     <v-flex>
       <v-layout row>
@@ -256,4 +254,3 @@ export default {
   }
 }
 </script>
-
