@@ -652,7 +652,7 @@ export default {
 
   'Container thumbnail': 'Cover thumbnail',
   'Download': 'Herunterladen',
-  'View': 'Anzezigen',
+  'View': 'Anzeigen',
   'Add member of': 'Datei hinzufügen',
   'Record created': 'Metadatensatz wurde erstellt',
   'Upload successful': 'Datei wurde hochgeladen',

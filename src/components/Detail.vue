@@ -21,40 +21,44 @@
       </v-card>
     </v-flex>
     <v-flex>
-      <v-layout row>
+      <v-layout row wrap>
       
-        <v-flex xs6>
+        <v-flex xs12 sm6 md4>
           <v-card>
             <v-card-text>
-              <p-d-jsonld :jsonld="displayjsonld[pid]"></p-d-jsonld>
+              <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid"></p-d-jsonld>
             </v-card-text>
-            <v-divider light></v-divider>
+            <v-divider light v-if="loggedin"></v-divider>
             <v-card-actions v-if="loggedin" class="pa-3">
-              <v-flex class="grey--text">{{ 'https://' + instance.baseurl + '/' + pid }}</v-flex>
               <v-spacer></v-spacer>
               <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit metadata') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
     
-        <v-flex xs6 v-if="members">
-          <v-card v-for="(member) in members" :key="'member_'+member.pid" class="mb-3 pt-4">
-            <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
-              <v-img max-height="400" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
-              <v-img max-height="400" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
-            </a>
-            <v-card-text class="ma-2">
-              <p-d-jsonld :jsonld="displayjsonld[member.pid]"></p-d-jsonld>
-            </v-card-text>
-            <v-divider light></v-divider>
-            <v-card-actions class="pa-3">
-              <v-flex class="grey--text">{{ 'https://' + instance.baseurl + '/' + member.pid }}</v-flex>
-              <v-spacer></v-spacer>
-              <v-btn v-if="loggedin" :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit metadata') }}</v-btn>
-              <v-btn v-if="loggedin && (member.cmodel === 'Picture')" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
-              <v-btn v-if="loggedin" :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
-            </v-card-actions>
-          </v-card>
+        <v-flex xs12 sm6 md8 v-if="members">
+ 
+          <v-layout row wrap>
+            <v-flex xs12 md6 v-for="(member) in members" :key="'member_'+member.pid" >
+              <v-card class="mb-3 pt-4">
+                <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
+                  <v-img max-height="200" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
+                  <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
+                </a>
+                <v-card-text class="ma-2">
+                  <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid"></p-d-jsonld>
+                </v-card-text>
+                <v-divider light v-if="loggedin"></v-divider>
+                <v-card-actions v-if="loggedin" class="pa-3">
+                  <v-spacer></v-spacer>
+                  <v-btn :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit metadata') }}</v-btn>
+                  <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
+                  <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-flex>
+          </v-layout>
+ 
         </v-flex>
 
       </v-layout>
