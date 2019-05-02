@@ -208,4 +208,8 @@ export default {
   text-decoration: none;
   font-weight: 300;
 }
+
+.pdlabel {
+  max-width: 100% !important;
+}
 </style>
