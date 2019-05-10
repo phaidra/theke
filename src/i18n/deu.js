@@ -660,11 +660,12 @@ export default {
   'u:account userID': 'u:account-UserID',
   'u:account password': 'u:account-Passwort',
   
+  'DELETE_OBJECT': 'Hier können Sie das Objekt {pid} löschen.',
+  'DELETE_OBJECT_CONFIRM': 'Sind Sie sicher, dass Sie das Objekt {pid} unwiderruflich löschen wollen?',
   'MEMBERS_DELETE_ALERT': 'This object is a {cmodel} with {nrmembers} members. Only an empty {cmodel} can be deleted. If you want to delete this object, you need to remove all members from this {cmodel} or delete them first.',
   'Edit': 'Bearbeiten',
   'Manage object': 'Objekt verwalten',
   'Delete': 'Löschen',
-  'Here you can delete this object.': 'Hier können Sie das Objekt löschen.',
   'Manage': 'Verwalten',
   'Save': 'Speichern',
   'Sort': 'Sortieren',
