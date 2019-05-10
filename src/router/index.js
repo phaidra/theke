@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Search from '@/components/Search'
 import Detail from '@/components/Detail'
+import Manage from '@/components/Manage'
 import Edit from '@/components/Edit'
 import Submit from '@/components/Submit'
 import Contact from '@/components/Contact'
@@ -25,6 +26,11 @@ export default new Router({
       path: '/edit/:pid',
       name: 'edit',
       component: Edit
+    },
+    {
+      path: '/manage/:pid',
+      name: 'manage',
+      component: Manage
     },
     {
       path: '/submit',

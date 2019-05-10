@@ -9,7 +9,7 @@
           <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark v-on="on">{{ $t('Download') }}</v-btn>
+              <v-btn color="primary" dark v-on="on">{{ $t('Download') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
             </template>
             <v-list>
               <v-list-tile v-for="(member, index) in members" :key="index" :href="getMemberDownloadUrl(member)">
@@ -31,7 +31,19 @@
             <v-divider light v-if="loggedin"></v-divider>
             <v-card-actions v-if="loggedin" class="pa-3">
               <v-spacer></v-spacer>
-              <v-btn :to="{ name: 'edit'}" raised>{{ $t('Edit metadata') }}</v-btn>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                  <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
+                </template>
+                <v-list>
+                  <v-list-tile :to="{ name: 'edit'}">
+                    <v-list-tile-title>{{ $t('Edit metadata') }}</v-list-tile-title>
+                  </v-list-tile>
+                  <v-list-tile :to="{ name: 'manage'}">
+                    <v-list-tile-title>{{ $t('Manage object') }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -51,9 +63,21 @@
                 <v-divider light v-if="loggedin"></v-divider>
                 <v-card-actions v-if="loggedin" class="pa-3">
                   <v-spacer></v-spacer>
-                  <v-btn :to="{ name: 'edit', params: { pid: member.pid } }" raised>{{ $t('Edit metadata') }}</v-btn>
                   <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
                   <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
+                  <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-tile :to="{ name: 'edit', params: { pid: member.pid } }">
+                        <v-list-tile-title>{{ $t('Edit metadata') }}</v-list-tile-title>
+                      </v-list-tile>
+                      <v-list-tile :to="{ name: 'manage', params: { pid: member.pid } }">
+                        <v-list-tile-title>{{ $t('Manage object') }}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -165,7 +189,8 @@ export default {
         defType: 'edismax',
         wt: 'json',
         qf: 'ismemberof^5',
-        fl: 'pid,cmodel'
+        fl: 'pid,cmodel',
+        sort: 'pos_in_' + pid.replace(':','_') + ' asc'
       }
 
       var query = qs.stringify(params, { encodeValuesOnly: true, indices: false })
