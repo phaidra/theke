@@ -6,6 +6,7 @@ import Manage from '@/components/Manage'
 import Edit from '@/components/Edit'
 import Submit from '@/components/Submit'
 import Contact from '@/components/Contact'
+import Impressum from '@/components/Impressum'
 import AddMember from '@/components/AddMember'
 
 Vue.use(Router)
@@ -47,5 +48,10 @@ export default new Router({
       name: 'contact',
       component: Contact
     },
+    {
+      path: '/impressum',
+      name: 'impressum',
+      component: Impressum
+    }
   ]
 })

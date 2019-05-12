@@ -71,8 +71,9 @@
                 single-line
               ></v-select>
             </v-flex>
-            <router-link class="mx-4 navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
-            <a class="navlink" href="https://github.com/phaidra/theke" target="_blank">v {{ version }}</a>
+            <router-link class="ml-4 navlink" :to="{ name: 'impressum' }">{{$t('Impressum')}}</router-link>
+            <router-link class="ml-4 navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
+            <a class="ml-4 navlink" href="https://github.com/phaidra/theke" target="_blank">v {{ version }}</a>
           </v-footer>
         </v-layout>
       </v-container>

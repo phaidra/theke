@@ -6,21 +6,27 @@
    
     <v-card flat>
       <v-card-title primary-title class="title">
-        {{$t('Contact')}}
+        {{$t('Impressum')}}
       </v-card-title>
       <v-card-text>
         <v-layout column>
           <v-flex>
-            {{instance.contact.name}}
+            {{instance.impressum.orgname}}
           </v-flex>
           <v-flex>
-            {{instance.contact.email}}
+            {{instance.impressum.address_line_1}}
           </v-flex>
           <v-flex>
-            {{instance.contact.phone}}
+            {{instance.impressum.address_line_2}}
           </v-flex>
           <v-flex>
-            {{instance.contact.address}}
+            {{instance.impressum.zip}} {{instance.impressum.city}}
+          </v-flex>
+          <v-flex>
+            T: {{instance.impressum.phone}}
+          </v-flex>
+          <v-flex>
+            <a :href="'mailto:'+instance.impressum.email" >{{instance.impressum.email}}</a>
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -31,7 +37,7 @@
 
 <script>
 export default {
-  name: 'contact',
+  name: 'impressum',
   computed: {
     breadcrumbs () {
       let bc = [
@@ -40,7 +46,7 @@ export default {
           to: { name: 'search', path: '/' }
         },
         {
-          text: this.$t('Contact'),
+          text: this.$t('Impressum'),
           disabled: true
         }
       ]
