@@ -116,9 +116,6 @@ export default new Vuex.Store({
         .then(function (json) {
           commit('initStore')
           dispatch('initSearch')
-          if (json.alerts && json.alerts.length > 0) {
-            commit('setAlerts', json.alerts)
-          }
           resolve()
         })
         .catch(function (error) {

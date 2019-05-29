@@ -13,18 +13,38 @@
             </v-flex>
             <v-flex xs4>
               <v-btn-toggle light v-model="toggle_exclusive">
-                <v-btn @click.native="setSort('title asc')">
-                  <span>A-Z</span>
-                </v-btn>
-                <v-btn @click.native="setSort('title desc')">
-                  <span>Z-A</span>
-                </v-btn>
-                <v-btn @click.native="setSort('rdau_P60071_year_sort asc')">
-                  <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
-                </v-btn>
-                <v-btn @click.native="setSort('rdau_P60071_year_sort desc')">
-                  <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
-                </v-btn>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('title asc')">
+                      <span>A-Z</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Title ascending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('title desc')">
+                      <span>Z-A</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Title descending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort asc')">
+                      <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
+                    </v-btn>
+                    </template>
+                  <span>{{ $t('Production year ascending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort desc')">
+                      <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
+                    </v-btn>
+                    </template>
+                  <span>{{ $t('Production year descending') }}</span>
+                </v-tooltip>
               </v-btn-toggle>
             </v-flex>
           </v-layout>

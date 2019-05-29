@@ -125,39 +125,6 @@ export default {
 
       return promise
     },
-    loadDetail: function (self, pid) {
-
-      self.displayjsonld = {}
-      self.members = []
-
-      var params = {
-        q: 'pid:"' + pid + '"',
-        defType: 'edismax',
-        wt: 'json',
-        qf: 'pid^5'
-      }
-
-      var query = qs.stringify(params, { encodeValuesOnly: true, indices: false })
-      var url = self.instance.solr + '/select?' + query
-      var promise = fetch(url, {
-        method: 'GET',
-        mode: 'cors'
-      })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        if (json.response.numFound > 0) {
-          self.doc = json.response.docs[0]
-        }
-        if (self.dshash['JSON-LD']) {
-          self.loadJsonld(self, pid)
-          self.loadMembers(self, pid)
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-      return promise
-    },
     orderSaved: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Order for object ' + event + ' saved' }])
     },

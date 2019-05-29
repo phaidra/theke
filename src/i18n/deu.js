@@ -57,6 +57,8 @@ export default {
   'objects': 'Objekte',
   'Title ascending': 'Titel aufsteigend',
   'Title descending': 'Titel absteigend',
+  'Production year ascending': 'Produktionsjahr aufsteigend',
+  'Production year descending': 'Produktionsjahr absteigend',
   'Upload date ascending': 'Upload Datum aufsteigend',
   'Upload date descending': 'Upload Datum absteigend',
   'Link to search results': 'Link zu dieser Suche',

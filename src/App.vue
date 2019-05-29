@@ -20,7 +20,7 @@
             <v-spacer></v-spacer>
             <template v-if="token">
               <v-flex>
-                <v-btn :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
+                <v-btn v-if="isadmin" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
                 <v-btn class="grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
               </v-flex>
             </template>
@@ -95,6 +95,9 @@ export default {
     token: function() {
       return this.$store.state.user.token
     },
+    isadmin: function() {
+      return this.$store.state.user.username === this.$store.state.settings.global.admin
+    },
     alerts: function () {
       return this.$store.state.alerts.alerts
     },
@@ -113,8 +116,8 @@ export default {
       version: version,
       lang: 'deu',
       languages: [
-        { text: 'English', value: 'eng' },
-        { text: 'Deutsch', value: 'deu' }
+        { text: 'english', value: 'eng' },
+        { text: 'deutsch', value: 'deu' }
       ],
       credentials: {
         username: '',

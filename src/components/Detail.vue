@@ -6,7 +6,7 @@
     <v-flex v-if="loggedin">
       <v-card flat color="#fafafa">
         <v-card-actions>
-          <v-btn :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
+          <v-btn v-if="isadmin" :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark v-on="on">{{ $t('Download') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
@@ -28,8 +28,8 @@
             <v-card-text>
               <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid"></p-d-jsonld>
             </v-card-text>
-            <v-divider light v-if="loggedin"></v-divider>
-            <v-card-actions v-if="loggedin" class="pa-3">
+            <v-divider light v-if="isadmin"></v-divider>
+            <v-card-actions v-if="isadmin" class="pa-3">
               <v-spacer></v-spacer>
               <v-menu offset-y>
                 <template v-slot:activator="{ on }">
@@ -60,12 +60,12 @@
                 <v-card-text class="ma-2">
                   <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid"></p-d-jsonld>
                 </v-card-text>
-                <v-divider light v-if="loggedin"></v-divider>
+                <v-divider light v-if="isadmin"></v-divider>
                 <v-card-actions v-if="loggedin" class="pa-3">
                   <v-spacer></v-spacer>
                   <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
                   <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
-                  <v-menu offset-y>
+                  <v-menu v-if="isadmin" offset-y>
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
                     </template>
@@ -99,6 +99,9 @@ export default {
   computed: {
     loggedin: function() {
       return this.$store.state.user.token
+    },
+    isadmin: function() {
+      return this.$store.state.user.username === this.$store.state.settings.global.admin
     },
     pid () {
       return this.$route.params.pid

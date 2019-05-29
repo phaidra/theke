@@ -801,7 +801,7 @@ const actions = {
     var i, j, k, l, field, v
     var start = (state.page - 1) * state.pagesize
     var params = {
-      q: state.q,
+      q: state.q + '~1',
       defType: 'edismax',
       wt: 'json',
       qf: 'pid^5 dc_title^4 dc_creator^3 dc_subject^2 _text_',
