@@ -132,7 +132,12 @@ export default {
       var self = this
       this.loading = true
       this.$store.commit('setQuery', query.term)
-      this.$store.dispatch('search').then(function () { self.loading = false })
+      this.$store.dispatch('search').then(function () { 
+        self.loading = false 
+        if (self.$route.name !== 'search') {
+          self.$router.push({ name: 'search' })
+        }
+      })
     },
     login: function () {
       this.$store.dispatch('login', this.credentials)
