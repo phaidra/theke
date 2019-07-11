@@ -671,5 +671,7 @@ export default {
   'Manage': 'Verwalten',
   'Save': 'Speichern',
   'Sort': 'Sortieren',
-  'Here you can sort members of this object (drag & drop).': 'Hier können Sie Mitglieder dieses Objekts sortieren (drag & drop)'
+  'Here you can sort members of this object (drag & drop).': 'Hier können Sie Mitglieder dieses Objekts sortieren (drag & drop)',
+
+  'HOME/SEARCH': 'HOME/SUCHE'
 }

@@ -28,7 +28,7 @@ export default {
     breadcrumbs () {
       let bc = [
         {
-          text: this.$t('Search'),
+          text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
         },
         {
