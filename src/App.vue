@@ -20,7 +20,7 @@
             <v-spacer></v-spacer>
             <template v-if="token">
               <v-flex>
-                <v-btn v-if="isadmin" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
+                <v-btn v-if="isowner || isuploader" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
                 <v-btn class="grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
               </v-flex>
             </template>
@@ -42,7 +42,7 @@
               </v-flex>
             </template>
             <v-spacer></v-spacer>
-            <h1 class="text-lg-right display-3 font-weight-light mb-3 grey--text">{{name}}</h1>
+            <h1 class="text-lg-right display-3 font-weight-light mb-3 grey--text"><router-link class="grey--text logo" :to="{ name: 'search', path: '/' }">{{name}}</router-link></h1>
           </v-layout> 
 
           <v-flex xs4>
@@ -95,8 +95,16 @@ export default {
     token: function() {
       return this.$store.state.user.token
     },
-    isadmin: function() {
-      return this.$store.state.user.username === this.$store.state.settings.global.admin
+    isowner: function() {
+      return this.$store.state.user.username === this.$store.state.settings.global.owner
+    },
+    isuploader: function() {
+      for (let uploader of this.$store.state.settings.global.uploaders) {
+        if (uploader === this.$store.state.user.username) {
+          return true
+        }
+      }
+      return false
     },
     alerts: function () {
       return this.$store.state.alerts.alerts
@@ -132,6 +140,7 @@ export default {
       var self = this
       this.loading = true
       this.$store.commit('setQuery', query.term)
+      this.$store.commit('setPage', 1)
       this.$store.dispatch('search').then(function () { 
         self.loading = false 
         if (self.$route.name !== 'search') {
@@ -201,6 +210,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#app .v-btn {
+  text-transform: none;
+}
+
+#app .v-tabs__div {
+  text-transform: none;
+  font-weight: 300;
+}
+
 .right {
   float: right;
 }
@@ -220,5 +238,9 @@ export default {
 
 .pdlabel {
   max-width: 100% !important;
+}
+
+.logo {
+  text-decoration: none;
 }
 </style>

@@ -42,7 +42,7 @@ export default {
   'dcterms:dateSubmitted': 'Date submitted',
   'phaidra:dateAccessioned': 'Date accessioned',
 
-  'rdau:P60193': 'Journal/Series',
+  'rdau:P60193': 'Series',
   'rdau:P60227': 'Adaptation of',
 
   'dcterms:spatial': 'Depicted/Represented place',

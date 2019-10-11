@@ -11,6 +11,7 @@
         <p-i-form
           :form="form"
           :templating="false"
+          :owner="isuploader ? owner : null"
           :contentmodel="contentmodel" 
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
@@ -53,6 +54,17 @@ export default {
         }
       ]
       return bc
+    },
+    isuploader: function() {
+      for (let uploader of this.$store.state.settings.global.uploaders) {
+        if (uploader === this.$store.state.user.username) {
+          return true
+        }
+      }
+      return false
+    },
+    owner: function() {
+      return this.$store.state.settings.global.owner
     }
   },
   methods: {
@@ -62,133 +74,133 @@ export default {
   },
   mounted: function () {
 
-      let rt = fields.getField('resource-type')
-      rt.value = 'https://pid.phaidra.org/vocabulary/8MY0-BQDQ'
-      this.form.sections[0].fields.push(rt)
+    let rt = fields.getField('resource-type')
+    rt.value = 'https://pid.phaidra.org/vocabulary/8MY0-BQDQ'
+    this.form.sections[0].fields.push(rt)
 
-      let tit = fields.getField('title')
-      tit.titleLabel = 'Original title'
-      tit.hideSubtitle = true
-      this.form.sections[0].fields.push(tit)
+    let tit = fields.getField('title')
+    tit.titleLabel = 'Original title'
+    tit.hideSubtitle = true
+    this.form.sections[0].fields.push(tit)
 
-      let paralelltitle = fields.getField('title')
-      paralelltitle.type = 'bf:ParallelTitle'
-      paralelltitle.hideSubtitle = true
-      this.form.sections[0].fields.push(paralelltitle)
+    let paralelltitle = fields.getField('title')
+    paralelltitle.type = 'bf:ParallelTitle'
+    paralelltitle.hideSubtitle = true
+    this.form.sections[0].fields.push(paralelltitle)
 
-      let ser = fields.getField('series')
-      ser.label = 'Series title'
-      ser.hideVolume = true
-      ser.hideIssue = true
-      ser.hideIssued = true
-      ser.hideIssn = true
-      ser.hideIdentifier = true
-      this.form.sections[0].fields.push(ser)
+    let ser = fields.getField('series')
+    ser.label = 'Series title'
+    ser.hideVolume = true
+    ser.hideIssue = true
+    ser.hideIssued = true
+    ser.hideIssn = true
+    ser.hideIdentifier = true
+    this.form.sections[0].fields.push(ser)
 
-      let actor = fields.getField('role')
-      actor.role = 'role:act'
-      this.form.sections[0].fields.push(actor)
+    let actor = fields.getField('role')
+    actor.role = 'role:act'
+    this.form.sections[0].fields.push(actor)
 
-      let director = fields.getField('role')
-      director.role = 'role:drt'
-      this.form.sections[0].fields.push(director)
+    let director = fields.getField('role')
+    director.role = 'role:drt'
+    this.form.sections[0].fields.push(director)
 
-      let screenplay = fields.getField('role')
-      screenplay.role = 'role:aus'
-      this.form.sections[0].fields.push(screenplay)
+    let screenplay = fields.getField('role')
+    screenplay.role = 'role:aus'
+    this.form.sections[0].fields.push(screenplay)
 
-      let camera = fields.getField('role')
-      camera.role = 'role:cng'
-      this.form.sections[0].fields.push(camera)
+    let camera = fields.getField('role')
+    camera.role = 'role:cng'
+    this.form.sections[0].fields.push(camera)
 
-      let music = fields.getField('role')
-      music.role = 'role:msd'
-      this.form.sections[0].fields.push(music)
+    let music = fields.getField('role')
+    music.role = 'role:msd'
+    this.form.sections[0].fields.push(music)
 
-      let production = fields.getField('role')
-      production.role = 'role:pro'
-      this.form.sections[0].fields.push(production)
+    let production = fields.getField('role')
+    production.role = 'role:pro'
+    this.form.sections[0].fields.push(production)
 
-      let productioncomp = fields.getField('role')
-      productioncomp.type = 'schema:Organisation'
-      productioncomp.role = 'role:prn'
-      productioncomp.showname = true
-      productioncomp.hideRole = true
-      productioncomp.institutionLabel = 'Production company'
-      this.form.sections[0].fields.push(productioncomp)
+    let productioncomp = fields.getField('role')
+    productioncomp.type = 'schema:Organisation'
+    productioncomp.role = 'role:prn'
+    productioncomp.showname = true
+    productioncomp.hideRole = true
+    productioncomp.institutionLabel = 'Production company'
+    this.form.sections[0].fields.push(productioncomp)
 
-      let prodplace = fields.getField('role')
-      prodplace.type = 'schema:Organisation'
-      prodplace.role = 'role:prp'
-      prodplace.institutionLabel = 'Production country'
-      prodplace.showname = true
-      prodplace.hideRole = true
-      this.form.sections[0].fields.push(prodplace)
+    let prodplace = fields.getField('role')
+    prodplace.type = 'schema:Organisation'
+    prodplace.role = 'role:prp'
+    prodplace.institutionLabel = 'Production country'
+    prodplace.showname = true
+    prodplace.hideRole = true
+    this.form.sections[0].fields.push(prodplace)
 
-      let prodyear = fields.getField('date-edtf')
-      prodyear.type = 'rdau:P60071'
-      prodyear.hideType = true
-      prodyear.dateLabel = 'Production year'
-      this.form.sections[0].fields.push(prodyear)
+    let prodyear = fields.getField('date-edtf')
+    prodyear.type = 'rdau:P60071'
+    prodyear.hideType = true
+    prodyear.dateLabel = 'Production year'
+    this.form.sections[0].fields.push(prodyear)
 
-      let dur = fields.getField('duration')
-      dur.hideHours = true
-      dur.hideSeconds = true
-      this.form.sections[0].fields.push(dur)
+    let dur = fields.getField('duration')
+    dur.hideHours = true
+    dur.hideSeconds = true
+    this.form.sections[0].fields.push(dur)
 
-      this.form.sections[0].fields.push(fields.getField('language'))
+    this.form.sections[0].fields.push(fields.getField('language'))
 
-      this.form.sections[0].fields.push(fields.getField('subtitle-language'))
+    this.form.sections[0].fields.push(fields.getField('subtitle-language'))
 
-      let desc = fields.getField('description')
-      desc.label = 'Content description'
-      this.form.sections[0].fields.push(desc)
+    let desc = fields.getField('description')
+    desc.label = 'Content description'
+    this.form.sections[0].fields.push(desc)
 
-      let adp = fields.getField('movieadaptation') 
-      adp.role = 'role:aut'
-      this.form.sections[0].fields.push(adp)
+    let adp = fields.getField('movieadaptation') 
+    adp.role = 'role:aut'
+    this.form.sections[0].fields.push(adp)
 
-      let genre = fields.getField('genre')
-      genre.vocabulary = 'moviegenre'
-      this.form.sections[0].fields.push(genre)
+    let genre = fields.getField('genre')
+    genre.vocabulary = 'moviegenre'
+    this.form.sections[0].fields.push(genre)
 
-      this.form.sections[0].fields.push(fields.getField('keyword'))
+    this.form.sections[0].fields.push(fields.getField('keyword'))
 
-      let dceformat = fields.getField('dce-format-vocab')
-      dceformat.vocabulary = 'dceformat'
-      this.form.sections[0].fields.push(dceformat)
+    let dceformat = fields.getField('dce-format-vocab')
+    dceformat.vocabulary = 'dceformat'
+    this.form.sections[0].fields.push(dceformat)
 
-      let tech = fields.getField('technique-vocab')
-      tech.vocabulary = 'technique'
-      tech.value = 'https://pid.phaidra.org/vocabulary/K818-FSM5'
-      this.form.sections[0].fields.push(tech)
+    let tech = fields.getField('technique-vocab')
+    tech.vocabulary = 'technique'
+    tech.value = 'https://pid.phaidra.org/vocabulary/K818-FSM5'
+    this.form.sections[0].fields.push(tech)
 
-      let tech2 = fields.getField('technique-vocab')
-      tech2.vocabulary = 'technique'
-      tech2.value = 'https://pid.phaidra.org/vocabulary/1K09-VXQ4'
-      this.form.sections[0].fields.push(tech2)
+    let tech2 = fields.getField('technique-vocab')
+    tech2.vocabulary = 'technique'
+    tech2.value = 'https://pid.phaidra.org/vocabulary/1K09-VXQ4'
+    this.form.sections[0].fields.push(tech2)
 
-      this.form.sections[0].fields.push(fields.getField('supplementary-content'))
+    this.form.sections[0].fields.push(fields.getField('supplementary-content'))
 
-      this.form.sections[0].fields.push(fields.getField('award'))
+    this.form.sections[0].fields.push(fields.getField('award'))
 
-      let aud = fields.getField('audience-vocab')
-      aud.vocabulary = 'audience'
-      this.form.sections[0].fields.push(aud)
+    let aud = fields.getField('audience-vocab')
+    aud.vocabulary = 'audience'
+    this.form.sections[0].fields.push(aud)
 
-      let regcode = fields.getField('regional-encoding')
-      regcode.vocabulary = 'regionalencoding'
-      this.form.sections[0].fields.push(regcode)
+    let regcode = fields.getField('regional-encoding')
+    regcode.vocabulary = 'regionalencoding'
+    this.form.sections[0].fields.push(regcode)
 
-      this.form.sections[0].fields.push(fields.getField('note'))
+    this.form.sections[0].fields.push(fields.getField('note'))
 
-      let physloc = fields.getField('physical-location-select-text')
-      physloc.selectlabel = 'Standort'
-      physloc.label = 'Arbeitsbereich'
-      physloc.vocabulary = 'pool'
-      this.form.sections[0].fields.push(physloc)
+    let physloc = fields.getField('physical-location-select-text')
+    physloc.selectlabel = 'Standort'
+    physloc.label = 'Arbeitsbereich'
+    physloc.vocabulary = 'pool'
+    this.form.sections[0].fields.push(physloc)
 
-      this.form.sections[0].fields.push(fields.getField('shelf-mark'))
+    this.form.sections[0].fields.push(fields.getField('shelf-mark'))
   }
 }
 </script>

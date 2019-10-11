@@ -553,7 +553,7 @@ export default {
   'phaidra:dateAccessioned': 'Date accessioned',
   'edm:rights': 'Lizenz',
 
-  'rdau:P60193': 'Journal/Series',
+  'rdau:P60193': 'Serie',
   // c18n
   'rdau:P60227': 'Literaturvorlage',
 
@@ -673,5 +673,6 @@ export default {
   'Sort': 'Sortieren',
   'Here you can sort members of this object (drag & drop).': 'Hier können Sie Mitglieder dieses Objekts sortieren (drag & drop)',
 
-  'HOME/SEARCH': 'HOME/SUCHE'
+  'HOME/SEARCH': 'HOME/SUCHE',
+  'Download search results as a CSV file': 'Die Suchergebnisse als CSV-Datei herunterladen'
 }

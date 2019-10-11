@@ -124,6 +124,158 @@ const state = {
 const getters = {
   getMarcRoleLabel: function (state, r) {
     return state.marcRoles[r] ? state.marcRoles[r] : r
+  },
+  solrParams: function (state) {
+    var i, j, k, l, field, v
+    var params = {
+      q: state.q + '~1',
+      defType: 'edismax',
+      wt: 'json',
+      qf: 'pid^5 dc_title^4 dc_creator^3 dc_subject^2 _text_',
+      start: 0,
+      rows: 0,
+      sort: '',
+      facet: true,
+      'facet.query': []
+    }
+
+    if (state.q === '' || state.q === null) {
+      params.q = '*:*'
+      params.sort = 'created desc'
+    }
+    for (i = 0; i < state.sortdef.length; i++) {
+      if (state.sortdef[i].active) {
+        if ((state.sortdef[i].id === 'title asc') || (state.sortdef[i].id === 'title desc')) {
+          params.sort = state.sortdef[i].def[state.lang]
+        } else {
+          params.sort = state.sortdef[i].def
+        }
+      }
+    }
+
+    for (i = 0; i < state.facetQueries.length; i++) {
+      if (state.facetQueries[i].show) {
+        for (j = 0; j < state.facetQueries[i].queries.length; j++) {
+          // exclude '{!ex=' + state.facetQueries[i].id + '}' +
+          if (state.facetQueries[i].queries[j].active && state.facetQueries[i].queries[j].childFacet) {
+            var childFacetLvl1 = state.facetQueries[i].queries[j].childFacet
+            for (k = 0; k < childFacetLvl1.queries.length; k++) {
+              if (childFacetLvl1.queries[k].active && childFacetLvl1.queries[k].childFacet) {
+                var childFacetLvl2 = childFacetLvl1.queries[k].childFacet
+                for (l = 0; l < childFacetLvl2.queries.length; l++) {
+                  // days
+                  params['facet.query'].push(childFacetLvl2.queries[l].query)
+                }
+              }
+              // months
+              params['facet.query'].push(childFacetLvl1.queries[k].query)
+            }
+          }
+
+          params['facet.query'].push(state.facetQueries[i].queries[j].query)
+        }
+      }
+    }
+
+    var ands = []
+    for (i = 0; i < state.facetQueries.length; i++) {
+      var ors = []
+      for (j = 0; j < state.facetQueries[i].queries.length; j++) {
+        if (state.facetQueries[i].queries[j].active) {
+          // tag '{!tag=' + state.facetQueries[i].id + '}' +
+          if (state.facetQueries[i].queries[j].childFacet) {
+            // there are two levels, only take the lowest active levels
+            var lvl1 = state.facetQueries[i].queries[j].childFacet
+            var foundActiveLvl1Query = false
+            for (k = 0; k < lvl1.queries.length; k++) {
+              if (lvl1.queries[k].active) {
+                foundActiveLvl1Query = true
+
+                var lvl2 = lvl1.queries[k].childFacet
+                var foundActiveLvl2Query = false
+                for (l = 0; l < lvl2.queries.length; l++) {
+                  if (lvl2.queries[l].active) {
+                    foundActiveLvl2Query = true
+                    ors.push(lvl2.queries[l].query)
+                  }
+                }
+
+                if (!foundActiveLvl2Query) {
+                  ors.push(lvl1.queries[k].query)
+                }
+              }
+            }
+
+            if (!foundActiveLvl1Query) {
+              ors.push(state.facetQueries[i].queries[j].query)
+            }
+          } else {
+            ors.push(state.facetQueries[i].queries[j].query)
+          }
+        }
+      }
+      if (ors.length > 0) {
+        if (ors.length > 1) {
+          ands.push('(' + ors.join(' OR ') + ')')
+        } else {
+          ands.push(ors[0])
+        }
+      }
+    }
+
+    for (i = 0; i < state.corp_authors.length; i++) {
+      field = state.corp_authors[i]
+      for (j = 0; j < field.values.length; j++) {
+        v = field.values[j]
+        if (v !== '') {
+          ands.push('(' + field.field + ':"' + v + '")')
+        }
+      }
+    }
+
+    for (i = 0; i < state.pers_authors.length; i++) {
+      field = state.pers_authors[i]
+      for (j = 0; j < field.values.length; j++) {
+        v = field.values[j]
+        if (v !== '') {
+          ands.push('(' + field.field + ':"' + v + '")')
+        }
+      }
+    }
+
+    for (i = 0; i < state.roles.length; i++) {
+      field = state.roles[i]
+      for (j = 0; j < field.values.length; j++) {
+        v = field.values[j]
+        if (v !== '') {
+          ands.push('(' + field.field + ':"' + v + '")')
+        }
+      }
+    }
+
+    if (state.owner) {
+      ands.push('owner:"' + state.owner + '"')
+    } else {
+      // an object should have at least an owner, else it's garbage
+      ands.push('owner:*')
+    }
+
+    if (state.statsfields) {
+      params['stats'] = true
+      for (let sf of state.statsfields) {
+        params['stats.field'] = sf
+      }
+    }
+
+    if (state.collection) {
+      ands.push('ispartof:"' + state.collection + '"')
+    }
+
+    if (ands.length > 0) {
+      params['fq'] = ands.join(' AND ')
+    }
+
+    return params
   }
 }
 
@@ -804,7 +956,7 @@ const actions = {
       q: state.q + '~1',
       defType: 'edismax',
       wt: 'json',
-      qf: 'pid^5 dc_title^4 dc_creator^3 dc_subject^2 _text_',
+      qf: 'pid^5 dc_title^4 bf_shelfmark^4 dc_creator^3 dc_subject^2 _text_',
       start: start,
       rows: state.pagesize,
       sort: '',

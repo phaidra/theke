@@ -11,7 +11,8 @@
             <v-flex>
               <v-card-title primary-title>
                 <div>
-                  <div class="title" @click.stop v-if="doc.dc_title"><router-link :to="{ name: 'detail', params: { pid: doc.pid } }">{{ doc.dc_title[0] }}</router-link></div>
+                  <div class="title" @click.stop v-if="doc.bf_title_maintitle"><router-link :to="{ name: 'detail', params: { pid: doc.pid } }">{{ doc.bf_title_maintitle[0] }}</router-link></div>
+                  <div v-if="doc.bf_paralleltitle_maintitle && (doc.bf_paralleltitle_maintitle[0] !== doc.bf_title_maintitle[0])" class="subtitle mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_maintitle[0] }}</div>
                   <div class="my-3">
                     <span  v-for="(drt,i) in doc.bib_roles_pers_drt" :key="'pers'+i">
                       {{drt}}<span v-if="(i+1) < doc.bib_roles_pers_drt.length">, </span>
