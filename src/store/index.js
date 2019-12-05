@@ -10,6 +10,15 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
   state: {
+    instanceconfig: {
+      api: '',
+      solr: '',
+      baseurl: ''
+    },
+    appconfig: {
+      suggesters: {}
+    },
+    /*
     settings: { 
       instance: {
         api: '',
@@ -19,6 +28,7 @@ export default new Vuex.Store({
         suggesters: {}
       }
     },
+    */
     user: {
       username: '',
       token: ''
@@ -50,8 +60,8 @@ export default new Vuex.Store({
       state.alerts.alerts = []
     },
     initSettings (state) {
-      state.settings.instance = config.instances[config.defaultinstance]
-      state.settings.global = config.global
+      state.instanceconfig = config.instances[config.defaultinstance]
+      state.appconfig = config.global
     },
     clearUser (state) {
       state.settings.username = '',

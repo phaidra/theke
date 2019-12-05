@@ -59,6 +59,12 @@
                 </a>
                 <v-card-text class="ma-2">
                   <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid"></p-d-jsonld>
+                  <v-container v-if="getMD5(member.pid)">
+                    <v-row>
+                      <v-col md="2" cols="12" class="pdlabel primary--text text-right">md5</v-col>
+                      <v-col md="10" cols="12">{{ getMD5(member.pid) }}</v-col>
+                    </v-row>
+                  </v-container>
                 </v-card-text>
                 <v-divider light v-if="isowner"></v-divider>
                 <v-card-actions v-if="loggedin" class="pa-3">
@@ -162,7 +168,8 @@ export default {
     return {
       displayjsonld: {},
       members: [],
-      doc: {}
+      doc: {},
+      md5: {}
     }
   },
   methods: {
@@ -219,6 +226,22 @@ export default {
 
       return promise
     },
+    loadMD5 (self, pid) {
+      var url = self.$store.state.settings.instance.api + '/object/' + pid + '/md5'
+      var promise = fetch(url, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then(function (response) { return response.json() })
+      .then(function (json) {
+        Vue.set(self.md5, pid, json.md5)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+
+      return promise
+    },
     loadDetail: function (self, pid) {
 
       self.displayjsonld = {}
@@ -245,12 +268,24 @@ export default {
         if (self.dshash['JSON-LD']) {
           self.loadJsonld(self, pid)
           self.loadMembers(self, pid)
+          self.loadMD5(self, pid)
         }
       })
       .catch(function (error) {
         console.log(error)
       })
       return promise
+    },
+    getMD5: function (pid) {
+      if (this.md5[pid]) {
+        let md5s = [] // there might be more versions of octets
+        for (let md5 of this.md5[pid]) {
+          if (md5.path.replace('_',':').match(new RegExp(pid + '\+OCTETS', 'g'))) {
+            md5s.push(md5.md5)
+          }
+        }
+        return md5s.join(', ')
+      }
     },
     getFilename: function (pid) {
       if(this.displayjsonld[pid]){

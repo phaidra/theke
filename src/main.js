@@ -11,6 +11,7 @@ import router from './router'
 import store from './store'
 import PhaidraVueComponents from 'phaidra-vue-components'
 import App from './App.vue'
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
@@ -53,5 +54,6 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App),
+  vuetify,
+  render: h => h(App)
 }).$mount('#app')

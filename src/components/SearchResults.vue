@@ -1,32 +1,30 @@
 <template>
 
   <v-container grid-list-lg>
-    <v-layout row wrap>
-      <v-flex v-for="(doc) in this.docs" :key="doc.pid" xs12>
+    <v-row v-for="(doc) in this.docs" :key="doc.pid" xs12>
+      <v-col cols="12">
         <v-card class="ma-3" flat :color="'rgba(255, 255, 255, 0)'">
-          <v-layout>
-            <v-flex xs2>
-              <router-link :to="{ name: 'detail', params: { pid: doc.pid } }"><v-img height="120px" min-width="120px" contain :src="getPreview(doc.pid)" ></v-img></router-link>
-            </v-flex>
-            <v-flex>
-              <v-card-title primary-title>
-                <div>
-                  <div class="title" @click.stop v-if="doc.bf_title_maintitle"><router-link :to="{ name: 'detail', params: { pid: doc.pid } }">{{ doc.bf_title_maintitle[0] }}</router-link></div>
-                  <div v-if="doc.bf_paralleltitle_maintitle && (doc.bf_paralleltitle_maintitle[0] !== doc.bf_title_maintitle[0])" class="subtitle mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_maintitle[0] }}</div>
-                  <div class="my-3">
-                    <span  v-for="(drt,i) in doc.bib_roles_pers_drt" :key="'pers'+i">
-                      {{drt}}<span v-if="(i+1) < doc.bib_roles_pers_drt.length">, </span>
-                    </span>
-                  </div>
-                  <div v-if="doc.rdau_P60071_year" class="my-3">{{ doc.rdau_P60071_year[0] }}</div>
+          <v-card-text>
+            <v-row>
+              <v-col cols="2">
+                <router-link :to="{ name: 'detail', params: { pid: doc.pid } }"><v-img height="120px" min-width="120px" contain :src="getPreview(doc.pid)" ></v-img></router-link>
+              </v-col>
+              <v-col>
+                <div class="title font-weight-light primary--text" @click.stop v-if="doc.bf_title_maintitle"><router-link :to="{ name: 'detail', params: { pid: doc.pid } }">{{ doc.bf_title_maintitle[0] }}</router-link></div>
+                <div v-if="doc.bf_paralleltitle_maintitle && (doc.bf_paralleltitle_maintitle[0] !== doc.bf_title_maintitle[0])" class=" font-weight-light mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_maintitle[0] }}</div>
+                <div class="my-3">
+                  <span  v-for="(drt,i) in doc.bib_roles_pers_drt" :key="'pers'+i">
+                    {{drt}}<span v-if="(i+1) < doc.bib_roles_pers_drt.length">, </span>
+                  </span>
                 </div>
-              </v-card-title>
-            </v-flex>
-          </v-layout>
+                <div v-if="doc.rdau_P60071_year" class="my-3">{{ doc.rdau_P60071_year[0] }}</div>
+              </v-col>
+            </v-row>
+          </v-card-text>
         </v-card>
         <v-divider></v-divider>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 
 </template>
