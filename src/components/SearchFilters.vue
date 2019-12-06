@@ -1,13 +1,12 @@
 <template>
 
-  <v-container fluid grid-list-md>
-    <v-layout column>
-      <v-flex>
-        <v-spacer></v-spacer>
-        <v-btn @click.native="resetFilters()" :disabled="disableReset">
-          <span>{{ $t('Remove filters') }}</span>
-        </v-btn>
-      </v-flex>
+  <v-container>
+    <v-row>
+      <v-btn class="mb-4" @click.native="resetFilters()" :disabled="disableReset">
+        <span>{{ $t('Remove filters') }}</span>
+      </v-btn>
+    </v-row>
+    <v-row>
       <ul class="main-ul">
         <li v-for="(f, i) in facetQueries" :key="i">
           <!--<v-icon @click.native="showFacet(f)" v-if="f.show" class="primary--text">check_box</v-icon>
@@ -45,7 +44,7 @@
           </ul>
         </li>
       </ul>
-    </v-layout>
+    </v-row>
   </v-container>
 
 </template>
@@ -59,8 +58,8 @@ export default {
     Autocomplete
   },
   computed: {
-    searchsettings: function() {
-      return this.$store.state.settings.global.search.state
+    searchsettings: function () {
+      return this.$store.state.appconfig.search.state
     },
     owner () {
       return this.$store.state.search.owner
@@ -75,12 +74,12 @@ export default {
       return this.$store.state.search.showOwnerFilter
     },
     facetQueries () {
-      return this.$store.state.search.facetQueries.filter(f => !f.hidefilter);
+      return this.$store.state.search.facetQueries.filter(f => !f.hidefilter)
     },
     disableReset () {
-      for (let fq of this.$store.state.search.facetQueries) {
+      for (const fq of this.$store.state.search.facetQueries) {
         if (fq.resetable) {
-          for (let q of fq.queries) {
+          for (const q of fq.queries) {
             if (q.active) {
               return false
             }
@@ -164,7 +163,7 @@ export default {
       this.$store.dispatch('setRoleFilterValues', role)
     },
     removeRoleFilterValue: function (role, value) {
-      this.$store.dispatch('removeRoleFilterValue', {role: role, value: value})
+      this.$store.dispatch('removeRoleFilterValue', { role: role, value: value })
     },
     resetFilters: function () {
       this.$store.dispatch('resetFilters')

@@ -1,32 +1,32 @@
 <template>
-  <v-layout column>
-    <v-flex>
+  <v-row column>
+    <v-col>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-flex>
-   
+    </v-col>
+
     <v-card flat>
       <v-card-title primary-title class="title">
         {{$t('Contact')}}
       </v-card-title>
       <v-card-text>
-        <v-layout column>
-          <v-flex>
+        <v-row column>
+          <v-col>
             {{instance.contact.name}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             <a :href="'mailto:'+instance.contact.email" >{{instance.contact.email}}</a>
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             {{instance.contact.phone}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             {{instance.contact.address}}
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
-      
-  </v-layout>
+
+  </v-row>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
   name: 'contact',
   computed: {
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
@@ -47,9 +47,8 @@ export default {
       return bc
     },
     instance () {
-      return this.$store.state.settings.instance
+      return this.$store.state.instanceconfig
     }
   }
 }
 </script>
-

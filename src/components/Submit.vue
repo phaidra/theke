@@ -1,8 +1,8 @@
 <template>
-  <v-flex>
-    <v-flex>
+  <v-col>
+    <v-col>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-flex>
+    </v-col>
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>{{ $t('Submit') }}</v-toolbar-title>
@@ -12,13 +12,13 @@
           :form="form"
           :templating="false"
           :owner="isuploader ? owner : null"
-          :contentmodel="contentmodel" 
+          :contentmodel="contentmodel"
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
         ></p-i-form>
       </v-card-text>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
@@ -50,21 +50,21 @@ export default {
         {
           text: this.$t('Submit'),
           disabled: true,
-          to: { name: 'submit' },
+          to: { name: 'submit' }
         }
       ]
       return bc
     },
-    isuploader: function() {
-      for (let uploader of this.$store.state.settings.global.uploaders) {
+    isuploader: function () {
+      for (const uploader of this.$store.state.appconfig.uploaders) {
         if (uploader === this.$store.state.user.username) {
           return true
         }
       }
       return false
     },
-    owner: function() {
-      return this.$store.state.settings.global.owner
+    owner: function () {
+      return this.$store.state.appconfig.owner
     }
   },
   methods: {
@@ -73,22 +73,21 @@ export default {
     }
   },
   mounted: function () {
-
-    let rt = fields.getField('resource-type')
+    const rt = fields.getField('resource-type')
     rt.value = 'https://pid.phaidra.org/vocabulary/8MY0-BQDQ'
     this.form.sections[0].fields.push(rt)
 
-    let tit = fields.getField('title')
+    const tit = fields.getField('title')
     tit.titleLabel = 'Original title'
     tit.hideSubtitle = true
     this.form.sections[0].fields.push(tit)
 
-    let paralelltitle = fields.getField('title')
+    const paralelltitle = fields.getField('title')
     paralelltitle.type = 'bf:ParallelTitle'
     paralelltitle.hideSubtitle = true
     this.form.sections[0].fields.push(paralelltitle)
 
-    let ser = fields.getField('series')
+    const ser = fields.getField('series')
     ser.label = 'Series title'
     ser.hideVolume = true
     ser.hideIssue = true
@@ -97,31 +96,31 @@ export default {
     ser.hideIdentifier = true
     this.form.sections[0].fields.push(ser)
 
-    let actor = fields.getField('role')
+    const actor = fields.getField('role')
     actor.role = 'role:act'
     this.form.sections[0].fields.push(actor)
 
-    let director = fields.getField('role')
+    const director = fields.getField('role')
     director.role = 'role:drt'
     this.form.sections[0].fields.push(director)
 
-    let screenplay = fields.getField('role')
+    const screenplay = fields.getField('role')
     screenplay.role = 'role:aus'
     this.form.sections[0].fields.push(screenplay)
 
-    let camera = fields.getField('role')
+    const camera = fields.getField('role')
     camera.role = 'role:cng'
     this.form.sections[0].fields.push(camera)
 
-    let music = fields.getField('role')
+    const music = fields.getField('role')
     music.role = 'role:msd'
     this.form.sections[0].fields.push(music)
 
-    let production = fields.getField('role')
+    const production = fields.getField('role')
     production.role = 'role:pro'
     this.form.sections[0].fields.push(production)
 
-    let productioncomp = fields.getField('role')
+    const productioncomp = fields.getField('role')
     productioncomp.type = 'schema:Organisation'
     productioncomp.role = 'role:prn'
     productioncomp.showname = true
@@ -129,7 +128,7 @@ export default {
     productioncomp.institutionLabel = 'Production company'
     this.form.sections[0].fields.push(productioncomp)
 
-    let prodplace = fields.getField('role')
+    const prodplace = fields.getField('role')
     prodplace.type = 'schema:Organisation'
     prodplace.role = 'role:prp'
     prodplace.institutionLabel = 'Production country'
@@ -137,13 +136,13 @@ export default {
     prodplace.hideRole = true
     this.form.sections[0].fields.push(prodplace)
 
-    let prodyear = fields.getField('date-edtf')
+    const prodyear = fields.getField('date-edtf')
     prodyear.type = 'rdau:P60071'
     prodyear.hideType = true
     prodyear.dateLabel = 'Production year'
     this.form.sections[0].fields.push(prodyear)
 
-    let dur = fields.getField('duration')
+    const dur = fields.getField('duration')
     dur.hideHours = true
     dur.hideSeconds = true
     this.form.sections[0].fields.push(dur)
@@ -152,30 +151,30 @@ export default {
 
     this.form.sections[0].fields.push(fields.getField('subtitle-language'))
 
-    let desc = fields.getField('description')
+    const desc = fields.getField('description')
     desc.label = 'Content description'
     this.form.sections[0].fields.push(desc)
 
-    let adp = fields.getField('movieadaptation') 
+    const adp = fields.getField('movieadaptation')
     adp.role = 'role:aut'
     this.form.sections[0].fields.push(adp)
 
-    let genre = fields.getField('genre')
+    const genre = fields.getField('genre')
     genre.vocabulary = 'moviegenre'
     this.form.sections[0].fields.push(genre)
 
     this.form.sections[0].fields.push(fields.getField('keyword'))
 
-    let dceformat = fields.getField('dce-format-vocab')
+    const dceformat = fields.getField('dce-format-vocab')
     dceformat.vocabulary = 'dceformat'
     this.form.sections[0].fields.push(dceformat)
 
-    let tech = fields.getField('technique-vocab')
+    const tech = fields.getField('technique-vocab')
     tech.vocabulary = 'technique'
     tech.value = 'https://pid.phaidra.org/vocabulary/K818-FSM5'
     this.form.sections[0].fields.push(tech)
 
-    let tech2 = fields.getField('technique-vocab')
+    const tech2 = fields.getField('technique-vocab')
     tech2.vocabulary = 'technique'
     tech2.value = 'https://pid.phaidra.org/vocabulary/1K09-VXQ4'
     this.form.sections[0].fields.push(tech2)
@@ -184,17 +183,17 @@ export default {
 
     this.form.sections[0].fields.push(fields.getField('award'))
 
-    let aud = fields.getField('audience-vocab')
+    const aud = fields.getField('audience-vocab')
     aud.vocabulary = 'audience'
     this.form.sections[0].fields.push(aud)
 
-    let regcode = fields.getField('regional-encoding')
+    const regcode = fields.getField('regional-encoding')
     regcode.vocabulary = 'regionalencoding'
     this.form.sections[0].fields.push(regcode)
 
     this.form.sections[0].fields.push(fields.getField('note'))
 
-    let physloc = fields.getField('physical-location-select-text')
+    const physloc = fields.getField('physical-location-select-text')
     physloc.selectlabel = 'Standort'
     physloc.label = 'Arbeitsbereich'
     physloc.vocabulary = 'pool'
@@ -204,4 +203,3 @@ export default {
   }
 }
 </script>
-

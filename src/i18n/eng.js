@@ -1,14 +1,14 @@
 
 export default {
-  'ADD_PREFIX': 'Add',
-  'ADD_PREFIX_2': 'Add another',
-  'ADD_SUFFIX': '',
-  'ADD_TO_PREFIX': 'Add to',
-  'ADD_TO_SUFFIX': '',
+  ADD_PREFIX: 'Add',
+  ADD_PREFIX_2: 'Add another',
+  ADD_SUFFIX: '',
+  ADD_TO_PREFIX: 'Add to',
+  ADD_TO_SUFFIX: '',
   'less 10MB': '< 10MB',
   'more 1GB': '> 1GB',
-  'SEARCH_PLACEHOLDER': 'Search',
-  'PHAIDRA_IS': 'Phaidra is the repository for the permanent secure storage of digital assets at the University of Vienna.',
+  SEARCH_PLACEHOLDER: 'Search',
+  PHAIDRA_IS: 'Phaidra is the repository for the permanent secure storage of digital assets at the University of Vienna.',
 
   'bf:Title': 'Title',
   'bf:ParallelTitle': 'Parallel title',
@@ -77,9 +77,9 @@ export default {
   // c18n
   'Container thumbnail': 'Cover thumbnail',
 
-  'MEMBERS_DELETE_ALERT_CONTAINER': 'This object is a Container with {nrmembers} members. Only an empty Container can be deleted. If you want to delete this object, you need to remove all members from this Container or delete them first.',
-  'DELETE_OBJECT': 'Here you can delete object {pid}.',
-  'DELETE_OBJECT_CONFIRM': 'Are you sure you want to permanently delete object {pid}?',
+  MEMBERS_DELETE_ALERT_CONTAINER: 'This object is a Container with {nrmembers} members. Only an empty Container can be deleted. If you want to delete this object, you need to remove all members from this Container or delete them first.',
+  DELETE_OBJECT: 'Here you can delete object {pid}.',
+  DELETE_OBJECT_CONFIRM: 'Are you sure you want to permanently delete object {pid}?',
 
   uwm_etheses: 'E-Theses',
   uwm_etheses_note_2: 'Note 2',

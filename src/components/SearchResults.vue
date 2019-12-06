@@ -1,7 +1,7 @@
 <template>
 
   <v-container grid-list-lg>
-    <v-row v-for="(doc) in this.docs" :key="doc.pid" xs12>
+    <v-row class="xs12" v-for="(doc) in this.docs" :key="doc.pid" >
       <v-col cols="12">
         <v-card class="ma-3" flat :color="'rgba(255, 255, 255, 0)'">
           <v-card-text>
@@ -37,7 +37,7 @@ export default {
       return this.$store.state.search.docs
     },
     instance () {
-      return this.$store.state.settings.instance
+      return this.$store.state.instanceconfig
     }
   },
   methods: {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import './plugins/vuetify'
+import vuetify from './plugins/vuetify'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueI18n from 'vue-i18n'
@@ -11,7 +11,6 @@ import router from './router'
 import store from './store'
 import PhaidraVueComponents from 'phaidra-vue-components'
 import App from './App.vue'
-import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 

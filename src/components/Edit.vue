@@ -1,12 +1,12 @@
 <template>
-  <v-flex>
+  <v-col>
     <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>{{$t('Edit') }} {{pid}}</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
-        <p-i-form 
+        <p-i-form
           :form="editform"
           :targetpid="pid"
           :templating="false"
@@ -14,7 +14,7 @@
         ></p-i-form>
       </v-card-text>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>
@@ -27,14 +27,14 @@ export default {
       return this.$route.params.pid
     },
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
         },
         {
           text: this.$t('Detailpage') + ' ' + this.parentpid,
-          to: { name: 'detail', params: { pid: this.parentpid } },
+          to: { name: 'detail', params: { pid: this.parentpid } }
         },
         {
           text: this.$t('Metadata editor') + ' ' + this.pid,
@@ -42,7 +42,7 @@ export default {
         }
       ]
       return bc
-    },
+    }
   },
   data () {
     return {
@@ -57,18 +57,18 @@ export default {
       this.$router.push({ name: 'detail', params: { pid: this.parentpid } })
     },
     loadJsonld (self, pid) {
-      var url = self.$store.state.settings.instance.api + '/object/' + pid + '/metadata?mode=resolved'
+      var url = self.$store.state.instanceconfig.api + '/object/' + pid + '/metadata?mode=resolved'
       var promise = fetch(url, {
         method: 'GET',
         mode: 'cors'
       })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        self.editform = self.json2form(json.metadata['JSON-LD'])
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+        .then(function (response) { return response.json() })
+        .then(function (json) {
+          self.editform = self.json2form(json.metadata['JSON-LD'])
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
 
       return promise
     },
@@ -94,4 +94,3 @@ export default {
   }
 }
 </script>
-

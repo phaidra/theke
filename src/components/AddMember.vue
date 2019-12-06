@@ -1,11 +1,11 @@
 <template>
-  <v-flex>
-    <v-flex>
+  <v-col>
+    <v-col>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-flex>
+    </v-col>
     <v-card>
       <v-toolbar flat>
-        <v-toolbar-title>{{ $t('Add member of') }} {{this.parentpid}}</v-toolbar-title>        
+        <v-toolbar-title>{{ $t('Add member of') }} {{this.parentpid}}</v-toolbar-title>
         <v-divider class="mx-3" inset vertical></v-divider>
         <v-checkbox class="pt-4 pl-4" v-model="isthumbnail" :label="$t('Container thumbnail')"></v-checkbox>
         <v-spacer></v-spacer>
@@ -20,7 +20,7 @@
         ></p-i-form>
       </v-card-text>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>
@@ -47,14 +47,14 @@ export default {
   },
   computed: {
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
         },
         {
           text: this.$t('Detailpage') + ' ' + this.parentpid,
-          to: { name: 'detail', params: { pid: this.parentpid } },
+          to: { name: 'detail', params: { pid: this.parentpid } }
         },
         {
           text: this.$t('Add member of') + ' ' + this.parentpid,
@@ -124,9 +124,9 @@ export default {
                 var rt = this.form.sections[i].fields[j]
                 rt.value = resourcetype
                 var preflabels
-                for (k = 0; k < this.vocabularies['resourcetype'].terms.length; k++) {
-                  if (this.vocabularies['resourcetype'].terms[k]['@id'] === rt.value) {
-                    preflabels = this.vocabularies['resourcetype'].terms[k]['skos:prefLabel']
+                for (k = 0; k < this.vocabularies.resourcetype.terms.length; k++) {
+                  if (this.vocabularies.resourcetype.terms[k]['@id'] === rt.value) {
+                    preflabels = this.vocabularies.resourcetype.terms[k]['skos:prefLabel']
                   }
                 }
                 rt['skos:prefLabel'] = []
@@ -138,12 +138,12 @@ export default {
           }
           this.form.sections.splice(i, 1, this.form.sections[i])
         }
-        if (this.$store.state.settings.global.upload) {
-          if (this.$store.state.settings.global.upload.accessrights) {
-            if (this.$store.state.settings.global.upload.accessrights[resourcetype]){
+        if (this.$store.state.appconfig.upload) {
+          if (this.$store.state.appconfig.upload.accessrights) {
+            if (this.$store.state.appconfig.upload.accessrights[resourcetype]) {
               for (k = 0; k < this.form.sections.length; k++) {
-                if (typeof this.form.sections[k].id === 'string'){
-                  if (this.form.sections[k].id.startsWith('autoaccessrights_')){
+                if (typeof this.form.sections[k].id === 'string') {
+                  if (this.form.sections[k].id.startsWith('autoaccessrights_')) {
                     this.form.sections.splice(k, 1)
                   }
                 }
@@ -152,14 +152,14 @@ export default {
                 {
                   title: 'Access rights',
                   type: 'accessrights',
-                  id: 'autoaccessrights_'+resourcetype,
-                  rights: this.$store.state.settings.global.upload.accessrights[resourcetype]
+                  id: 'autoaccessrights_' + resourcetype,
+                  rights: this.$store.state.appconfig.upload.accessrights[resourcetype]
                 }
               )
             } else {
               for (k = 0; k < this.form.sections.length; k++) {
-                if (typeof this.form.sections[k].id === 'string'){
-                  if (this.form.sections[k].id.startsWith('autoaccessrights_')){
+                if (typeof this.form.sections[k].id === 'string') {
+                  if (this.form.sections[k].id.startsWith('autoaccessrights_')) {
                     this.form.sections.splice(k, 1)
                   }
                 }
@@ -178,7 +178,7 @@ export default {
       this.loading = true
       httpFormData.append('predicate', 'http://pcdm.org/models#hasMember')
       httpFormData.append('object', 'info:fedora/' + self.memberpid)
-      var url = self.$store.state.settings.instance.api + '/object/' + self.parentpid + '/relationship/add'
+      var url = self.$store.state.instanceconfig.api + '/object/' + self.parentpid + '/relationship/add'
       var promise = fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -187,52 +187,52 @@ export default {
         },
         body: httpFormData
       })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        if (self.isthumbnail) {
-          httpFormData = new FormData()
-          httpFormData.append('predicate', 'http://phaidra.org/XML/V1.0/relations#isThumbnailFor')
-          httpFormData.append('object', 'info:fedora/' + self.parentpid)
-          url = self.$store.state.settings.instance.api + '/object/' + self.memberpid + '/relationship/add'
-          var promise2 = fetch(url, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'X-XSRF-TOKEN': self.$store.state.user.token
-            },
-            body: httpFormData
-          })
-          .then(function (response) { return response.json() })
-          .then(function (json) {
+        .then(function (response) { return response.json() })
+        .then(function (json) {
+          if (self.isthumbnail) {
+            httpFormData = new FormData()
+            httpFormData.append('predicate', 'http://phaidra.org/XML/V1.0/relations#isThumbnailFor')
+            httpFormData.append('object', 'info:fedora/' + self.parentpid)
+            url = self.$store.state.instanceconfig.api + '/object/' + self.memberpid + '/relationship/add'
+            var promise2 = fetch(url, {
+              method: 'POST',
+              mode: 'cors',
+              headers: {
+                'X-XSRF-TOKEN': self.$store.state.user.token
+              },
+              body: httpFormData
+            })
+              .then(function (response) { return response.json() })
+              .then(function (json) {
+                self.loading = false
+                self.$router.push({ name: 'detail', params: { pid: self.parentpid } })
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
+
+            return promise2
+          } else {
             self.loading = false
             self.$router.push({ name: 'detail', params: { pid: self.parentpid } })
-          })
-          .catch(function (error) {
-            console.log(error)
-          })
-
-          return promise2
-        } else {
-          self.loading = false
-          self.$router.push({ name: 'detail', params: { pid: self.parentpid } })
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
       return promise
     }
   },
   mounted: function () {
-    let mrt = fields.getField('resource-type')
+    const mrt = fields.getField('resource-type')
     mrt.value = 'https://pid.phaidra.org/vocabulary/44TN-P1S0'
     this.form.sections[0].fields.push(mrt)
     this.form.sections[0].fields.push(fields.getField('file'))
     this.form.sections[0].fields.push(fields.getField('title'))
-    let mt = fields.getField('mime-type')
+    const mt = fields.getField('mime-type')
     mt.required = true
     this.form.sections[0].fields.push(mt)
-    let lic = fields.getField('license')
+    const lic = fields.getField('license')
     lic.value = 'http://rightsstatements.org/vocab/InC/1.0/'
     this.form.sections[0].fields.push(lic)
   },
@@ -246,4 +246,3 @@ export default {
   }
 }
 </script>
-

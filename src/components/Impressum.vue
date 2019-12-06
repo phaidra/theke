@@ -1,38 +1,38 @@
 <template>
-  <v-layout column>
-    <v-flex>
+  <v-row column>
+    <v-col>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-flex>
-   
+    </v-col>
+
     <v-card flat>
       <v-card-title primary-title class="title">
         {{$t('Impressum')}}
       </v-card-title>
       <v-card-text>
-        <v-layout column>
-          <v-flex>
+        <v-row column>
+          <v-col>
             {{instance.impressum.orgname}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             {{instance.impressum.address_line_1}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             {{instance.impressum.address_line_2}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             {{instance.impressum.zip}} {{instance.impressum.city}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             T: {{instance.impressum.phone}}
-          </v-flex>
-          <v-flex>
+          </v-col>
+          <v-col>
             <a :href="'mailto:'+instance.impressum.email" >{{instance.impressum.email}}</a>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
-      
-  </v-layout>
+
+  </v-row>
 </template>
 
 <script>
@@ -40,7 +40,7 @@ export default {
   name: 'impressum',
   computed: {
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
@@ -53,9 +53,8 @@ export default {
       return bc
     },
     instance () {
-      return this.$store.state.settings.instance
+      return this.$store.state.instanceconfig
     }
   }
 }
 </script>
-

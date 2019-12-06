@@ -1,13 +1,13 @@
 <template>
-  <v-layout column>
-    <v-flex>
+  <v-row column>
+    <v-col>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-flex>
-    <v-flex v-if="loggedin">
+    </v-col>
+    <v-col v-if="loggedin">
       <p-m-sort v-if="members.length > 0" :pid="pid" :cmodel="loadedcmodel" :members="members" @input="members=$event" @order-saved="orderSaved($event)"></p-m-sort>
       <p-m-delete :pid="pid" :cmodel="loadedcmodel" :members="members" @object-deleted="objectDeleted($event)"></p-m-delete>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -16,35 +16,35 @@ import qs from 'qs'
 export default {
   name: 'manage',
   computed: {
-    loadedcmodel: function() {
+    loadedcmodel: function () {
       return 'cmodel' in this.doc ? this.doc.cmodel : 'unknown'
     },
-    loggedin: function() {
+    loggedin: function () {
       return this.$store.state.user.token
     },
     pid () {
       return this.$route.params.pid
     },
     breadcrumbs () {
-      let bc = [
+      const bc = [
         {
           text: this.$t('HOME/SEARCH'),
           to: { name: 'search', path: '/' }
         },
         {
           text: this.$t('Detailpage') + ' ' + this.parentpid,
-          to: { name: 'detail', params: { pid: this.parentpid } },
+          to: { name: 'detail', params: { pid: this.parentpid } }
         },
         {
           text: this.$t('Manage') + ' ' + this.$route.params.pid,
           disabled: true,
-          to: { name: 'manage', params: { pid: this.$route.params.pid } },
+          to: { name: 'manage', params: { pid: this.$route.params.pid } }
         }
       ]
       return bc
     },
     instance () {
-      return this.$store.state.settings.instance
+      return this.$store.state.instanceconfig
     }
   },
   data () {
@@ -57,10 +57,10 @@ export default {
   methods: {
     loadManagement: function (self, pid) {
       return self.loadDoc(self, pid)
-      .then(function (response) { 
-        return self.loadMembers(self, pid) 
+        .then(function (response) {
+          return self.loadMembers(self, pid)
         }
-      )
+        )
     },
     loadDoc: function (self, pid) {
       this.members = []
@@ -78,22 +78,21 @@ export default {
         method: 'GET',
         mode: 'cors'
       })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        if (json.response.numFound > 0) {
-          self.doc = json.response.docs[0]
-        } else {
-          self.doc = {}
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+        .then(function (response) { return response.json() })
+        .then(function (json) {
+          if (json.response.numFound > 0) {
+            self.doc = json.response.docs[0]
+          } else {
+            self.doc = {}
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
 
       return promise
     },
     loadMembers (self, pid) {
-      
       this.members = []
 
       var params = {
@@ -102,7 +101,7 @@ export default {
         wt: 'json',
         qf: 'ismemberof^5',
         fl: 'pid,cmodel,dc_title,created',
-        sort: 'pos_in_' + pid.replace(':','_') + ' asc'
+        sort: 'pos_in_' + pid.replace(':', '_') + ' asc'
       }
 
       var query = qs.stringify(params, { encodeValuesOnly: true, indices: false })
@@ -111,17 +110,17 @@ export default {
         method: 'GET',
         mode: 'cors'
       })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        if (json.response.numFound > 0) {
-          self.members = json.response.docs
-        } else {
-          self.members = []
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+        .then(function (response) { return response.json() })
+        .then(function (json) {
+          if (json.response.numFound > 0) {
+            self.members = json.response.docs
+          } else {
+            self.members = []
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
 
       return promise
     },
@@ -131,7 +130,7 @@ export default {
     objectDeleted: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object' + this.pid + ' was successfully deleted.' }])
       if (this.pid === this.parentpid) {
-        this.$router.push({ name: 'search'})
+        this.$router.push({ name: 'search' })
       } else {
         this.$router.push({ name: 'detail', params: { pid: this.parentpid } })
       }

@@ -24,76 +24,76 @@ const state = {
     sound: 'Sound'
   },
   marcRoles: {
-    'initiator': 'Initiator',
-    'evaluator': 'Evaluator',
-    'technicalinspector': 'Technical inspector',
-    'textprocessor': 'Textprocessor',
-    'pedagogicexpert': 'Pedagogic expert',
-    'interpreter': 'Interpreter',
-    'digitiser': 'Digitiser',
-    'keeperoftheoriginal': 'Keeper of the original',
-    'adviser': 'Adviser',
-    'degreegrantor': 'Degree grantor',
-    'uploader': 'Uploader',
-    'dtc': 'Data contributor',
+    initiator: 'Initiator',
+    evaluator: 'Evaluator',
+    technicalinspector: 'Technical inspector',
+    textprocessor: 'Textprocessor',
+    pedagogicexpert: 'Pedagogic expert',
+    interpreter: 'Interpreter',
+    digitiser: 'Digitiser',
+    keeperoftheoriginal: 'Keeper of the original',
+    adviser: 'Adviser',
+    degreegrantor: 'Degree grantor',
+    uploader: 'Uploader',
+    dtc: 'Data contributor',
     // 'aut': 'Author', has a separate input box
-    'pbl': 'Publisher',
-    'edt': 'Editor',
-    'dsr': 'Designer',
-    'trl': 'Translator',
-    'exp': 'Expert',
-    'oth': 'Other',
-    'art': 'Artist',
-    'dnr': 'Donor',
-    'pht': 'Photographer',
-    'jud': 'Judge',
-    'prf': 'Performer',
-    'wde': 'Wood engraver',
-    'rce': 'Recording engineer',
-    'sce': 'Scenarist',
-    'ths': 'Thesis advisor',
-    'sds': 'Sound designer',
-    'lyr': 'Lyricist',
-    'ilu': 'Illuminator',
-    'eng': 'Engineer',
-    'cnd': 'Conductor',
-    'dto': 'Dedicator',
-    'opn': 'Opponent',
-    'cmp': 'Composer',
-    'ctg': 'Cartographer',
-    'dub': 'Dubious author',
-    'wam': 'Writer of accompanying material',
-    'arc': 'Architect',
-    'vdg': 'Videographer',
-    'scl': 'Sculptor',
-    'aus': 'Screenwriter',
-    'own': 'Owner',
-    'fmo': 'Former owner',
-    'mus': 'Musician',
-    'ive': 'Interviewee',
-    'ill': 'Illustrator',
-    'cng': 'Cinematographer',
-    'dte': 'Dedicatee',
-    'sad': 'Scientific advisor',
-    'mte': 'Metal-engraver',
-    'arr': 'Arranger',
-    'etr': 'Etcher',
-    'dis': 'Dissertant',
-    'prt': 'Printer',
-    'flm': 'Film editor',
-    'rev': 'Reviewer',
-    'pro': 'Producer',
-    'att': 'Attributed name',
-    'lbt': 'Librettist',
-    'ivr': 'Interviewer',
-    'egr': 'Engraver',
-    'msd': 'Musical director',
-    'ard': 'Artistic director',
-    'chr': 'Choreographer',
-    'com': 'Compiler',
-    'sng': 'Singer',
-    'act': 'Actor',
-    'adp': 'Adapter'
+    pbl: 'Publisher',
+    edt: 'Editor',
+    dsr: 'Designer',
+    trl: 'Translator',
+    exp: 'Expert',
+    oth: 'Other',
+    art: 'Artist',
+    dnr: 'Donor',
+    pht: 'Photographer',
+    jud: 'Judge',
+    prf: 'Performer',
+    wde: 'Wood engraver',
+    rce: 'Recording engineer',
+    sce: 'Scenarist',
+    ths: 'Thesis advisor',
+    sds: 'Sound designer',
+    lyr: 'Lyricist',
+    ilu: 'Illuminator',
+    eng: 'Engineer',
+    cnd: 'Conductor',
+    dto: 'Dedicator',
+    opn: 'Opponent',
+    cmp: 'Composer',
+    ctg: 'Cartographer',
+    dub: 'Dubious author',
+    wam: 'Writer of accompanying material',
+    arc: 'Architect',
+    vdg: 'Videographer',
+    scl: 'Sculptor',
+    aus: 'Screenwriter',
+    own: 'Owner',
+    fmo: 'Former owner',
+    mus: 'Musician',
+    ive: 'Interviewee',
+    ill: 'Illustrator',
+    cng: 'Cinematographer',
+    dte: 'Dedicatee',
+    sad: 'Scientific advisor',
+    mte: 'Metal-engraver',
+    arr: 'Arranger',
+    etr: 'Etcher',
+    dis: 'Dissertant',
+    prt: 'Printer',
+    flm: 'Film editor',
+    rev: 'Reviewer',
+    pro: 'Producer',
+    att: 'Attributed name',
+    lbt: 'Librettist',
+    ivr: 'Interviewer',
+    egr: 'Engraver',
+    msd: 'Musical director',
+    ard: 'Artistic director',
+    chr: 'Choreographer',
+    com: 'Compiler',
+    sng: 'Singer',
+    act: 'Actor',
+    adp: 'Adapter'
   },
   // inited in initStore
   suggestions: {},
@@ -261,8 +261,8 @@ const getters = {
     }
 
     if (state.statsfields) {
-      params['stats'] = true
-      for (let sf of state.statsfields) {
+      params.stats = true
+      for (const sf of state.statsfields) {
         params['stats.field'] = sf
       }
     }
@@ -272,7 +272,7 @@ const getters = {
     }
 
     if (ands.length > 0) {
-      params['fq'] = ands.join(' AND ')
+      params.fq = ands.join(' AND ')
     }
 
     return params
@@ -297,18 +297,18 @@ const mutations = {
         id: 'title asc',
         active: false,
         def: {
-          'en': 'sort_eng_dc_title asc,sort_dc_title asc',
-          'de': 'sort_deu_dc_title asc,sort_dc_title asc',
-          'it': 'sort_ita_dc_title asc,sort_dc_title asc'
+          en: 'sort_eng_dc_title asc,sort_dc_title asc',
+          de: 'sort_deu_dc_title asc,sort_dc_title asc',
+          it: 'sort_ita_dc_title asc,sort_dc_title asc'
         }
       },
       {
         id: 'title desc',
         active: false,
         def: {
-          'en': 'sort_eng_dc_title desc,sort_dc_title desc',
-          'de': 'sort_deu_dc_title desc,sort_dc_title desc',
-          'it': 'sort_ita_dc_title desc,sort_dc_title desc'
+          en: 'sort_eng_dc_title desc,sort_dc_title desc',
+          de: 'sort_deu_dc_title desc,sort_dc_title desc',
+          it: 'sort_ita_dc_title desc,sort_dc_title desc'
         }
       },
       {
@@ -859,9 +859,9 @@ const mutations = {
     state.collection = collection
   },
   resetFilters (state) {
-    for (let fq of state.facetQueries) {
+    for (const fq of state.facetQueries) {
       if (fq.resetable) {
-        for (let q of fq.queries) {
+        for (const q of fq.queries) {
           q.active = false
         }
       }
@@ -1106,8 +1106,8 @@ const actions = {
     }
 
     if (state.statsfields) {
-      params['stats'] = true
-      for (let sf of state.statsfields) {
+      params.stats = true
+      for (const sf of state.statsfields) {
         params['stats.field'] = sf
       }
     }
@@ -1120,27 +1120,27 @@ const actions = {
     commit('setSearchDef', searchdefarr.join('&'))
 
     if (ands.length > 0) {
-      params['fq'] = ands.join(' AND ')
+      params.fq = ands.join(' AND ')
     }
 
     var query = qs.stringify(params, { encodeValuesOnly: true, indices: false })
-    var url = rootState.settings.instance.solr + '/select?' + query
+    var url = rootState.instanceconfig.solr + '/select?' + query
     var promise = fetch(url, {
       method: 'GET',
       mode: 'cors'
     })
-    .then(function (response) { return response.json() })
-    .then(function (json) {
-      commit('setDocs', json.response.docs)
-      commit('setTotal', json.response.numFound)
-      commit('setStats', json.stats)
-      commit('setFacetCounts', json.facet_counts)
-      commit('updateFacetQueries', json.facet_counts)
-      commit('resetFacets')
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+      .then(function (response) { return response.json() })
+      .then(function (json) {
+        commit('setDocs', json.response.docs)
+        commit('setTotal', json.response.numFound)
+        commit('setStats', json.stats)
+        commit('setFacetCounts', json.facet_counts)
+        commit('updateFacetQueries', json.facet_counts)
+        commit('resetFacets')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
 
     return promise
   },
@@ -1155,27 +1155,27 @@ const actions = {
 
       var query = qs.stringify(params)
 
-      fetch(rootState.settings.instance.solr + '/suggest?' + query, {
+      fetch(rootState.instanceconfig.solr + '/suggest?' + query, {
         method: 'GET',
         mode: 'cors'
       })
-      .then(function (response) { return response.json() })
-      .then(function (json) {
-        commit('setSuggestions', { suggester: inputdata.suggester, suggestions: json.suggest[inputdata.suggester][inputdata.value].suggestions })
-        resolve()
-      })
-      .catch(function (error) {
-        console.log(error)
-        reject()
-      })
+        .then(function (response) { return response.json() })
+        .then(function (json) {
+          commit('setSuggestions', { suggester: inputdata.suggester, suggestions: json.suggest[inputdata.suggester][inputdata.value].suggestions })
+          resolve()
+        })
+        .catch(function (error) {
+          console.log(error)
+          reject()
+        })
     })
   },
-  resetFilters ({dispatch, commit}) {
+  resetFilters ({ dispatch, commit }) {
     commit('resetFilters')
     dispatch('search')
   },
-  initSearch ({dispatch, commit, state, rootState}) {
-    let searchsettings = rootState.settings.global.search.state
+  initSearch ({ dispatch, commit, state, rootState }) {
+    const searchsettings = rootState.appconfig.search.state
     if (searchsettings.owner) {
       commit('setOwnerFilter', searchsettings.owner)
     }

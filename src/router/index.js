@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Search from '@/components/Search'
-//import PSearch from 'phaidra-vue-components/src/components/search/PSearch'
 import Detail from '@/components/Detail'
 import Manage from '@/components/Manage'
 import Edit from '@/components/Edit'
@@ -9,7 +8,6 @@ import Submit from '@/components/Submit'
 import Contact from '@/components/Contact'
 import Impressum from '@/components/Impressum'
 import AddMember from '@/components/AddMember'
-import PhaidraVueComponents from 'phaidra-vue-components'
 
 Vue.use(Router)
 

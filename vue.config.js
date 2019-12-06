@@ -1,6 +1,6 @@
 module.exports = {
-  "assetsDir": "mediathek",
-  "transpileDependencies": [
-    "vuetify"
+  assetsDir: 'mediathek',
+  transpileDependencies: [
+    'phaidra-vue-components'
   ]
 }
