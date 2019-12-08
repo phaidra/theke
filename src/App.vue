@@ -18,8 +18,11 @@
           <v-spacer></v-spacer>
           <template v-if="token">
             <v-col>
-              <v-btn v-if="isowner || isuploader" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
-              <v-btn class="grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
+              <v-btn class="mx-2" v-if="isowner || isuploader" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
+              <v-btn class="mx-2 grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
+              <v-icon v-if="token" class="mx-2">mdi-account</v-icon>
+              <span v-if="user.lastname">{{ user.firstname }} {{ user.lastname }}</span>
+              <span v-else="user.username">{{ user.username }}</span>
             </v-col>
           </template>
           <template v-else>
@@ -30,7 +33,7 @@
               <v-text-field
                 v-model="credentials.password"
                 :label="$t('u:account password')"
-                :append-icon="psvis ? 'visibility' : 'visibility_off'"
+                :append-icon="psvis ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="toggleVisibility"
                 :type="psvis ? 'password' : 'text'"
               ></v-text-field>
@@ -39,13 +42,19 @@
               <v-btn raised single-line color="primary" class="mt-3" @click="login()">{{ $t('Login') }}</v-btn>
             </v-col>
           </template>
-          <v-spacer></v-spacer>
-          <h1 class="text-lg-right display-3 font-weight-light mb-3 grey--text"><router-link class="grey--text logo" :to="{ name: 'search', path: '/' }">{{name}}</router-link></h1>
+          <h1 class="ml-4 text-lg-right display-3 font-weight-light mb-3 grey--text"><router-link class="grey--text logo" :to="{ name: 'search', path: '/' }">{{name}}</router-link></h1>
         </v-row>
-        <v-row>
-          <v-alert v-for="(alert, i) in alerts" :type="(alert.type === 'danger' ? 'error' : alert.type)" :value="true" transition="slide-y-transition" :key="i">
-            <span class="pa-3">{{alert.msg}}</span><v-spacer></v-spacer><v-btn icon @click.native="dismiss(alert)"><v-icon>close</v-icon></v-btn>
-          </v-alert>
+        <v-row justify="center" v-for="(alert, i) in alerts" :key="i">
+          <v-col cols="12">
+            <v-alert prominent :type="(alert.type === 'danger' ? 'error' : alert.type)" :value="true" transition="slide-y-transition">
+              <v-row align="center">
+                <v-col class="grow">{{alert.msg}}</v-col>
+                <v-col class="shrink">
+                  <v-btn icon @click.native="dismiss(alert)"><v-icon>mdi-close</v-icon></v-btn>
+                </v-col>
+              </v-row>
+            </v-alert>
+          </v-col>
         </v-row>
         <v-row>
           <transition name="fade" mode="out-in">
@@ -63,7 +72,7 @@
             :items="languages"
             :label="$t('Language')"
             @change="$i18n.locale=$event"
-            prepend-icon="language"
+            prepend-icon="mdi-web"
             single-line
           ></v-select>
         </span>
@@ -88,6 +97,9 @@ export default {
   computed: {
     token: function () {
       return this.$store.state.user.token
+    },
+    user () {
+      return this.$store.state.user
     },
     isowner: function () {
       return this.$store.state.user.username === this.$store.state.appconfig.owner
@@ -184,6 +196,9 @@ export default {
     var token = this.getCookie('X-XSRF-TOKEN')
     if (token) {
       this.$store.commit('setToken', token)
+      if (!this.user.username) {
+        this.$store.dispatch('getLoginData')
+      }
     }
   },
   created: function () {
@@ -217,7 +232,7 @@ export default {
   float: right;
 }
 
-.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+.theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined)  {
   background-color: white;
 }
 

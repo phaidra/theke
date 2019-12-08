@@ -1,13 +1,15 @@
 <template>
-  <v-row column>
-    <v-col>
+  <v-container>
+    <v-row>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-col>
-    <v-col v-if="loggedin">
+    </v-row>
+    <v-row v-if="loggedin">
+      <v-col offset="1" cols="10">
       <p-m-sort v-if="members.length > 0" :pid="pid" :cmodel="loadedcmodel" :members="members" @input="members=$event" @order-saved="orderSaved($event)"></p-m-sort>
       <p-m-delete :pid="pid" :cmodel="loadedcmodel" :members="members" @object-deleted="objectDeleted($event)"></p-m-delete>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

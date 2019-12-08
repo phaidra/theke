@@ -9,12 +9,12 @@
           <v-btn v-if="isowner" :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark v-on="on">{{ $t('Download') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
+              <v-btn color="primary" dark v-on="on" class="mx-2">{{ $t('Download') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
             </template>
             <v-list>
-              <v-list-tile v-for="(member, index) in members" :key="index" :href="getMemberDownloadUrl(member)">
-                <v-list-tile-title>{{ getFilename(member.pid) }}</v-list-tile-title>
-              </v-list-tile>
+              <v-list-item v-for="(member, index) in members" :key="index" :href="getMemberDownloadUrl(member)">
+                <v-list-item-title>{{ getFilename(member.pid) }}</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-card-actions>
@@ -24,22 +24,22 @@
       <v-col cols="12" sm="6" md="4">
         <v-card>
           <v-card-text>
-            <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid"></p-d-jsonld>
+            <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
           </v-card-text>
           <v-divider light v-if="isowner"></v-divider>
           <v-card-actions v-if="isowner" class="pa-3">
             <v-spacer></v-spacer>
             <v-menu offset-y>
               <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
+                <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
               </template>
               <v-list>
-                <v-list-tile :to="{ name: 'edit'}">
-                  <v-list-tile-title>{{ $t('Edit metadata') }}</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile :to="{ name: 'manage'}">
-                  <v-list-tile-title>{{ $t('Manage object') }}</v-list-tile-title>
-                </v-list-tile>
+                <v-list-item :to="{ name: 'edit'}">
+                  <v-list-item-title>{{ $t('Edit metadata') }}</v-list-item-title>
+                </v-list-item>
+                <v-list-item :to="{ name: 'manage'}">
+                  <v-list-item-title>{{ $t('Manage object') }}</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
           </v-card-actions>
@@ -54,11 +54,11 @@
                 <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
               </a>
               <v-card-text class="ma-2">
-                <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid"></p-d-jsonld>
+                <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
                 <v-container v-if="getMD5(member.pid)">
                   <v-row>
-                    <v-col md="2" cols="12" class="pdlabel primary--text text-right">md5</v-col>
-                    <v-col md="10" cols="12">{{ getMD5(member.pid) }}</v-col>
+                    <v-col md="4" cols="12" class="pdlabel primary--text text-right">md5</v-col>
+                    <v-col md="8" cols="12">{{ getMD5(member.pid) }}</v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -69,15 +69,15 @@
                 <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
                 <v-menu v-if="isowner" offset-y>
                   <template v-slot:activator="{ on }">
-                    <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>arrow_drop_down</v-icon></v-btn>
+                    <v-btn color="primary" class="mx-2" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
                   </template>
                   <v-list>
-                    <v-list-tile :to="{ name: 'edit', params: { pid: member.pid } }">
-                      <v-list-tile-title>{{ $t('Edit metadata') }}</v-list-tile-title>
-                    </v-list-tile>
-                    <v-list-tile :to="{ name: 'manage', params: { pid: member.pid } }">
-                      <v-list-tile-title>{{ $t('Manage object') }}</v-list-tile-title>
-                    </v-list-tile>
+                    <v-list-item :to="{ name: 'edit', params: { pid: member.pid } }">
+                      <v-list-item-title>{{ $t('Edit metadata') }}</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item :to="{ name: 'manage', params: { pid: member.pid } }">
+                      <v-list-item-title>{{ $t('Manage object') }}</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </v-card-actions>

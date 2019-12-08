@@ -674,5 +674,6 @@ export default {
   'Here you can sort members of this object (drag & drop).': 'Hier können Sie Mitglieder dieses Objekts sortieren (drag & drop)',
 
   'HOME/SEARCH': 'HOME/SUCHE',
-  'Download search results as a CSV file': 'Die Suchergebnisse als CSV-Datei herunterladen'
+  'Download search results as a CSV file': 'Die Suchergebnisse als CSV-Datei herunterladen',
+  'OTHER_FEMININE': 'Andere'
 }

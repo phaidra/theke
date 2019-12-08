@@ -121,17 +121,17 @@ export default {
     this.form.sections[0].fields.push(production)
 
     const productioncomp = fields.getField('role')
-    productioncomp.type = 'schema:Organisation'
+    productioncomp.type = 'schema:Organization'
     productioncomp.role = 'role:prn'
     productioncomp.showname = true
     productioncomp.hideRole = true
-    productioncomp.institutionLabel = 'Production company'
+    productioncomp.organizationLabel = 'Production company'
     this.form.sections[0].fields.push(productioncomp)
 
     const prodplace = fields.getField('role')
-    prodplace.type = 'schema:Organisation'
+    prodplace.type = 'schema:Organization'
     prodplace.role = 'role:prp'
-    prodplace.institutionLabel = 'Production country'
+    prodplace.organizationLabel = 'Production country'
     prodplace.showname = true
     prodplace.hideRole = true
     this.form.sections[0].fields.push(prodplace)

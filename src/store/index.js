@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import vocabulary from 'phaidra-vue-components/src/store/modules/vocabulary'
 import search from './modules/search'
 import config from '../config/theke'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -18,17 +19,6 @@ export default new Vuex.Store({
     appconfig: {
       suggesters: {}
     },
-    /*
-    settings: {
-      instance: {
-        api: '',
-        solr: ''
-      },
-      global: {
-        suggesters: {}
-      }
-    },
-    */
     user: {
       username: '',
       token: ''
@@ -53,6 +43,14 @@ export default new Vuex.Store({
     },
     setToken (state, token) {
       state.user.token = token
+    },
+    setLoginData (state, logindata) {
+      Vue.set(state.user, 'username', logindata.username)
+      Vue.set(state.user, 'firstname', logindata.firstname)
+      Vue.set(state.user, 'lastname', logindata.lastname)
+      Vue.set(state.user, 'email', logindata.email)
+      Vue.set(state.user, 'org_units_l1', logindata.org_units_l1)
+      Vue.set(state.user, 'org_units_l2', logindata.org_units_l2)
     },
     initStore (state) {
       state.user.username = '',
@@ -102,6 +100,7 @@ export default new Vuex.Store({
             if (json.status === 200) {
               commit('setToken', json['XSRF-TOKEN'])
               document.cookie = 'X-XSRF-TOKEN=' + json['XSRF-TOKEN']
+              dispatch('getLoginData')
             }
 
             dispatch('initSearch')
@@ -134,6 +133,26 @@ export default new Vuex.Store({
             resolve()
           })
       })
+    },
+    async getLoginData ({ commit, dispatch, state }) {
+      try {
+        let response = await axios.get(state.instanceconfig.api + '/directory/user/data', {
+          headers: {
+            'X-XSRF-TOKEN': state.user.token
+          }
+        })
+        if (response.data.alerts && response.data.alerts.length > 0) {
+          commit('setAlerts', response.data.alerts)
+        }
+        console.log('[' + state.user.username + '] got user data firstname[' + response.data.user_data.firstname + '] lastname[' + response.data.user_data.lastname + '] email[' + response.data.user_data.email + ']')
+        commit('setLoginData', response.data.user_data)
+      } catch (error) {
+        //if (error.response.status === 401) {
+          // this token is invalid
+        //  dispatch('logout')
+        //}
+        console.log(error)
+      }
     }
   },
   modules: {

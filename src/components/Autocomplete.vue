@@ -13,7 +13,7 @@
       @keydown="handleKeyDown"
       @focus="handleFocus"
       autocomplete="off"
-      append-icon="search"
+      append-icon="mdi-magnify"
       @click:append="clickSearch"
       @click:clear="clickClear"
       clearable

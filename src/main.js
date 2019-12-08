@@ -1,7 +1,4 @@
 import Vue from 'vue'
-import vuetify from './plugins/vuetify'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
 import VueI18n from 'vue-i18n'
 import moment from 'moment'
 import eng from './i18n/eng'
@@ -9,12 +6,15 @@ import deu from './i18n/deu'
 import ita from './i18n/ita'
 import router from './router'
 import store from './store'
-import PhaidraVueComponents from 'phaidra-vue-components'
+import PhaidraVueComponents from 'phaidra-vue-components/src/components'
 import App from './App.vue'
+import vuetify from './plugins/vuetify'
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
-Vue.use(Vuetify)
+Vue.prototype.$http = axios
+
 Vue.use(VueI18n)
 Vue.use(PhaidraVueComponents)
 
