@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
     </v-row>

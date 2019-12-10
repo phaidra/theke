@@ -72,7 +72,7 @@
             :items="languages"
             :label="$t('Language')"
             @change="$i18n.locale=$event"
-            prepend-icon="mdi-web"
+            prepend-icon="mdi-translate"
             single-line
           ></v-select>
         </span>
