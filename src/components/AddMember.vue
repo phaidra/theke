@@ -16,7 +16,7 @@
           :templating="false"
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
-          v-on:form-input-p-select="handleSelect($event)"
+          v-on:form-input-p-file="handleMimeSelect($event)"
         ></p-i-form>
       </v-card-text>
     </v-card>
@@ -103,20 +103,13 @@ export default {
           return 'https://pid.phaidra.org/vocabulary/7AVS-Y482'
       }
     },
-    handleSelect: function (val) {
+    handleMimeSelect: function (val) {
       var i
       var j
       var k
-      if (val.predicate === 'ebucore:hasMimeType') {
+      if (val.predicate === 'ebucore:filename') {
         for (i = 0; i < this.form.sections.length; i++) {
-          var mime
-          if (this.form.sections[i].fields) {
-            for (j = 0; j < this.form.sections[i].fields.length; j++) {
-              if (this.form.sections[i].fields[j].predicate === 'ebucore:hasMimeType') {
-                mime = this.form.sections[i].fields[j].value
-              }
-            }
-          }
+          var mime = val.mimetype
           var resourcetype = this.getResourceTypeFromMimeType(mime)
           if (this.form.sections[i].fields) {
             for (j = 0; j < this.form.sections[i].fields.length; j++) {
@@ -229,9 +222,6 @@ export default {
     this.form.sections[0].fields.push(mrt)
     this.form.sections[0].fields.push(fields.getField('file'))
     this.form.sections[0].fields.push(fields.getField('title'))
-    const mt = fields.getField('mime-type')
-    mt.required = true
-    this.form.sections[0].fields.push(mt)
     const lic = fields.getField('license')
     lic.value = 'http://rightsstatements.org/vocab/InC/1.0/'
     this.form.sections[0].fields.push(lic)
