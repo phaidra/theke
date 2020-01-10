@@ -14,7 +14,11 @@ export default new Vuex.Store({
     instanceconfig: {
       api: '',
       solr: '',
-      baseurl: ''
+      baseurl: '',
+      institution: '',
+      impressum: {
+        orgname: ''
+      }
     },
     appconfig: {
       suggesters: {}
@@ -25,9 +29,130 @@ export default new Vuex.Store({
     },
     alerts: {
       alerts: []
-    }
+    },
+    breadcrumbs: []
   },
   mutations: {
+    updateBreadcrumbs (state, transition) {
+      let pagetitle
+      state.breadcrumbs = [
+        {
+          text: config.instances[config.defaultinstance].institution,
+          external: true,
+          to: 'https://www.univie.ac.at'
+        },
+        {
+          text: config.instances[config.defaultinstance].impressum.orgname,
+          external: true,
+          to: 'https://romanistik.univie.ac.at/'
+        },
+        {
+          text: config.global.name,
+          to: '/'
+        }
+      ]
+      if (transition.to.name === 'detail') {
+        pagetitle = 'Detail ' + transition.to.params.pid
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            to: { name: transition.to.name, params: { pid: transition.to.params.pid } },
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'edit') {
+        pagetitle = 'Edit ' + transition.to.params.pid
+        if (transition.from.name === 'detail') {
+          state.breadcrumbs.push(
+            {
+              text: 'Detail ' + transition.from.params.pid,
+              to: { name: transition.from.name, params: { pid: transition.from.params.pid } }
+            }
+          )
+        }
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            to: { name: transition.to.name, params: { pid: transition.to.params.pid } },
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'addmember') {
+        pagetitle = 'Add member ' + transition.to.params.pid
+        if (transition.from.name === 'detail') {
+          state.breadcrumbs.push(
+            {
+              text: 'Detail ' + transition.from.params.pid,
+              to: { name: transition.from.name, params: { pid: transition.from.params.pid } }
+            }
+          )
+        }
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            to: { name: transition.to.name, params: { pid: transition.to.params.pid } },
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'manage') {
+        pagetitle = 'Manage ' + transition.to.params.pid
+        if (transition.from.name === 'detail') {
+          state.breadcrumbs.push(
+            {
+              text: 'Detail ' + transition.from.params.pid,
+              to: { name: transition.from.name, params: { pid: transition.from.params.pid } }
+            }
+          )
+        }
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            to: { name: transition.to.name, params: { pid: transition.to.params.pid } },
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'submit') {
+        pagetitle = 'Submit'
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'contact') {
+        pagetitle = 'Contact'
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'impressum') {
+        pagetitle = 'Impressum'
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            disabled: true
+          }
+        )
+      }
+  
+      if (pagetitle) {
+        state.pagetitle = state.appconfig.name + ' - ' + pagetitle
+      } else {
+        state.pagetitle = state.appconfig.name
+      }
+  
+      if (process.browser) {
+        document.title = state.pagetitle
+      }
+    },
     setAlerts (state, alerts) {
       state.alerts.alerts = alerts
     },
@@ -102,8 +227,8 @@ export default new Vuex.Store({
               document.cookie = 'X-XSRF-TOKEN=' + json['XSRF-TOKEN']
               dispatch('getLoginData')
             }
-
             dispatch('initSearch')
+            resolve()
           })
           .catch(function (error) {
             console.log(error)

@@ -1,20 +1,17 @@
 <template>
-  <v-col>
-    <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    <v-card>
-      <v-toolbar flat>
-        <v-toolbar-title>{{$t('Edit') }} {{pid}}</v-toolbar-title>
-      </v-toolbar>
-      <v-card-text>
-        <p-i-form
-          :form="editform"
-          :targetpid="pid"
-          :templating="false"
-          v-on:object-saved="objectSaved($event)"
-        ></p-i-form>
-      </v-card-text>
-    </v-card>
-  </v-col>
+  <v-card>
+    <v-toolbar flat>
+      <v-toolbar-title>{{$t('Edit') }} {{pid}}</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <p-i-form
+        :form="editform"
+        :targetpid="pid"
+        :templating="false"
+        v-on:object-saved="objectSaved($event)"
+      ></p-i-form>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -25,23 +22,6 @@ export default {
   computed: {
     pid () {
       return this.$route.params.pid
-    },
-    breadcrumbs () {
-      const bc = [
-        {
-          text: this.$t('HOME/SEARCH'),
-          to: { name: 'search', path: '/' }
-        },
-        {
-          text: this.$t('Detailpage') + ' ' + this.parentpid,
-          to: { name: 'detail', params: { pid: this.parentpid } }
-        },
-        {
-          text: this.$t('Metadata editor') + ' ' + this.pid,
-          disabled: true
-        }
-      ]
-      return bc
     }
   },
   data () {

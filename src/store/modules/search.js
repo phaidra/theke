@@ -849,6 +849,11 @@ const mutations = {
   setSortdef (state, sortdef) {
     state.sortdef = sortdef
   },
+  resetSort (state, sort) {
+    for (let s of state.sortdef) {
+      s.active = false
+    }
+  },
   setStatsfields (state, statsfields) {
     state.statsfields = statsfields
   },
@@ -1188,6 +1193,12 @@ const actions = {
     if (searchsettings.statsfields) {
       commit('setStatsfields', searchsettings.statsfields)
     }
+    dispatch('search')
+  },
+  resetSearch ({ dispatch, commit }) {
+    commit('setPage', 1)
+    commit('resetFilters')
+    commit('resetSort')
     dispatch('search')
   }
 }

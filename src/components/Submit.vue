@@ -1,8 +1,5 @@
 <template>
   <v-col>
-    <v-col>
-      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-col>
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>{{ $t('Submit') }}</v-toolbar-title>
@@ -41,20 +38,6 @@ export default {
     }
   },
   computed: {
-    breadcrumbs () {
-      const bc = [
-        {
-          text: this.$t('HOME/SEARCH'),
-          to: { name: 'search', path: '/' }
-        },
-        {
-          text: this.$t('Submit'),
-          disabled: true,
-          to: { name: 'submit' }
-        }
-      ]
-      return bc
-    },
     isuploader: function () {
       for (const uploader of this.$store.state.appconfig.uploaders) {
         if (uploader === this.$store.state.user.username) {

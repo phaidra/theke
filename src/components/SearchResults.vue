@@ -1,6 +1,6 @@
 <template>
 
-  <v-container grid-list-lg>
+  <v-container>
     <v-row v-for="(doc) in this.docs" :key="doc.pid" >
       <v-col cols="12">
         <v-card class="ma-3" flat :color="'rgba(255, 255, 255, 0)'">

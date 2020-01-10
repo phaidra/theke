@@ -1,8 +1,5 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-row>
     <v-row v-if="loggedin">
       <v-card flat color="#fafafa">
         <v-card-actions>
@@ -104,20 +101,6 @@ export default {
     },
     pid () {
       return this.$route.params.pid
-    },
-    breadcrumbs () {
-      const bc = [
-        {
-          text: this.$t('HOME/SEARCH'),
-          to: { name: 'search', path: '/' }
-        },
-        {
-          text: this.$t('Detailpage') + ' ' + this.$route.params.pid,
-          disabled: true,
-          to: { name: 'detail', params: { pid: this.$route.params.pid } }
-        }
-      ]
-      return bc
     },
     instance () {
       return this.$store.state.instanceconfig

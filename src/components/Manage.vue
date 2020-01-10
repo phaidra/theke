@@ -1,8 +1,5 @@
 <template>
   <v-container>
-    <v-row>
-      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-row>
     <v-row v-if="loggedin">
       <v-col offset="1" cols="10">
       <p-m-sort v-if="members.length > 0" :pid="pid" :cmodel="loadedcmodel" :members="members" @input="members=$event" @order-saved="orderSaved($event)"></p-m-sort>
@@ -26,24 +23,6 @@ export default {
     },
     pid () {
       return this.$route.params.pid
-    },
-    breadcrumbs () {
-      const bc = [
-        {
-          text: this.$t('HOME/SEARCH'),
-          to: { name: 'search', path: '/' }
-        },
-        {
-          text: this.$t('Detailpage') + ' ' + this.parentpid,
-          to: { name: 'detail', params: { pid: this.parentpid } }
-        },
-        {
-          text: this.$t('Manage') + ' ' + this.$route.params.pid,
-          disabled: true,
-          to: { name: 'manage', params: { pid: this.$route.params.pid } }
-        }
-      ]
-      return bc
     },
     instance () {
       return this.$store.state.instanceconfig
@@ -132,6 +111,7 @@ export default {
     objectDeleted: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: 'Object' + this.pid + ' was successfully deleted.' }])
       if (this.pid === this.parentpid) {
+        this.$store.dispatch('search')
         this.$router.push({ name: 'search' })
       } else {
         this.$router.push({ name: 'detail', params: { pid: this.parentpid } })

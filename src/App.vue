@@ -1,100 +1,179 @@
 <template>
   <div id="app">
     <v-app>
-      <v-container fluid grid-list-lg>
-        <v-row>
-          <v-col cols="4">
-            <autocomplete
-              placeholder="Search..."
-              name="autocomplete"
-              :initValue="query"
-              :suggester="'titlesuggester'"
-              :customParams="{ token: 'dev' }"
-              :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
-              :onSelect="handleSelect"
-              :loading="loading"
-            ></autocomplete>
+      <v-container fluid>
+
+        <quicklinks :showquicklinks="quicklinksenabled"></quicklinks>
+
+        <v-row no-gutters>
+
+          <v-col cols="12" md="10" offset-md="1">
+
+            <v-row justify="end">
+              <icon v-if="token" class="personicon mr-2 univie-grey" name="material-social-person" width="24px" height="24px"></icon>
+              <span v-if="token" class="subheading displayname univie-grey">{{ user.firstname }} {{ user.lastname }}</span>
+
+              <v-menu bottom transition="slide-y-transition" class="v-align-top">
+                <template v-slot:activator="{ on }">
+                  <v-btn text v-on="on" class="top-margin-lang">
+                    <span class="grey--text text--darken-1">{{$i18n.locale}}</span>
+                    <icon name="univie-sprache" class="lang-icon grey--text text--darken-1"></icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="$i18n.locale='eng'">
+                    <v-list-item-title>English</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="$i18n.locale='deu'">
+                    <v-list-item-title>Deutsch</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+
+              <a id="quicklinks-button" class="ph-button hidden-sm-and-down" v-on:click="quicklinksenabled = !quicklinksenabled">Quicklinks</a>
+            </v-row>
+
+            <v-row no-gutters>
+
+              <v-col class="text-left mt-4" md="3" cols="9">
+                <router-link :to="'/'">
+                  <img src="./assets/Uni_Logo_2016.png" class="logo" alt="logo" />
+                </router-link>
+              </v-col>
+
+              <v-col md="9" cols="3" :align-self="'center'">
+
+                <v-app-bar-nav-icon class="hidden-md-and-up">
+                  <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                      <v-btn text icon color="grey lighten-1" v-on="on"><icon name="material-navigation-menu" width="24px" height="24px"></icon></v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item @click="$router.push({ path: '/' })"><v-list-item-title>{{ $t("Search") }}</v-list-item-title></v-list-item>
+                      <v-list-item v-if="isowner || isuploader" @click="$router.push({ name: 'submit' })"><v-list-item-title>{{ $t("Submit") }}</v-list-item-title></v-list-item>
+                      <v-list-item @click="$router.push({ path: '/contact' })"><v-list-item-title>{{ $t("Contact") }}</v-list-item-title></v-list-item>
+                      <v-list-item v-if="!token" @click="$router.push('login')"><v-list-item-title>{{ $t("Login") }}</v-list-item-title></v-list-item>
+                      <v-list-item v-if="token" @click="logout()"><v-list-item-title>{{ $t("Logout") }}</v-list-item-title></v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-app-bar-nav-icon>
+
+                <span class="text-left hidden-sm-and-down" v-if="name">
+                  <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
+                  <a class="name primary--text ma-3" @click="resetSearch()">{{ name }}</a>
+                  <div class="ml-6 mt-2">Die Benutzung der Medien ist im Rahmen der Lehre und des Studiums an der Universität Wien gestattet.</div>
+                  <div class="ml-6">Die Weitergabe eines Mediums an Dritte sowie deren Veröffentlichung, Vervielfältigung, Verbreitung oder sonstige Verwertung ist untersagt.</div>
+                </span>
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters class="hidden-md-and-up pb-1">
+              <span class="text-left ml-3 mt-4" v-if="name">
+                <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
+                <a class="name primary--text ma-3" @click="resetSearch()">{{ name }}</a>
+                <div class="ml-6 mt-2">Die Benutzung der Medien ist im Rahmen der Lehre und des Studiums an der Universität Wien gestattet.</div>
+                <div class="ml-6">Die Weitergabe eines Mediums an Dritte sowie deren Veröffentlichung, Vervielfältigung, Verbreitung oder sonstige Verwertung ist untersagt.</div>
+              </span>
+            </v-row>
+
+            <v-row no-gutters class="hidden-sm-and-down header">
+
+            <v-toolbar flat color="white" dense>
+              <v-spacer></v-spacer>
+              <v-toolbar-items class="hidden-sm-and-down no-height-inherit">
+                <v-hover v-slot:default="{ hover }">
+                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/' }">{{ $t("Search") }}</router-link>
+                </v-hover>
+                <v-hover v-slot:default="{ hover }">
+                  <router-link v-if="isowner || isuploader" :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ name: 'submit' }">{{ $t("Submit") }}</router-link>
+                </v-hover>
+                <v-hover v-slot:default="{ hover }">
+                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/contact' }">{{ $t("Contact") }}</router-link>
+                </v-hover>
+                <v-hover v-slot:default="{ hover }">
+                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" v-if="!token" :to="{ path: '/login' }">{{ $t("Login") }}</router-link>
+                </v-hover>
+                <v-hover v-slot:default="{ hover }">
+                  <a class="flat dark ph-button grey" v-if="token" @click="logout()" >{{ $t("Logout") }}</a>
+                </v-hover>
+              </v-toolbar-items>
+            </v-toolbar>
+
+          </v-row>
+
+            <v-row>
+              <v-col cols="12" class="content">
+                <p-breadcrumbs :items="breadcrumbs" class="ml-1"></p-breadcrumbs>
+                <v-row justify="center" v-for="(alert, i) in alerts" :key="i">
+                  <v-col cols="12">
+                    <v-alert prominent :type="(alert.type === 'danger' ? 'error' : alert.type)" :value="true" transition="slide-y-transition">
+                      <v-row align="center">
+                        <v-col class="grow">{{alert.msg}}</v-col>
+                        <v-col class="shrink">
+                          <v-btn icon @click.native="dismiss(alert)"><v-icon>mdi-close</v-icon></v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-alert>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <transition name="fade" mode="out-in">
+                    <keep-alive>
+                      <router-view></router-view>
+                    </keep-alive>
+                  </transition>
+                </v-row>
+              </v-col>
+            </v-row>
+
           </v-col>
-          <v-spacer></v-spacer>
-          <template v-if="token">
-            <v-col>
-              <v-btn class="mx-2" v-if="isowner || isuploader" :to="{ name: 'submit' }" color="primary" raised>{{ $t('Submit') }}</v-btn>
-              <v-btn class="mx-2 grey--text" raised single-line @click="logout()">{{ $t('Logout') }}</v-btn>
-              <v-icon v-if="token" class="mx-2">mdi-account</v-icon>
-              <span v-if="user.lastname">{{ user.firstname }} {{ user.lastname }}</span>
-              <span v-else="user.username">{{ user.username }}</span>
-            </v-col>
-          </template>
-          <template v-else>
-            <v-col>
-              <v-text-field v-model="credentials.username" :label="$t('u:account userID')" ></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="credentials.password"
-                :label="$t('u:account password')"
-                :append-icon="psvis ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="toggleVisibility"
-                :type="psvis ? 'password' : 'text'"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="1">
-              <v-btn raised single-line color="primary" class="mt-3" @click="login()">{{ $t('Login') }}</v-btn>
-            </v-col>
-          </template>
-          <h1 class="ml-4 text-lg-right display-3 font-weight-light mb-3 grey--text"><router-link class="grey--text logo" :to="{ name: 'search', path: '/' }">{{name}}</router-link></h1>
         </v-row>
-        <v-row justify="center" v-for="(alert, i) in alerts" :key="i">
+
+        <v-row>
           <v-col cols="12">
-            <v-alert prominent :type="(alert.type === 'danger' ? 'error' : alert.type)" :value="true" transition="slide-y-transition">
-              <v-row align="center">
-                <v-col class="grow">{{alert.msg}}</v-col>
-                <v-col class="shrink">
-                  <v-btn icon @click.native="dismiss(alert)"><v-icon>mdi-close</v-icon></v-btn>
-                </v-col>
-              </v-row>
-            </v-alert>
+            <quicklinks-footer></quicklinks-footer>
           </v-col>
         </v-row>
+
         <v-row>
-          <transition name="fade" mode="out-in">
-            <keep-alive>
-              <router-view></router-view>
-            </keep-alive>
-          </transition>
+          <v-col cols="12" md="10" offset-md="1">
+            <v-row>
+          <v-col class="text-left" >
+            <span class="grey--text text--darken-2"><address>{{ instanceconfig.address }} | <abbr title="Telefon">T</abbr> {{ instanceconfig.phone }}</address></span>
+          </v-col>
+          <v-col class="text-right" >
+            <router-link class="navlink" :to="{ name: 'impressum' }">{{$t('Impressum')}}</router-link> | <router-link class="navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
+          </v-col>
+            </v-row>
+          </v-col>
         </v-row>
+
       </v-container>
-      <v-footer class="pa-3" color="#fafafa">
-        <v-spacer></v-spacer>
-        <span style="width: 150px">
-          <v-select
-            v-model="lang"
-            :items="languages"
-            :label="$t('Language')"
-            @change="$i18n.locale=$event"
-            prepend-icon="mdi-translate"
-            single-line
-          ></v-select>
-        </span>
-        <router-link class="ml-4 navlink" :to="{ name: 'impressum' }">{{$t('Impressum')}}</router-link>
-        <router-link class="ml-4 navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
-        <a class="ml-4 navlink" href="https://github.com/phaidra/theke" target="_blank">v {{ version }}</a>
-      </v-footer>
     </v-app>
   </div>
 </template>
 
 <script>
 import fields from 'phaidra-vue-components/src/utils/fields'
-import Autocomplete from '@/components/Autocomplete'
+import PBreadcrumbs from '@/components/PBreadcrumbs'
+import Quicklinks from '@/components/Quicklinks'
+import QuicklinksFooter from '@/components/QuicklinksFooter'
 import { version } from '../package.json'
+import '@/compiled-icons/material-social-person'
+import '@/compiled-icons/material-navigation-menu'
+import '@/compiled-icons/univie-sprache'
 
 export default {
   name: 'app',
   components: {
-    Autocomplete
+    Quicklinks,
+    QuicklinksFooter,
+    PBreadcrumbs
   },
   computed: {
+    instanceconfig: function () {
+      return this.$store.state.instanceconfig
+    },
     token: function () {
       return this.$store.state.user.token
     },
@@ -115,18 +194,16 @@ export default {
     alerts: function () {
       return this.$store.state.alerts.alerts
     },
-    query: function () {
-      return this.$store.state.search.q
-    },
     name: function () {
       return this.$store.state.appconfig.name
     },
-    searchsettings: function () {
-      return this.$store.state.appconfig.search.state
+    breadcrumbs () {
+      return this.$store.state.breadcrumbs
     }
   },
   data () {
     return {
+      quicklinksenabled: 0,
       version: version,
       lang: 'deu',
       languages: [
@@ -142,24 +219,13 @@ export default {
     }
   },
   methods: {
-    handleSelect: function (query) {
-      var self = this
-      this.loading = true
-      this.$store.commit('setQuery', query.term)
-      this.$store.commit('setPage', 1)
-      this.$store.dispatch('search').then(function () {
-        self.loading = false
-        if (self.$route.name !== 'search') {
-          self.$router.push({ name: 'search' })
-        }
-      })
-    },
-    login: function () {
-      this.$store.dispatch('login', this.credentials)
-    },
     logout: function () {
       this.$store.dispatch('logout')
       document.cookie = 'X-XSRF-TOKEN='
+    },
+    resetSearch: function () {
+      this.$store.dispatch('resetSearch')
+      this.$router.push({ name: 'search', path: '/' })
     },
     toggleVisibility: function () {
       this.psvis = !this.psvis
@@ -174,19 +240,6 @@ export default {
         var val = parts.pop().split(';').shift()
         return val === ' ' ? null : val
       }
-    },
-    setSort: function (sort) {
-      this.$store.dispatch('setSort', sort)
-    },
-    sortIsActive: function (sort) {
-      for (var i = 0; i < this.$store.state.search.sortdef.length; i++) {
-        if (this.$store.state.search.sortdef[i].id === sort) {
-          return this.$store.state.search.sortdef[i].active
-        }
-      }
-    },
-    removeCollectionFilter: function () {
-      this.$store.dispatch('setCollection', '')
     },
     initLanguages: function () {
       this.$store.commit('setLangTerms', this.$store.state.appconfig.vocabularies.lang)
@@ -228,6 +281,14 @@ export default {
   font-weight: 300;
 }
 
+.name {
+  font-size: 18.6667px;
+  font-weight: 400;
+}
+.name:hover {
+  text-decoration: underline;
+}
+
 .right {
   float: right;
 }
@@ -256,4 +317,227 @@ export default {
 .logo {
   text-decoration: none;
 }
+
+
+.no-padding {
+  padding: 0px;
+}
+
+.svg-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  vertical-align: middle;
+  fill: none;
+  stroke: currentColor;
+}
+
+.svg-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.svg-up {
+  transform: rotate(0deg);
+}
+
+.svg-right {
+  transform: rotate(90deg);
+}
+
+.svg-down {
+  transform: rotate(180deg);
+}
+
+.svg-left {
+  transform: rotate(-90deg);
+}
+
+.ie-fixMinHeight {
+    display:flex;
+}
+
+html, body{
+    height:100%;
+}
+
+section { overflow: auto; }
+
+#app {
+  font-family: "Roboto", sans-serif, Arial, Helvetica, sans-serif;
+  font-size: 11.5pt;
+  line-height: 1.42857143;
+  color: black;
+  background-color: white;
+  font-weight: 300;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  height: auto;
+  width: auto;
+  max-width: 250px;
+  max-height: 150px;
+}
+
+.header {
+  -webkit-box-shadow: 48px 0 0 0 white, -48px 0 0 0 white, 0 30px 30px -16px rgba(70, 70, 70, 0.3);
+  box-shadow: 48px 0 0 0 white, -48px 0 0 0 white, 0 30px 30px -16px rgba(70, 70, 70, 0.3);
+  background-color: white;
+  z-index: 1;
+}
+
+address {
+  font-style: normal;
+}
+
+.v-align-top {
+  vertical-align: top;
+}
+
+.theme--light.v-card > .v-card__text {
+  color: black;
+}
+
+.lang-icon {
+  margin-left: 5px;
+}
+
+.displayname {
+  vertical-align: top;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.ph-button  {
+  color: white !important;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  outline: 0;
+  border: 0;
+  border-radius: 0px;
+  display: inline-block;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 6px;
+  margin: 6px 1px 6px 0px;
+  height: 30px;
+  line-height: 30px;
+  min-height: 30px;
+  white-space: nowrap;
+  min-width: 88px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 14px;
+  font-style: inherit;
+  font-variant: inherit;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  letter-spacing: .010em;
+  font-weight: 400;
+}
+
+.ph-button:hover {
+  background-color: #267ab3;
+  text-decoration: none;
+  color: white;
+  font-weight: 400;
+}
+
+#quicklinks-button {
+  background-color: #1a74b0;
+  text-decoration: none;
+  color: white;
+  margin-top: 0px;
+  width: 263px;
+}
+
+#quicklinks-button:hover {
+  color: white;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.1s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
+.select-instance {
+  max-width: 300px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.border-right {
+  border-right: 1px solid;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.border-left {
+  border-left: 1px solid;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.border-top {
+  border-top: 1px solid;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+#app .v-btn {
+  text-transform: none;
+}
+#app .v-tabs__div {
+  text-transform: none;
+  font-weight: 300;
+}
+
+.v-application .subtitle-1 {
+  line-height: 1.25rem;
+}
+
+.univie-grey {
+  color: #7b7b7b
+}
+</style>
+
+<style scoped>
+.top-margin-lang {
+  margin-top: 0px;
+}
+
+.content {
+  min-height: 800px;
+}
+
+.container {
+  padding: 0px;
+}
+
+.no-height-inherit {
+  height: unset;
+}
+
+.personicon {
+  align-self: center;
+}
+
+.float-right {
+  float: right;
+}
+
 </style>

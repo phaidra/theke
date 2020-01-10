@@ -1,32 +1,27 @@
 <template>
-  <v-row column>
-    <v-col>
-      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-col>
 
-    <v-card flat>
-      <v-card-title primary-title class="title">
-        {{$t('Contact')}}
-      </v-card-title>
-      <v-card-text>
-        <v-row column>
-          <v-col>
-            {{instance.contact.name}}
-          </v-col>
-          <v-col>
-            <a :href="'mailto:'+instance.contact.email" >{{instance.contact.email}}</a>
-          </v-col>
-          <v-col>
-            {{instance.contact.phone}}
-          </v-col>
-          <v-col>
-            {{instance.contact.address}}
-          </v-col>
+  <v-card flat>
+    <v-card-title primary-title class="title">
+      {{$t('Contact')}}
+    </v-card-title>
+    <v-card-text>
+      <v-container>
+        <v-row>
+          {{instance.contact.name}}
         </v-row>
-      </v-card-text>
-    </v-card>
+        <v-row>
+          <a :href="'mailto:'+instance.contact.email" >{{instance.contact.email}}</a>
+        </v-row>
+        <v-row>
+          {{instance.contact.phone}}
+        </v-row>
+        <v-row>
+          {{instance.contact.address}}
+        </v-row>
+      </v-container>
+    </v-card-text>
+  </v-card>
 
-  </v-row>
 </template>
 
 <script>

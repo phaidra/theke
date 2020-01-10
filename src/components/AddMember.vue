@@ -1,8 +1,5 @@
 <template>
   <v-col>
-    <v-col>
-      <v-breadcrumbs :items="breadcrumbs" divider="/"></v-breadcrumbs>
-    </v-col>
     <v-card>
       <v-toolbar flat>
         <v-toolbar-title>{{ $t('Add member of') }} {{this.parentpid}}</v-toolbar-title>

@@ -7,6 +7,7 @@ import ita from './i18n/ita'
 import router from './router'
 import store from './store'
 import PhaidraVueComponents from 'phaidra-vue-components/src/components'
+import * as svgicon from 'vue-svgicon'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
@@ -43,10 +44,20 @@ Vue.filter('unixtime', function (value) {
   }
 })
 
+Vue.use(svgicon, {
+  tagName: 'icon',
+  defaultWidth: '1em',
+  defaultHeight: '1em'
+})
+
 const messages = { eng, deu, ita }
 const i18n = new VueI18n({
   locale: 'deu',
   messages: messages
+})
+
+router.afterEach((to, from) => {
+  store.commit('updateBreadcrumbs', { to, from })
 })
 
 new Vue({

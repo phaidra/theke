@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Search from '@/components/Search'
 import Detail from '@/components/Detail'
+import Login from '@/components/Login'
 import Manage from '@/components/Manage'
 import Edit from '@/components/Edit'
 import Submit from '@/components/Submit'
@@ -17,6 +18,11 @@ export default new Router({
       path: '/',
       name: 'search',
       component: Search
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/detail/:pid',
@@ -53,5 +59,8 @@ export default new Router({
       name: 'impressum',
       component: Impressum
     }
-  ]
+  ],
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  }
 })
