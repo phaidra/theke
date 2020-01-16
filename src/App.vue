@@ -485,22 +485,23 @@ address {
 
 .border-bottom {
   border-bottom: 1px solid;
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-.border-right {
-  border-right: 1px solid;
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-.border-left {
-  border-left: 1px solid;
-  border-color: rgba(0, 0, 0, 0.12);
 }
 
 .border-top {
   border-top: 1px solid;
+}
+
+.border-right {
+  border-right: 1px solid;
+}
+
+.border-left {
+  border-left: 1px solid;
+}
+
+.border-left, .border-right, .border-bottom, .border-top {
   border-color: rgba(0, 0, 0, 0.12);
+  border-radius: 0 !important;
 }
 
 #app .v-btn {
