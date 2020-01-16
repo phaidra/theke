@@ -1,4 +1,5 @@
 <template>
+
   <v-card>
     <v-toolbar flat>
       <v-toolbar-title>{{$t('Edit') }} {{pid}}</v-toolbar-title>
@@ -8,10 +9,12 @@
         :form="editform"
         :targetpid="pid"
         :templating="false"
+        :floatingsavebutton="true"
         v-on:object-saved="objectSaved($event)"
       ></p-i-form>
     </v-card-text>
   </v-card>
+
 </template>
 
 <script>
@@ -44,7 +47,7 @@ export default {
       })
         .then(function (response) { return response.json() })
         .then(function (json) {
-          self.editform = self.json2form(json.metadata['JSON-LD'])
+          self.editform = self.json2form(json.metadata['JSON-LD'], { role: { component: 'p-entity' } })
         })
         .catch(function (error) {
           console.log(error)
@@ -52,8 +55,8 @@ export default {
 
       return promise
     },
-    json2form: function (jsonld) {
-      return jsonLd.json2form(jsonld)
+    json2form: function (jsonld, options) {
+      return jsonLd.json2form(jsonld, options)
     }
   },
   beforeRouteEnter: function (to, from, next) {

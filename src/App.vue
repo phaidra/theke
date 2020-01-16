@@ -11,8 +11,10 @@
 
             <v-row justify="end">
               <icon v-if="token" class="personicon mr-2 univie-grey" name="material-social-person" width="24px" height="24px"></icon>
-              <span v-if="token" class="subheading displayname univie-grey">{{ user.firstname }} {{ user.lastname }}</span>
-
+              <template v-if="token">
+                <span v-if="user.firstname || user.lastname" class="subheading displayname univie-grey">{{ user.firstname }} {{ user.lastname }}</span>
+                <span v-else class="subheading displayname univie-grey">{{ user.username }}</span>
+              </template>
               <v-menu bottom transition="slide-y-transition" class="v-align-top">
                 <template v-slot:activator="{ on }">
                   <v-btn text v-on="on" class="top-margin-lang">
@@ -36,9 +38,9 @@
             <v-row no-gutters>
 
               <v-col class="text-left mt-4" md="3" cols="9">
-                <router-link :to="'/'">
+                <a :href="appconfig.logolink" target="_blank">
                   <img src="./assets/Uni_Logo_2016.png" class="logo" alt="logo" />
-                </router-link>
+                </a>
               </v-col>
 
               <v-col md="9" cols="3" :align-self="'center'">
@@ -58,51 +60,51 @@
                   </v-menu>
                 </v-app-bar-nav-icon>
 
-                <span class="text-left hidden-sm-and-down" v-if="name">
+                <span class="text-left hidden-sm-and-down" v-if="appconfig.name">
                   <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
-                  <a class="name primary--text ma-3" @click="resetSearch()">{{ name }}</a>
-                  <div class="ml-6 mt-2">Die Benutzung der Medien ist im Rahmen der Lehre und des Studiums an der Universität Wien gestattet.</div>
-                  <div class="ml-6">Die Weitergabe eines Mediums an Dritte sowie deren Veröffentlichung, Vervielfältigung, Verbreitung oder sonstige Verwertung ist untersagt.</div>
+                  <a class="name primary--text ma-3" @click="resetSearch()" :title="appconfig.nametooltip">{{ appconfig.name }}</a>
+                  <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
+                  <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
                 </span>
               </v-col>
             </v-row>
 
             <v-row no-gutters class="hidden-md-and-up pb-1">
-              <span class="text-left ml-3 mt-4" v-if="name">
+              <span class="text-left ml-3 mt-4" v-if="appconfig.name">
                 <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
-                <a class="name primary--text ma-3" @click="resetSearch()">{{ name }}</a>
-                <div class="ml-6 mt-2">Die Benutzung der Medien ist im Rahmen der Lehre und des Studiums an der Universität Wien gestattet.</div>
-                <div class="ml-6">Die Weitergabe eines Mediums an Dritte sowie deren Veröffentlichung, Vervielfältigung, Verbreitung oder sonstige Verwertung ist untersagt.</div>
+                <a class="name primary--text ma-3" @click="resetSearch()">{{ appconfig.name }}</a>
+                <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
+                <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
               </span>
             </v-row>
 
             <v-row no-gutters class="hidden-sm-and-down header">
 
-            <v-toolbar flat color="white" dense>
-              <v-spacer></v-spacer>
-              <v-toolbar-items class="hidden-sm-and-down no-height-inherit">
-                <v-hover v-slot:default="{ hover }">
-                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/' }">{{ $t("Search") }}</router-link>
-                </v-hover>
-                <v-hover v-slot:default="{ hover }">
-                  <router-link v-if="isowner || isuploader" :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ name: 'submit' }">{{ $t("Submit") }}</router-link>
-                </v-hover>
-                <v-hover v-slot:default="{ hover }">
-                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/contact' }">{{ $t("Contact") }}</router-link>
-                </v-hover>
-                <v-hover v-slot:default="{ hover }">
-                  <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" v-if="!token" :to="{ path: '/login' }">{{ $t("Login") }}</router-link>
-                </v-hover>
-                <v-hover v-slot:default="{ hover }">
-                  <a class="flat dark ph-button grey" v-if="token" @click="logout()" >{{ $t("Logout") }}</a>
-                </v-hover>
-              </v-toolbar-items>
-            </v-toolbar>
+              <v-toolbar flat color="white" dense>
+                <v-spacer></v-spacer>
+                <v-toolbar-items class="hidden-sm-and-down no-height-inherit">
+                  <v-hover v-slot:default="{ hover }">
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/' }">{{ $t("Search") }}</router-link>
+                  </v-hover>
+                  <v-hover v-slot:default="{ hover }">
+                    <router-link v-if="isowner || isuploader" :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ name: 'submit' }">{{ $t("Submit") }}</router-link>
+                  </v-hover>
+                  <v-hover v-slot:default="{ hover }">
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/contact' }">{{ $t("Contact") }}</router-link>
+                  </v-hover>
+                  <v-hover v-slot:default="{ hover }">
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" v-if="!token" :to="{ path: '/login' }">{{ $t("Login") }}</router-link>
+                  </v-hover>
+                  <v-hover v-slot:default="{ hover }">
+                    <a class="flat dark ph-button grey" v-if="token" @click="logout()" >{{ $t("Logout") }}</a>
+                  </v-hover>
+                </v-toolbar-items>
+              </v-toolbar>
 
-          </v-row>
+            </v-row>
 
             <v-row>
-              <v-col cols="12" class="content">
+              <v-col cols="12">
                 <p-breadcrumbs :items="breadcrumbs" class="ml-1"></p-breadcrumbs>
                 <v-row justify="center" v-for="(alert, i) in alerts" :key="i">
                   <v-col cols="12">
@@ -116,16 +118,19 @@
                     </v-alert>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <transition name="fade" mode="out-in">
-                    <keep-alive>
-                      <router-view></router-view>
-                    </keep-alive>
-                  </transition>
-                </v-row>
               </v-col>
             </v-row>
+            
+          </v-col>
+        </v-row>
 
+        <v-row class="content mx-4" justify="center">
+          <v-col cols="12" md="10">
+          <transition name="fade" mode="out-in">
+            <keep-alive>
+              <router-view></router-view>
+            </keep-alive>
+          </transition>
           </v-col>
         </v-row>
 
@@ -138,12 +143,12 @@
         <v-row>
           <v-col cols="12" md="10" offset-md="1">
             <v-row>
-          <v-col class="text-left" >
-            <span class="grey--text text--darken-2"><address>{{ instanceconfig.address }} | <abbr title="Telefon">T</abbr> {{ instanceconfig.phone }}</address></span>
-          </v-col>
-          <v-col class="text-right" >
-            <router-link class="navlink" :to="{ name: 'impressum' }">{{$t('Impressum')}}</router-link> | <router-link class="navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
-          </v-col>
+              <v-col class="text-left" >
+                <span class="grey--text text--darken-2"><address>{{ instanceconfig.address }} | <abbr title="Telefon">T</abbr> {{ instanceconfig.phone }}</address></span>
+              </v-col>
+              <v-col class="text-right" >
+                <router-link class="navlink" :to="{ name: 'impressum' }">{{$t('Impressum')}}</router-link> | <router-link class="navlink" :to="{ name: 'contact' }">{{$t('Contact')}}</router-link>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -194,8 +199,8 @@ export default {
     alerts: function () {
       return this.$store.state.alerts.alerts
     },
-    name: function () {
-      return this.$store.state.appconfig.name
+    appconfig: function () {
+      return this.$store.state.appconfig
     },
     breadcrumbs () {
       return this.$store.state.breadcrumbs

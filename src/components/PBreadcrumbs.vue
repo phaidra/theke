@@ -7,7 +7,7 @@
         <span :key="'distext'+index" v-if="item.disabled" class="text" >{{ $t(item.text) }}</span>
         <template v-else>
           <a :key="'home'+index" v-if="item.to === '/'" @click="resetSearch()"class="text primary--text">{{ $t(item.text) }}</a>
-          <a :key="'iconex'+index" v-else-if="item.external" :href="item.to" class="text primary--text">{{ $t(item.text) }}</a>
+          <a :key="'iconex'+index" v-else-if="item.external" :href="item.to" target="_blank" class="text primary--text">{{ $t(item.text) }}</a>
           <router-link :key="'link'+index" v-else :to="item.to" class="text primary--text">{{ $t(item.text) }}</router-link>
         </template>
       </template>

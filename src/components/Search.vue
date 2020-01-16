@@ -1,82 +1,83 @@
 <template>
   <v-container fluid>
-    <v-row no-gutters align="center" justify="space-between">
-      <v-col cols="12" md="4">
-        <autocomplete
-          class="mt-6"
-          placeholder="Search..."
-          name="autocomplete"
-          :initValue="query"
-          :suggester="'titlesuggester'"
-          :customParams="{ token: 'dev' }"
-          :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
-          :onSelect="handleSelect"
-          :loading="loading"
-        ></autocomplete>
-      </v-col>
-      <v-col cols="12" md="1">
-        <span class="ml-4">{{ total }} {{ $t('objects') }}</span>
-      </v-col>
-      <v-col cols="12" md="3">
-        <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="7" v-model="page" class="mb-3" flat></v-pagination>
-      </v-col>
-      <v-col cols="12" md="3">
-        <v-row justify="center">
-          <v-btn-toggle light v-model="toggle_exclusive">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click.native="setSort('title asc')">
-                  <span>A-Z</span>
-                </v-btn>
-              </template>
-              <span>{{ $t('Title ascending') }}</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click.native="setSort('title desc')">
-                  <span>Z-A</span>
-                </v-btn>
-              </template>
-              <span>{{ $t('Title descending') }}</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort asc')">
-                  <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
-                </v-btn>
-              </template>
-              <span>{{ $t('Production year ascending') }}</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort desc')">
-                  <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
-                </v-btn>
-              </template>
-              <span>{{ $t('Production year descending') }}</span>
-            </v-tooltip>
-          </v-btn-toggle>
+    <v-row justify="center">
+      <v-col cols="12" md="10">
+        <v-row no-gutters align="center">
+          <v-col cols="12" md="4">
+            <autocomplete
+              placeholder="Search..."
+              name="autocomplete"
+              :initValue="query"
+              :suggester="'titlesuggester'"
+              :customParams="{ token: 'dev' }"
+              :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
+              :onSelect="handleSelect"
+              :loading="loading"
+            ></autocomplete>
+          </v-col>
         </v-row>
-      </v-col>
-      <v-col cols="12" md="1">
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <v-btn class="ml-4" v-on="on" @click.native="csvExport()">
-              <span>Export</span>
-            </v-btn>
-          </template>
-          <span>{{ $t('Download search results as a CSV file') }}</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="9" class="border-right pr-2" >
+        <v-row justify="space-between" align="center" no-gutters>
+          <v-col cols="12" md="1">
+            <span>{{ total }} {{ $t('objects') }}</span>
+          </v-col>
+          <v-col cols="12" md="5">
+            <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="7" v-model="page" flat></v-pagination>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-row justify="center">
+              <v-btn-toggle light v-model="toggle_exclusive">
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('title asc')">
+                      <span>A-Z</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Title ascending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('title desc')">
+                      <span>Z-A</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Title descending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort asc')">
+                      <span>{{dctermsCreatedYearMin}}-{{dctermsCreatedYearMax}}</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Production year ascending') }}</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" @click.native="setSort('rdau_P60071_year_sort desc')">
+                      <span>{{dctermsCreatedYearMax}}-{{dctermsCreatedYearMin}}</span>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('Production year descending') }}</span>
+                </v-tooltip>
+              </v-btn-toggle>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="1">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" @click.native="csvExport()">
+                  <span>Export</span>
+                </v-btn>
+              </template>
+              <span>{{ $t('Download search results as a CSV file') }}</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
         <search-results></search-results>
         <v-row class="text-center">
           <v-pagination v-if="total>pagesize" v-bind:length="totalPages" total-visible="13" v-model="page" class="mb-3"></v-pagination>
         </v-row>
       </v-col>
-      <v-col cols="3" class="pa-2">
+      <v-col cols="12" md="2" class="pa-2 border-left">
         <search-filters></search-filters>
       </v-col>
     </v-row>

@@ -47,7 +47,7 @@ export default new Vuex.Store({
           to: 'https://romanistik.univie.ac.at/'
         },
         {
-          text: config.global.name,
+          text: config.global.breadcrumbsname,
           to: '/'
         }
       ]
@@ -163,7 +163,7 @@ export default new Vuex.Store({
       state.user.username = username
     },
     clearUser (state) {
-      state.user.username = '',
+      state.user.username = ''
       state.user.token = ''
     },
     setToken (state, token) {
@@ -178,17 +178,13 @@ export default new Vuex.Store({
       Vue.set(state.user, 'org_units_l2', logindata.org_units_l2)
     },
     initStore (state) {
-      state.user.username = '',
-      state.user.token = '',
+      state.user.username = ''
+      state.user.token = ''
       state.alerts.alerts = []
     },
     initSettings (state) {
       state.instanceconfig = config.instances[config.defaultinstance]
       state.appconfig = config.global
-    },
-    clearUser (state) {
-      state.settings.username = '',
-      state.settings.token = ''
     },
     setInstanceApi (state, api) {
       state.instanceconfig.api = api

@@ -1,84 +1,88 @@
 <template>
   <v-container fluid>
-    <v-row v-if="loggedin">
-      <v-card flat color="#fafafa">
-        <v-card-actions>
-          <v-btn v-if="isowner" :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark v-on="on" class="mx-2">{{ $t('Download') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-for="(member, index) in members" :key="index" :href="getMemberDownloadUrl(member)">
-                <v-list-item-title>{{ getFilename(member.pid) }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-card-actions>
-      </v-card>
-    </v-row>
-    <v-row>
-      <v-col cols="12" sm="6" md="4">
-        <v-card>
-          <v-card-text>
-            <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
-          </v-card-text>
-          <v-divider light v-if="isowner"></v-divider>
-          <v-card-actions v-if="isowner" class="pa-3">
-            <v-spacer></v-spacer>
-            <v-menu offset-y>
-              <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
-              </template>
-              <v-list>
-                <v-list-item :to="{ name: 'edit'}">
-                  <v-list-item-title>{{ $t('Edit metadata') }}</v-list-item-title>
-                </v-list-item>
-                <v-list-item :to="{ name: 'manage'}">
-                  <v-list-item-title>{{ $t('Manage object') }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" md="8" v-if="members">
-        <v-row  >
-          <v-col cols="12" md="6" v-for="(member) in members" :key="'member_'+member.pid" >
-            <v-card class="mb-3 pt-4">
-              <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
-                <v-img max-height="200" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
-                <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
-              </a>
-              <v-card-text class="ma-2">
-                <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
-                <v-container v-if="getMD5(member.pid)">
-                  <v-row>
-                    <v-col md="4" cols="12" class="pdlabel primary--text text-right">md5</v-col>
-                    <v-col md="8" cols="12">{{ getMD5(member.pid) }}</v-col>
-                  </v-row>
-                </v-container>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-row v-if="loggedin">
+          <v-card flat>
+            <v-card-actions>
+              <v-btn v-if="isowner" :to="{ name: 'addmember', params: { pid: pid }}" color="primary" raised>{{ $t('Add file') }}</v-btn>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                  <v-btn color="primary" dark v-on="on" class="mx-2">{{ $t('Download') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(member, index) in members" :key="index" :href="getMemberDownloadUrl(member)">
+                    <v-list-item-title>{{ getFilename(member.pid) }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-card-actions>
+          </v-card>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" md="6">
+            <v-card>
+              <v-card-text>
+                <p-d-jsonld :jsonld="displayjsonld[pid]" :pid="pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
               </v-card-text>
               <v-divider light v-if="isowner"></v-divider>
-              <v-card-actions v-if="loggedin" class="pa-3">
+              <v-card-actions v-if="isowner" class="pa-3">
                 <v-spacer></v-spacer>
-                <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
-                <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
-                <v-menu v-if="isowner" offset-y>
+                <v-menu offset-y>
                   <template v-slot:activator="{ on }">
-                    <v-btn color="primary" class="mx-2" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
+                    <v-btn color="primary" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
                   </template>
                   <v-list>
-                    <v-list-item :to="{ name: 'edit', params: { pid: member.pid } }">
+                    <v-list-item :to="{ name: 'edit'}">
                       <v-list-item-title>{{ $t('Edit metadata') }}</v-list-item-title>
                     </v-list-item>
-                    <v-list-item :to="{ name: 'manage', params: { pid: member.pid } }">
+                    <v-list-item :to="{ name: 'manage'}">
                       <v-list-item-title>{{ $t('Manage object') }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
               </v-card-actions>
             </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6" v-if="members">
+            <v-row no-gutters >
+              <v-col cols="12" v-for="(member) in members" :key="'member_'+member.pid" >
+                <v-card class="mb-3 mr-2 pt-4">
+                  <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
+                    <v-img max-height="200" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
+                    <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
+                  </a>
+                  <v-card-text class="ma-2">
+                    <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
+                    <v-container v-if="getMD5(member.pid)">
+                      <v-row>
+                        <v-col md="4" cols="12" class="pdlabel primary--text text-right">md5</v-col>
+                        <v-col md="8" cols="12">{{ getMD5(member.pid) }}</v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-divider light v-if="isowner"></v-divider>
+                  <v-card-actions v-if="loggedin" class="pa-3">
+                    <v-spacer></v-spacer>
+                    <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
+                    <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
+                    <v-menu v-if="isowner" offset-y>
+                      <template v-slot:activator="{ on }">
+                        <v-btn color="primary" class="mx-2" dark v-on="on">{{ $t('Edit') }}<v-icon right dark>mdi-menu-down</v-icon></v-btn>
+                      </template>
+                      <v-list>
+                        <v-list-item :to="{ name: 'edit', params: { pid: member.pid } }">
+                          <v-list-item-title>{{ $t('Edit metadata') }}</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item :to="{ name: 'manage', params: { pid: member.pid } }">
+                          <v-list-item-title>{{ $t('Manage object') }}</v-list-item-title>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-col>
