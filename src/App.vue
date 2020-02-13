@@ -23,10 +23,10 @@
                   </v-btn>
                 </template>
                 <v-list>
-                  <v-list-item @click="$i18n.locale='eng'">
+                  <v-list-item @click="setLang('eng')">
                     <v-list-item-title>English</v-list-item-title>
                   </v-list-item>
-                  <v-list-item @click="$i18n.locale='deu'">
+                  <v-list-item @click="setLang('deu')">
                     <v-list-item-title>Deutsch</v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -248,6 +248,10 @@ export default {
     },
     initLanguages: function () {
       this.$store.commit('setLangTerms', this.$store.state.appconfig.vocabularies.lang)
+    },
+    setLang: function (lang) {
+      this.$i18n.locale = lang
+      this.$store.commit('sortRoles', lang)
     }
   },
   mounted: function () {
@@ -265,6 +269,7 @@ export default {
     this.$store.commit('initStore')
     this.$store.dispatch('initSearch')
     this.initLanguages()
+    this.$store.commit('sortRoles', this.$i18n.locale)
     this.$vuetify.theme.themes.light.primary = this.$store.state.instanceconfig.primary
   }
 }
