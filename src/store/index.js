@@ -142,13 +142,13 @@ export default new Vuex.Store({
           }
         )
       }
-  
+
       if (pagetitle) {
         state.pagetitle = state.appconfig.name + ' - ' + pagetitle
       } else {
         state.pagetitle = state.appconfig.name
       }
-  
+
       if (process.browser) {
         document.title = state.pagetitle
       }
@@ -228,7 +228,7 @@ export default new Vuex.Store({
           })
           .catch(function (error) {
             console.log(error)
-            reject()
+            reject(error)
           })
       })
     },
@@ -257,7 +257,7 @@ export default new Vuex.Store({
     },
     async getLoginData ({ commit, dispatch, state }) {
       try {
-        let response = await axios.get(state.instanceconfig.api + '/directory/user/data', {
+        const response = await axios.get(state.instanceconfig.api + '/directory/user/data', {
           headers: {
             'X-XSRF-TOKEN': state.user.token
           }
@@ -268,10 +268,10 @@ export default new Vuex.Store({
         console.log('[' + state.user.username + '] got user data firstname[' + response.data.user_data.firstname + '] lastname[' + response.data.user_data.lastname + '] email[' + response.data.user_data.email + ']')
         commit('setLoginData', response.data.user_data)
       } catch (error) {
-        //if (error.response.status === 401) {
-          // this token is invalid
+        // if (error.response.status === 401) {
+        // this token is invalid
         //  dispatch('logout')
-        //}
+        // }
         console.log(error)
       }
     }

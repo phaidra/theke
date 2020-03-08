@@ -50,13 +50,8 @@
 </template>
 
 <script>
-import Autocomplete from '@/components/Autocomplete'
-
 export default {
   name: 'search-filters',
-  components: {
-    Autocomplete
-  },
   computed: {
     searchsettings: function () {
       return this.$store.state.appconfig.search.state

@@ -129,12 +129,16 @@ export default {
     },
 
     clickSearch () {
-      this.onSelect ? this.onSelect({ term: this.type }) : null
+      if (this.onSelect) {
+        this.onSelect({ term: this.type })
+      }
       this.showList = false
     },
 
     clickClear () {
-      this.onSelect ? this.onSelect({ term: '' }) : null
+      if (this.onSelect) {
+        this.onSelect({ term: '' })
+      }
       this.showList = false
     },
 
@@ -163,7 +167,9 @@ export default {
         case ENTER:
           e.preventDefault()
           if (this.focusList === 0) {
-            this.onSelect ? this.onSelect({ term: this.type }) : null
+            if (this.onSelect) {
+              this.onSelect({ term: this.type })
+            }
           } else {
             this.selectList(this.$store.state.search.suggestions[this.suggester][this.focusList])
           }
@@ -217,7 +223,9 @@ export default {
       // Hide List
       this.showList = false
 
-      this.onSelect ? this.onSelect(clean) : null
+      if (this.onSelect) {
+        this.onSelect(clean)
+      }
     },
 
     getData (value) {

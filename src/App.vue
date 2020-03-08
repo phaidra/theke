@@ -120,7 +120,7 @@
                 </v-row>
               </v-col>
             </v-row>
-            
+
           </v-col>
         </v-row>
 
@@ -159,7 +159,6 @@
 </template>
 
 <script>
-import fields from 'phaidra-vue-components/src/utils/fields'
 import PBreadcrumbs from '@/components/PBreadcrumbs'
 import Quicklinks from '@/components/Quicklinks'
 import QuicklinksFooter from '@/components/QuicklinksFooter'
@@ -241,7 +240,7 @@ export default {
     getCookie: function (name) {
       var value = '; ' + document.cookie
       var parts = value.split('; ' + name + '=')
-      if (parts.length == 2) {
+      if (parts.length === 2) {
         var val = parts.pop().split(';').shift()
         return val === ' ' ? null : val
       }
@@ -327,7 +326,6 @@ export default {
 .logo {
   text-decoration: none;
 }
-
 
 .no-padding {
   padding: 0px;

@@ -850,7 +850,7 @@ const mutations = {
     state.sortdef = sortdef
   },
   resetSort (state, sort) {
-    for (let s of state.sortdef) {
+    for (const s of state.sortdef) {
       s.active = false
     }
   },
@@ -1171,7 +1171,7 @@ const actions = {
         })
         .catch(function (error) {
           console.log(error)
-          reject()
+          reject(error)
         })
     })
   },

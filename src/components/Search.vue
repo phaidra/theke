@@ -136,6 +136,7 @@ export default {
           }
         }
       }
+      return '2011'
     },
     dctermsCreatedYearMax: function () {
       if (this.$store.state.search.stats) {
@@ -145,19 +146,21 @@ export default {
           }
         }
       }
+      return '2011'
     },
     activeSort: function () {
-      let nr = {
+      const nr = {
         'title asc': 0,
         'title desc': 1,
         'rdau_P60071_year_sort asc': 2,
-        'rdau_P60071_year_sort desc': 3,
+        'rdau_P60071_year_sort desc': 3
       }
-      for (let s of this.$store.state.search.sortdef) {
+      for (const s of this.$store.state.search.sortdef) {
         if (s.active) {
           return nr[s.id]
         }
       }
+      return 0
     },
     query: function () {
       return this.$store.state.search.q

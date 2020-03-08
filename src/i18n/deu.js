@@ -534,7 +534,7 @@ export default {
   'bf:ParallelTitle': 'Parallel titel',
 
   'bf:Note': 'Beschreibung',
-  'bf:Summary': 'Abstrakt',
+  'bf:Summary': 'Abstract',
   'phaidra:Remark': 'Anmerkung',
   'phaidra:ConditionNote': 'Zustand',
   'phaidra:ReproductionNote': 'Reproduction note',
@@ -675,7 +675,7 @@ export default {
 
   'HOME/SEARCH': 'HOME/SUCHE',
   'Download search results as a CSV file': 'Die Suchergebnisse als CSV-Datei herunterladen',
-  'OTHER_FEMININE': 'Andere',
+  OTHER_FEMININE: 'Andere',
 
   'You are here': 'Sie sind hier'
 }

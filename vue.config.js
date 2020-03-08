@@ -3,7 +3,8 @@ const path = require('path')
 module.exports = {
   assetsDir: 'mediathek',
   transpileDependencies: [
-    'phaidra-vue-components'
+    'phaidra-vue-components',
+    'vuetify'
   ],
   configureWebpack: {
     resolve: {

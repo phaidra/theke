@@ -6,7 +6,7 @@
         <icon :key="'icon'+index" left dark name="univie-right" color="#a4a4a4" width="8px" height="8px" class="mx-1"></icon>
         <span :key="'distext'+index" v-if="item.disabled" class="text" >{{ $t(item.text) }}</span>
         <template v-else>
-          <a :key="'home'+index" v-if="item.to === '/'" @click="resetSearch()"class="text primary--text">{{ $t(item.text) }}</a>
+          <a :key="'home'+index" v-if="item.to === '/'" @click="resetSearch()" class="text primary--text">{{ $t(item.text) }}</a>
           <a :key="'iconex'+index" v-else-if="item.external" :href="item.to" target="_blank" class="text primary--text">{{ $t(item.text) }}</a>
           <router-link :key="'link'+index" v-else :to="item.to" class="text primary--text">{{ $t(item.text) }}</router-link>
         </template>
