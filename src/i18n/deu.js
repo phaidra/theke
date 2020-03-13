@@ -492,7 +492,7 @@ export default {
   Role: 'Rolle',
   Identifier: 'Identifikator',
   Title: 'Titel',
-  Subtitle: 'Untertitel',
+  Subtitle: 'Titelzusatz',
   Description: 'Beschreibung',
   Note: 'Anmerkung',
   Keywords: 'Stichworte',
@@ -677,5 +677,7 @@ export default {
   'Download search results as a CSV file': 'Die Suchergebnisse als CSV-Datei herunterladen',
   OTHER_FEMININE: 'Andere',
 
-  'You are here': 'Sie sind hier'
+  'You are here': 'Sie sind hier',
+
+  'Regional language': 'Regionalsprache'
 }

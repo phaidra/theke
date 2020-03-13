@@ -131,6 +131,10 @@ export default {
     this.form.sections[0].fields.push(dur)
 
     this.form.sections[0].fields.push(fields.getField('language'))
+    let lang_vocab = fields.getField('language')
+    lang_vocab.vocabulary = 'lang_vocab'
+    lang_vocab.label = 'Regional language'
+    this.form.sections[0].fields.push(lang_vocab)
 
     this.form.sections[0].fields.push(fields.getField('subtitle-language'))
 
