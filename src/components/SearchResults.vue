@@ -11,7 +11,15 @@
               </v-col>
               <v-col>
                 <div class="title font-weight-light primary--text" @click.stop v-if="doc.bf_title_maintitle"><router-link :to="{ name: 'detail', params: { pid: doc.pid } }">{{ doc.bf_title_maintitle[0] }}</router-link></div>
-                <div v-if="doc.bf_paralleltitle_maintitle && (doc.bf_paralleltitle_maintitle[0] !== doc.bf_title_maintitle[0])" class=" font-weight-light mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_maintitle[0] }}</div>
+                <template v-if="doc.bf_title_subtitle">
+                  <div class="font-weight-light">{{ doc.bf_title_subtitle[0] }}</div>
+                </template>
+                <template v-if="doc.bf_paralleltitle_maintitle">
+                  <template v-if="doc.bf_paralleltitle_maintitle[0] !== doc.bf_title_maintitle[0]">
+                    <div class=" font-weight-light mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_maintitle[0] }}</div>
+                    <div v-if="doc.bf_paralleltitle_subtitle" class=" font-weight-light mt-2 grey--text text--darken-2" >{{ doc.bf_paralleltitle_subtitle[0] }}</div>
+                  </template>
+                </template>
                 <div class="my-3">
                   <span  v-for="(drt,i) in doc.bib_roles_pers_drt" :key="'pers'+i">
                     {{drt}}<span v-if="(i+1) < doc.bib_roles_pers_drt.length">, </span>
