@@ -77,6 +77,7 @@ export default {
     ser.hideIssued = true
     ser.hideIssn = true
     ser.hideIdentifier = true
+    ser.hidePages = true
     this.form.sections[0].fields.push(ser)
 
     const actor = fields.getField('role')
