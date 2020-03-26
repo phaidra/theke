@@ -245,9 +245,6 @@ export default {
         return val === ' ' ? null : val
       }
     },
-    initLanguages: function () {
-      this.$store.commit('setLangTerms', this.$store.state.appconfig.vocabularies.lang)
-    },
     setLang: function (lang) {
       this.$i18n.locale = lang
       this.$store.commit('sortRoles', lang)
@@ -267,7 +264,6 @@ export default {
     document.title = this.$store.state.appconfig.name
     this.$store.commit('initStore')
     this.$store.dispatch('initSearch')
-    this.initLanguages()
     this.$store.commit('sortRoles', this.$i18n.locale)
     this.$vuetify.theme.themes.light.primary = this.$store.state.instanceconfig.primary
   }
