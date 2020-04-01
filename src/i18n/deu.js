@@ -539,6 +539,7 @@ export default {
   'phaidra:ConditionNote': 'Zustand',
   'phaidra:ReproductionNote': 'Reproduction note',
   'phaidra:DigitizationNote': 'Digitization note',
+  'bf:tableOfContents': 'Inhaltsverzeichnis',
 
   'dcterms:date': 'Date',
   'dcterms:created': 'Date created',
