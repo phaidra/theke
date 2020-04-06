@@ -45,6 +45,12 @@ Vue.filter('unixtime', function (value) {
   }
 })
 
+Vue.filter('date', function (value) {
+  if (value) {
+    return moment(String(value)).format('DD.MM.YYYY')
+  }
+})
+
 Vue.use(svgicon, {
   tagName: 'icon',
   defaultWidth: '1em',

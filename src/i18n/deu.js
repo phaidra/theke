@@ -680,5 +680,9 @@ export default {
 
   'You are here': 'Sie sind hier',
 
-  'Regional language': 'Regionalsprache'
+  'Regional language': 'Regionalsprache',
+
+  'Import?': 'Importieren?',
+  'Field': 'Feld',
+  'Value': 'Wert'
 }

@@ -11,6 +11,9 @@
         <p-i-form
           :form="form"
           :templating="false"
+          :importing="false"
+          :debug="false"
+          :enablerights="false"
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
           v-on:form-input-p-file="handleMimeSelect($event)"
