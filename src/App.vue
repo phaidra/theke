@@ -286,6 +286,10 @@ export default {
   font-weight: 300;
 }
 
+#app .v-input {
+  font-weight: 400;
+}
+
 .name {
   font-size: 18.6667px;
   font-weight: 400;

@@ -84,6 +84,12 @@ import lang3to2map from 'phaidra-vue-components/src/utils/lang3to2map'
 
 export default {
   name: 'tmdb-import',
+  props: {
+    preselect: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       loading: false,
@@ -174,7 +180,7 @@ export default {
             field: 'bf:ParallelTitle',
             text: this.$t('bf:ParallelTitle'),
             value: this.tmdbMovieData.details['title'],
-            import: true
+            import: this.preselect
           }
         )
       }
@@ -186,7 +192,7 @@ export default {
             field: 'bf:Title',
             text: this.$t('bf:Title'),
             value: this.tmdbMovieData.details['original_title'],
-            import: true
+            import: this.preselect
           }
         )
       }
@@ -210,7 +216,7 @@ export default {
               field: 'role:act',
               text: this.$store.getters.getLocalizedTermLabel('rolepredicate', 'role:act', this.$i18n.locale),
               value: act.name,
-              import: i <= 5
+              import: (i <= 5) && this.preselect
             }
           )
         }
@@ -246,7 +252,7 @@ export default {
                 field: role,
                 text: this.$store.getters.getLocalizedTermLabel('rolepredicate', role, this.$i18n.locale),
                 value: crew.name,
-                import: true
+                import: this.preselect
               }
             )
           }
@@ -261,7 +267,7 @@ export default {
               text: this.$t('schema:genre'),
               value: this.$store.getters.getLocalizedTermLabel('genre', this.tmdbGenresMapHash[g.id], this.$i18n.locale),
               valueId: this.tmdbGenresMapHash[g.id],
-              import: true
+              import: this.preselect
             }
           )
         }
@@ -272,9 +278,9 @@ export default {
           this.tmdbImportData.push( 
             {
               field: 'role:prn',
-              text: this.$store.getters.getLocalizedTermLabel('rolepredicate', 'role:prn', this.$i18n.locale),
+              text: this.$t('Production company'),
               value: pc.name,
-              import: true
+              import: this.preselect
             }
           )
         }
@@ -285,9 +291,9 @@ export default {
           this.tmdbImportData.push( 
             {
               field: 'role:prp',
-              text: this.$store.getters.getLocalizedTermLabel('rolepredicate', 'role:prp', this.$i18n.locale),
+              text: this.$t('Production place'),
               value: pc.name,
-              import: true
+              import: this.preselect
             }
           )
         }
@@ -299,7 +305,7 @@ export default {
             field: 'rdau:P60071',
             text: this.$t('Production year'),
             value: this.tmdbMovieData.details['release_date'].substring(0, 4),
-            import: true
+            import: this.preselect
           }
         )
       }
@@ -310,7 +316,7 @@ export default {
             field: 'schema:duration',
             text: this.$t('schema:duration'),
             value: this.tmdbMovieData.details['runtime'],
-            import: true
+            import: this.preselect
           }
         )
       }
@@ -324,7 +330,7 @@ export default {
                 text: this.$t('dcterms:language'),
                 value: this.$store.getters.getLocalizedTermLabel('lang', this.lang2to3map[l.iso_639_1], this.$i18n.locale),
                 valueId: this.lang2to3map[l.iso_639_1],
-                import: true
+                import: this.preselect
               }
             )
           }
@@ -343,7 +349,7 @@ export default {
               case 'fra':
               case 'ron':
               case 'por':
-                imp = true
+                imp = this.preselect
                 break
             }
             if (desc.data) {
@@ -370,7 +376,7 @@ export default {
               field: 'dce:subject',
               text: this.$t('dce:subject'),
               value: kw.name,
-              import: true
+              import: this.preselect
             }
           )
         }

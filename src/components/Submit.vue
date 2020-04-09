@@ -16,6 +16,7 @@
               :enablerights="false"
               :owner="isuploader ? owner : null"
               :contentmodel="contentmodel"
+              :validate="validate"
               v-on:object-created="objectCreated($event)"
               v-on:load-form="form = $event"
             ></p-i-form>
@@ -69,6 +70,9 @@ export default {
     }
   },
   methods: {
+    validate: function () {
+      return true
+    },
     objectCreated: function (event) {
       this.$store.commit('setAlerts', [{ type: 'success', msg: this.$t('Record created') + ' ' + event }])
     },
@@ -244,24 +248,15 @@ export default {
       if (tmdbImportData) {
         for (let f of tmdbImportData) {
           if ((f.field === 'role:prn') && (f.import)) {
-            let role = fields.getField('role')
-            role.type = 'schema:Organization'
-            role.role = 'role:prn'
-            role.organization = f.value
-            role.hideRole = true
-            role.organizationLabel = 'Production company'
+            let role = fields.getField('production-company')
+            role.organizationText = f.value
             this.form.sections[0].fields.push(role)
             importedCompany = true
           }
         }
       }
       if (!importedCompany) {
-        let productioncomp = fields.getField('role')
-        productioncomp.type = 'schema:Organization'
-        productioncomp.role = 'role:prn'
-        productioncomp.showname = true
-        productioncomp.hideRole = true
-        productioncomp.organizationLabel = 'Production company'
+        let productioncomp = fields.getField('production-company')
         this.form.sections[0].fields.push(productioncomp)
       }
 
@@ -269,24 +264,15 @@ export default {
       if (tmdbImportData) {
         for (let f of tmdbImportData) {
           if ((f.field === 'role:prp') && (f.import)) {
-            let role = fields.getField('role')
-            role.type = 'schema:Organization'
-            role.role = 'role:prp'
-            role.organization = f.value
-            role.hideRole = true
-            role.organizationLabel = 'Production country'
+            let role = fields.getField('production-place')
+            role.organizationText = f.value
             this.form.sections[0].fields.push(role)
             importedPlace = true
           }
         }
       }
       if (!importedPlace) {
-        let prodplace = fields.getField('role')
-        prodplace.type = 'schema:Organization'
-        prodplace.role = 'role:prp'
-        prodplace.organizationLabel = 'Production country'
-        prodplace.showname = true
-        prodplace.hideRole = true
+        let prodplace = fields.getField('production-place')
         this.form.sections[0].fields.push(prodplace)
       }
 
@@ -443,9 +429,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.v-input__control {
-  font-weight: 400;
-}
-</style>

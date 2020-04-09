@@ -608,7 +608,7 @@ export default {
   'Movie metadata': 'Film metadaten',
   'Series title': 'Serientitel',
   'Content description': 'Inhalt',
-  'Production country': 'Productionsland',
+  'Production place': 'Produktionsland',
   'Production company': 'Produktionsgesellschaft',
   'Production year': 'Produktionsjahr',
   'Language of subtitles': 'Untertitelsprache',

@@ -15,13 +15,14 @@
             :importing="false"
             :debug="false"
             :enablerights="false"
+            :validate="validate"
             :floatingsavebutton="true"
             v-on:object-saved="objectSaved($event)"
           ></p-i-form>
         </v-card-text>
       </v-tab-item>
       <v-tab-item>
-        <tmdb-import v-on:tmdb-import="importTmdbData($event)"></tmdb-import>
+        <tmdb-import :preselect="false" v-on:tmdb-import="importTmdbData($event)"></tmdb-import>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -52,6 +53,9 @@ export default {
     }
   },
   methods: {
+    validate: function () {
+      return true
+    },
     importTmdbData: function (tmdbImportData) {
       this.addToForm(tmdbImportData)
       this.tab = 0
@@ -94,20 +98,22 @@ export default {
           }
 
           if (f.field.startsWith('role') && f.import) {
-            if ((f.field === 'role:prn') || (f.field === 'role:prp')) {
-              let role = fields.getField('role')
-              role.type = 'schema:Organization'
-              role.role = f.field
-              role.organization = f.value
-              role.hideRole = true
-              role.organizationLabel = f.field === 'role:prn' ? 'Production company' : 'Production country'
+            if (f.field === 'role:prn') {
+              let role = fields.getField('production-company')
+              role.organizationText = f.value
               this.editform.sections[0].fields.push(role)
             } else {
-              let role = fields.getField('role')
-              role.role = f.field
-              role.name = f.value
-              role.showname = true
-              this.editform.sections[0].fields.push(role)
+              if (f.field === 'role:prp') {
+                let role = fields.getField('production-place')
+                role.organizationText = f.value
+                this.editform.sections[0].fields.push(role)
+              } else {
+                let role = fields.getField('role')
+                role.role = f.field
+                role.name = f.value
+                role.showname = true
+                this.editform.sections[0].fields.push(role)
+              }
             }
           }
 
@@ -198,8 +204,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.v-input__control {
-  font-weight: 400;
-}
-</style>
