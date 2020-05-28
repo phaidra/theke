@@ -14,6 +14,7 @@
           :importing="false"
           :debug="false"
           :enablerights="false"
+          :validate="validate"
           v-on:object-created="objectCreated($event)"
           v-on:load-form="form = $event"
           v-on:form-input-p-file="handleMimeSelect($event)"
@@ -68,6 +69,9 @@ export default {
     }
   },
   methods: {
+    validate: function () {
+      return true
+    },
     getResourceTypeFromMimeType: function (mime) {
       switch (mime) {
         case 'image/jpeg':
