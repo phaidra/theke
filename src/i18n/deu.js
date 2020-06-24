@@ -644,6 +644,7 @@ export default {
   'Short film': 'Kurzfilm',
   Musical: 'Musical',
   Newscast: 'Nachrichtensendung',
+  Opera: 'Oper',
   Romance: 'Romanze',
   Satire: 'Satire',
   'Science fiction': 'Science Fiction',

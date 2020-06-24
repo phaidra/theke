@@ -395,16 +395,6 @@ export default {
       dceformat.vocabulary = 'dceformat'
       this.form.sections[0].fields.push(dceformat)
 
-      let tech = fields.getField('technique-vocab')
-      tech.vocabulary = 'technique'
-      tech.value = 'https://pid.phaidra.org/vocabulary/K818-FSM5'
-      this.form.sections[0].fields.push(tech)
-
-      let tech2 = fields.getField('technique-vocab')
-      tech2.vocabulary = 'technique'
-      tech2.value = 'https://pid.phaidra.org/vocabulary/1K09-VXQ4'
-      this.form.sections[0].fields.push(tech2)
-
       this.form.sections[0].fields.push(fields.getField('supplementary-content'))
 
       this.form.sections[0].fields.push(fields.getField('award'))

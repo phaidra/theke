@@ -14,6 +14,7 @@
                   v-model="tmdbSearchQuery" 
                   :label="$t('Search movie...')" 
                   v-on:keyup.enter="tmdbSearch()"
+                  @click:append="tmdbSearch()"
                   clearable
                   solo
                   autocomplete="off"
