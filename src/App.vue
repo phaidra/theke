@@ -52,6 +52,8 @@
                     </template>
                     <v-list>
                       <v-list-item @click="$router.push({ path: '/' })"><v-list-item-title>{{ $t("Search") }}</v-list-item-title></v-list-item>
+                      <v-list-item v-if="appconfig.contentpage" @click="$router.push({ path: '/content' })"><v-list-item-title>{{ $t("Content") }}</v-list-item-title></v-list-item>
+                      <v-list-item v-if="appconfig.usagepage" @click="$router.push({ path: '/usage' })"><v-list-item-title>{{ $t("Usage") }}</v-list-item-title></v-list-item>
                       <v-list-item v-if="isowner || isuploader" @click="$router.push({ name: 'submit' })"><v-list-item-title>{{ $t("Submit") }}</v-list-item-title></v-list-item>
                       <v-list-item @click="$router.push({ path: '/contact' })"><v-list-item-title>{{ $t("Contact") }}</v-list-item-title></v-list-item>
                       <v-list-item v-if="!token" @click="$router.push('login')"><v-list-item-title>{{ $t("Login") }}</v-list-item-title></v-list-item>
@@ -62,7 +64,7 @@
 
                 <span class="text-left hidden-sm-and-down" v-if="appconfig.name">
                   <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
-                  <a class="name primary--text ma-3" @click="resetSearch()" :title="appconfig.nametooltip">{{ appconfig.name }}</a>
+                  <a class="name primary--text ma-3" @click="appconfig.homepage ? $router.push('/') : resetSearch()" :title="appconfig.nametooltip">{{ appconfig.name }}</a>
                   <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
                   <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
                 </span>
@@ -72,19 +74,24 @@
             <v-row no-gutters class="hidden-md-and-up pb-1">
               <span class="text-left ml-3 mt-4" v-if="appconfig.name">
                 <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
-                <a class="name primary--text ma-3" @click="resetSearch()">{{ appconfig.name }}</a>
+                <a class="name primary--text ma-3" @click="appconfig.homepage ? $router.push('/') : resetSearch()">{{ appconfig.name }}</a>
                 <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
                 <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
               </span>
             </v-row>
 
             <v-row no-gutters class="hidden-sm-and-down header">
-
               <v-toolbar flat color="white" dense>
                 <v-spacer></v-spacer>
                 <v-toolbar-items class="hidden-sm-and-down no-height-inherit">
                   <v-hover v-slot:default="{ hover }">
-                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/' }">{{ $t("Search") }}</router-link>
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: appconfig.homepage ? '/search' : '/' }">{{ $t("Search") }}</router-link>
+                  </v-hover>
+                  <v-hover v-if="appconfig.contentpage" v-slot:default="{ hover }">
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/content' }">{{ $t("Content") }}</router-link>
+                  </v-hover>
+                  <v-hover v-if="appconfig.usagepage" v-slot:default="{ hover }">
+                    <router-link :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ path: '/usage' }">{{ $t("Usage") }}</router-link>
                   </v-hover>
                   <v-hover v-slot:default="{ hover }">
                     <router-link v-if="isowner || isuploader" :class="hover ? 'ph-button primary' : 'ph-button grey'" :to="{ name: 'submit' }">{{ $t("Submit") }}</router-link>
@@ -102,6 +109,8 @@
               </v-toolbar>
 
             </v-row>
+
+            <banner v-if="$route.name === 'home'"></banner>
 
             <v-row>
               <v-col cols="12">
@@ -160,8 +169,9 @@
 
 <script>
 import PBreadcrumbs from '@/components/PBreadcrumbs'
-import Quicklinks from '@/components/Quicklinks'
-import QuicklinksFooter from '@/components/QuicklinksFooter'
+import Banner from '@/components/ext/Banner'
+import Quicklinks from '@/components/ext/Quicklinks'
+import QuicklinksFooter from '@/components/ext/QuicklinksFooter'
 import { version } from '../package.json'
 import '@/compiled-icons/material-social-person'
 import '@/compiled-icons/material-navigation-menu'
@@ -170,6 +180,7 @@ import '@/compiled-icons/univie-sprache'
 export default {
   name: 'app',
   components: {
+    Banner,
     Quicklinks,
     QuicklinksFooter,
     PBreadcrumbs

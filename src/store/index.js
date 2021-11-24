@@ -42,9 +42,9 @@ export default new Vuex.Store({
           to: 'https://www.univie.ac.at'
         },
         {
-          text: config.instances[config.defaultinstance].impressum.orgname,
+          text: config.instances[config.defaultinstance].breadcrumbs.orgname,
           external: true,
-          to: 'https://romanistik.univie.ac.at/'
+          to: config.instances[config.defaultinstance].breadcrumbs.orgurl
         },
         {
           text: config.global.breadcrumbsname,
@@ -142,6 +142,24 @@ export default new Vuex.Store({
           }
         )
       }
+      if (transition.to.name === 'usage') {
+        pagetitle = 'Usage'
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            disabled: true
+          }
+        )
+      }
+      if (transition.to.name === 'content') {
+        pagetitle = 'Content'
+        state.breadcrumbs.push(
+          {
+            text: pagetitle,
+            disabled: true
+          }
+        )
+      }
 
       if (pagetitle) {
         state.pagetitle = state.appconfig.name + ' - ' + pagetitle
@@ -185,6 +203,12 @@ export default new Vuex.Store({
     initSettings (state) {
       state.instanceconfig = config.instances[config.defaultinstance]
       state.appconfig = config.global
+      for (const term of state.vocabulary.vocabularies.objectidentifiertype.terms) {
+        if (term['@id'] === 'phaidra:acnumber') {
+          term['skos:prefLabel'].eng = 'View in u:search'
+          term['skos:prefLabel'].deu = 'Anzeige in u:search'
+        }
+      }
     },
     setInstanceApi (state, api) {
       state.instanceconfig.api = api

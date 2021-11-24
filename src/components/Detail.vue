@@ -180,6 +180,7 @@ export default {
         wt: 'json',
         qf: 'ismemberof^5',
         fl: 'pid,cmodel',
+        rows: 100,
         sort: 'pos_in_' + pid.replace(':', '_') + ' asc'
       }
 

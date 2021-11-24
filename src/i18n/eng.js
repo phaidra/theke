@@ -74,9 +74,13 @@ export default {
   'dce:format': 'Format',
   'vra:material': 'Material',
   'vra:hasInscription': 'Inscription',
+  'bf:instanceOf': 'Instance of',
 
   // c18n
   'Container thumbnail': 'Cover thumbnail',
+
+  'PUBLISHER_VERLAG': 'Publisher',
+  'AC number': 'View in u:search',
 
   OTHER_FEMININE: 'Other',
 

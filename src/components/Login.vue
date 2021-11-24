@@ -62,6 +62,7 @@ export default {
     async login () {
       this.loading = true
       try {
+        this.credentials.username = this.credentials.username.toLowerCase()
         await this.$store.dispatch('login', this.credentials)
         if (this.$store.state.user.token) {
           this.credentials.username = ''

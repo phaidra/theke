@@ -598,6 +598,7 @@ export default {
   'dce:format': 'Format',
   'vra:material': 'Material',
   'vra:hasInscription': 'Inschrift',
+  'bf:instanceOf': 'Instance of',
 
   'Add file': 'Datei hinzufügen',
   'Edit metadata': 'Metadaten editieren',
@@ -626,6 +627,7 @@ export default {
   'Save as template': 'Als Vorlage speichern',
   Portuguese: 'Portugiesisch',
   Catalan: 'Katalanisch',
+  Spanish: 'Spanisch',
   Romanian: 'Rumänisch',
   French: 'Französisch',
   'Other/Unspecified': 'Andere/Nicht definiert',
@@ -685,5 +687,9 @@ export default {
 
   'Import?': 'Importieren?',
   'Field': 'Feld',
-  'Value': 'Wert'
+  'Value': 'Wert',
+  'PUBLISHER_VERLAG': 'Verlag',
+  'AC number': 'Anzeige in u:search',
+  'Usage': 'Benützung',
+  'Content': 'Bestand'
 }

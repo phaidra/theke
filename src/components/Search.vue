@@ -7,7 +7,7 @@
             <autocomplete
               placeholder="Search..."
               name="autocomplete"
-              :initValue="query"
+              :initValue="$route.query.q ? $route.query.q : query"
               :suggester="'titlesuggester'"
               :customParams="{ token: 'dev' }"
               :classes="{ input: 'form-control', wrapper: 'input-wrapper' }"
@@ -229,6 +229,30 @@ export default {
           saveAs(blob, 'search-results.csv')
         })
     }
+  },
+  mounted: function () {
+    if (this.$route.query.q) {
+      this.$store.commit('setQuery', this.$route.query.q)
+      this.$store.commit('setPage', 1)
+      this.$store.dispatch('search')
+    }
+  },
+  beforeRouteUpdate: async function (to, from, next) {
+    if (to.query.q) {
+      this.$store.commit('setQuery', to.query.q)
+      this.$store.commit('setPage', 1)
+      this.$store.dispatch('search')
+    }
+    next()
+  },
+  beforeRouteEnter: async function (to, from, next) {
+    next(async vm => {
+      if (to.query.q) {
+        vm.$store.commit('setQuery', to.query.q)
+        vm.$store.commit('setPage', 1)
+        vm.$store.dispatch('search')
+      }
+    })
   }
 }
 </script>
