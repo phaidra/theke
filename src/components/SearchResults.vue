@@ -26,6 +26,9 @@
                   </span>
                 </div>
                 <div v-if="doc.rdau_P60071_year" class="my-3">{{ doc.rdau_P60071_year[0] }}</div>
+                <div class="my-3" v-if="hasData(doc)">
+                  <icon width="24px" height="24px" class="grey--text" name="material-folder-play"></icon>
+                </div>
               </v-col>
             </v-row>
           </v-card-text>
@@ -38,6 +41,8 @@
 </template>
 
 <script>
+import '@/compiled-icons/material-folder-play'
+
 export default {
   name: 'search-results',
   computed: {
@@ -51,6 +56,11 @@ export default {
   methods: {
     getPreview: function (pid) {
       return 'https://' + this.instance.baseurl + '/preview/' + pid + '///120'
+    },
+    hasData: function (doc) {
+      if (doc.members_metadata) {
+        return doc.members_metadata.includes('memberresourcetype:other') || doc.members_metadata.includes('memberresourcetype:video') || doc.members_metadata.includes('memberresourcetype:audio')
+      }
     }
   }
 }

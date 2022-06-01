@@ -65,7 +65,7 @@
                 <span class="text-left hidden-sm-and-down" v-if="appconfig.name">
                   <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
                   <a class="name primary--text ma-3" @click="appconfig.homepage ? $router.push('/') : resetSearch()" :title="appconfig.nametooltip">{{ appconfig.name }}</a>
-                  <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
+                  <div class="ml-6 mt-2" style="max-width:700px;" v-if="appconfig.headernotice1" v-html="appconfig.headernotice1"></div>
                   <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
                 </span>
               </v-col>
@@ -75,7 +75,7 @@
               <span class="text-left ml-3 mt-4" v-if="appconfig.name">
                 <icon left dark name="univie-right" color="#a4a4a4" width="14px" height="14px" class="mb-1"></icon>
                 <a class="name primary--text ma-3" @click="appconfig.homepage ? $router.push('/') : resetSearch()">{{ appconfig.name }}</a>
-                <div class="ml-6 mt-2" v-if="appconfig.headernotice1">{{ appconfig.headernotice1 }}</div>
+                <div class="ml-6 mt-2" v-if="appconfig.headernotice1" v-html="appconfig.headernotice1"></div>
                 <div class="ml-6" v-if="appconfig.headernotice2">{{ appconfig.headernotice2 }}</div>
               </span>
             </v-row>
