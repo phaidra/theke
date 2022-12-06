@@ -15,7 +15,7 @@
     "file-saver": "^2.0.2",
     "moment": "^2.29.3",
     "phaidra-vue-components": "^0.8.0",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
     "vue-router": "^3.1.3",
