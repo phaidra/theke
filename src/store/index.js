@@ -233,6 +233,7 @@ export default new Vuex.Store({
         fetch(rootState.instanceconfig.api + '/signin', {
           method: 'GET',
           mode: 'cors',
+          credentials: 'include',
           headers: {
             Authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
           }
