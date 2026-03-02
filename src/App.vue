@@ -236,7 +236,7 @@ export default {
   methods: {
     logout: function () {
       this.$store.dispatch('logout')
-      document.cookie = 'X-XSRF-TOKEN='
+      document.cookie = 'TOKEN='
     },
     resetSearch: function () {
       this.$store.dispatch('resetSearch')
@@ -262,7 +262,7 @@ export default {
     }
   },
   mounted: function () {
-    var token = this.getCookie('X-XSRF-TOKEN')
+    var token = this.getCookie('TOKEN')
     if (token) {
       this.$store.commit('setToken', token)
       if (!this.user.username) {
