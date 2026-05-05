@@ -48,23 +48,17 @@
             <v-row no-gutters >
               <v-col cols="12" v-for="(member) in members" :key="'member_'+member.pid" >
                 <v-card class="mb-3 mr-2 pt-4">
-                  <a target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid">
-                    <v-img max-height="200" contain v-if="member.cmodel === 'PDFDocument'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/Document/preview/480'" />
-                    <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="'https://' + instance.baseurl + '/preview/' + member.pid + '/ImageManipulator/boxImage/480/png'" />
+                  <a target="_blank" :href="instance.api + '/object/' + member.pid + '/preview'">
+                    <v-img max-height="200" contain v-if="member.cmodel === 'PDFDocument'" :src="instance.api + '/object/' + member.pid + '/thumbnail?w=480'" />
+                    <v-img max-height="200" contain v-else-if="member.cmodel === 'Picture' || member.cmodel === 'Page'" :src="instance.api + '/object/' + member.pid + '/thumbnail?w=480'" />
                   </a>
                   <v-card-text class="ma-2">
                     <p-d-jsonld :jsonld="displayjsonld[member.pid]" :pid="member.pid" :labelColMd="'4'" :valueColMd="'8'"></p-d-jsonld>
-                    <v-container v-if="getMD5(member.pid)">
-                      <v-row>
-                        <v-col md="4" cols="12" class="pdlabel primary--text text-right">md5</v-col>
-                        <v-col md="8" cols="12">{{ getMD5(member.pid) }}</v-col>
-                      </v-row>
-                    </v-container>
                   </v-card-text>
                   <v-divider light v-if="isowner"></v-divider>
                   <v-card-actions v-if="loggedin" class="pa-3">
                     <v-spacer></v-spacer>
-                    <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="'https://' + instance.baseurl + '/imageserver/' + member.pid" primary>{{ $t('View') }}</v-btn>
+                    <v-btn v-if="member.cmodel === 'Picture'" target="_blank" :href="instance.api + '/object/' + member.pid + '/preview'" primary>{{ $t('View') }}</v-btn>
                     <v-btn :href="getMemberDownloadUrl(member)" primary>{{ $t('Download') }}</v-btn>
                     <v-menu v-if="isowner" offset-y>
                       <template v-slot:activator="{ on }">
@@ -233,6 +227,7 @@ export default {
       var params = {
         q: 'pid:"' + pid + '"',
         defType: 'edismax',
+        fl: 'pid cmodel datastreams',
         wt: 'json',
         qf: 'pid^5'
       }
@@ -258,17 +253,6 @@ export default {
         })
       return promise
     },
-    getMD5: function (pid) {
-      if (this.md5[pid]) {
-        const md5s = [] // there might be more versions of octets
-        for (const md5 of this.md5[pid]) {
-          if (md5.path.replace('_', ':').match(new RegExp(pid + '\\+OCTETS', 'g'))) {
-            md5s.push(md5.md5)
-          }
-        }
-        return md5s.join(', ')
-      }
-    },
     getFilename: function (pid) {
       if (this.displayjsonld[pid]) {
         if (this.displayjsonld[pid]['ebucore:filename']) {
@@ -280,11 +264,12 @@ export default {
       return ''
     },
     getMemberDownloadUrl: function (member) {
-      if (member.cmodel === 'Asset' || member.cmodel === 'Video') {
-        return this.instance.fedora + '/objects/' + member.pid + '/methods/bdef:Content/download'
-      } else {
-        return this.instance.api + '/object/' + member.pid + '/diss/Content/download'
-      }
+      // if (member.cmodel === 'Asset' || member.cmodel === 'Video') {
+      //   return this.instance.fedora + '/objects/' + member.pid + '/methods/bdef:Content/download'
+      // } else {
+      //   return this.instance.api + '/object/' + member.pid + '/diss/Content/download'
+      // }
+      return this.instance.api + '/object/' + member.pid + '/download'
     }
   },
   beforeRouteEnter: function (to, from, next) {

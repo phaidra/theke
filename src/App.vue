@@ -116,7 +116,7 @@
               <v-col cols="12">
                 <p-breadcrumbs :items="breadcrumbs" class="ml-1"></p-breadcrumbs>
                 <v-row justify="center" v-for="(alert, i) in alerts" :key="i">
-                  <v-col cols="12">
+                  <v-col v-if="!alert.msg.includes('org units')" cols="12">
                     <v-alert prominent :type="(alert.type === 'danger' ? 'error' : alert.type)" :value="true" transition="slide-y-transition">
                       <v-row align="center">
                         <v-col class="grow">{{alert.msg}}</v-col>

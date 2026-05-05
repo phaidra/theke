@@ -78,6 +78,7 @@ export default {
 
       var params = {
         q: 'ismemberof:"' + pid + '"',
+        rows: 1000,
         defType: 'edismax',
         wt: 'json',
         qf: 'ismemberof^5',

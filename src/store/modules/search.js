@@ -355,12 +355,12 @@ const mutations = {
         queries: [
           {
             id: 'restricted',
-            query: 'datastreams:POLICY',
+            query: 'datastreams:POLICY OR isrestricted:1',
             label: 'Restricted'
           },
           {
             id: 'unrestricted',
-            query: '-datastreams:POLICY',
+            query: '-datastreams:POLICY AND -isrestricted:1',
             label: 'Unrestricted'
           }
         ]
@@ -962,6 +962,7 @@ const actions = {
       defType: 'edismax',
       wt: 'json',
       qf: 'pid^5 dc_title^4 bib_journal^4 bf_shelfmark^4 dc_creator^3 dc_subject^2 _text_',
+      fl: 'pid cmodel bf_shelfmark bf_title_maintitle bf_title_subtitle bf_paralleltitle_maintitle bf_paralleltitle_subtitle bib_roles_pers_drt members_metadata',
       start: start,
       rows: state.pagesize,
       sort: '',

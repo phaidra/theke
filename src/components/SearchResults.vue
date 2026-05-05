@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     getPreview: function (pid) {
-      return 'https://' + this.instance.baseurl + '/preview/' + pid + '///120'
+      return this.instance.api + '/object/' + pid + '/thumbnail'
     },
     hasData: function (doc) {
       if (doc.members_metadata) {
